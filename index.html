@@ -1,110 +1,129 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>KitWorks - Main Menu</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<base target="_top" />
+<title>Aplikasi Main Menu - KitWorks Versi 1.0</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 <style>
-body { background-color: #f8f9fa; }
-.title-box { 
-  background-color: #003366; 
-  color: white; 
-  padding: 10px 15px; 
-  border-radius: 5px; 
-  display: flex; 
-  align-items: center; 
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2); 
-}
-.title-box i { margin-right: 10px; }
-.button-box { 
-  background: white; 
-  border-radius: 5px; 
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1); 
-  padding: 15px; 
-  margin: 20px auto; 
-  max-width: 400px; 
-}
-.btn.disabled { 
-  pointer-events: none; 
-  opacity: 0.5; 
-}
+/* CSS dari file Anda (tidak diubah) */
+body { background-color: #f8f9fa; min-height: 50vh; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+.brand-title { font-size: 12px; font: wide; color: #023581; line-height: 1; }
+.brand-subtitle { font-size: 10px; color: #6c757d; line-height: 1; }
+.social-icon { display: inline-flex; justify-content: center; align-items: center; width: 40px; height: 40px; border-radius: 50%; transition: background-color 0.3s ease-in-out; }
+.social-icon i { color: #555; transition: color 0.3s ease-in-out; }
+.social-icon:hover { background-color: #f0f0f0; }
+.social-icon:hover i { color: #dc3545; }
+.main-menu-link { font-weight: 500; padding: 8px 12px !important; border-radius: 6px; transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out; }
+.main-menu-link:hover, .main-menu-link.active { color: #dc3545 !important; background-color: #f0f0f0; }
+.card > header:first-child > .navbar { border-top-left-radius: var(--bs-card-border-radius); border-top-right-radius: var(--bs-card-border-radius); }
+@media (max-width: 591.98px) { .navbar-collapse { align-items: stretch; padding-top: 1rem; } .navbar-collapse .mx-auto { margin-left: 0 !important; margin-right: 0 !important; flex-direction: row; margin-bottom: 1rem; } .navbar-nav:not(.mx-auto) .nav-item { width: 100%; } .navbar-nav:not(.mx-auto) .main-menu-link { width: 100%; text-align: left; } }
 </style>
 </head>
 <body>
+<div class="container mt-5 mb-5">
+<div class="row justify-content-center">
+<div class="card mx-auto card shadow p-0" style="max-width:789px">
+<header>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<div class="container-fluid">
+<a class="navbar-brand d-flex align-items-center" href="#"><img src="images/Logo_Kitworks.png" alt="Logo" width="90" class="me-2">
+<div class="d-md-block">
+<div class="brand-title">Aplication for Everyone</div>
+<div class="brand-subtitle">anytime and anywhere</div>
+</div></a>
+<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"><span class="navbar-toggler-icon"></span></button>
+<div class="collapse navbar-collapse" id="mainNavbar">
+<ul class="navbar-nav mx-auto">
+<li class="nav-item"><a class="nav-link social-icon" href="https://facebook.com/beratidealku" target="_blank"><i class="fab fa-facebook-f fa-lg"></i></a></li>
+<li class="nav-item"><a class="nav-link social-icon" href="https://www.instagram.com/hestyamin" target="_blank"><i class="fab fa-instagram fa-lg"></i></a></li>
+<li class="nav-item"><a class="nav-link social-icon" href="https://www.youtube.com" target="_blank"><i class="fab fa-youtube fa-lg"></i></a></li>
+</ul>
+<ul class="navbar-nav">
+<li class="nav-item"><a class="nav-link main-menu-link always-enabled" href="#about">About</a></li>
+<li class="nav-item"><a class="nav-link main-menu-link always-enabled" href="#" id="logoutBtn">Logout</a></li>
+</ul>
+</div>
+</div>
+</nav>
+</header>
 
-<div class="container mt-4">
-    <div class="title-box">
-        <i class="fas fa-cogs"></i>
-        <h4 class="mb-0">KitWorks - Main Menu</h4>
-    </div>
+<div class="header-image"></div>
+<div class="card-body">
+<div class="card-title text-white text-center p-1 rounded shadow mb-3" style="background-color: #002266;"><h4>Main Menu - KitWorks</h4></div>
 
-    <div class="button-box text-center">
-        <div class="d-grid gap-2">
-            <a href="https://amihaji.github.io/kitworks/FormUser.html" class="btn btn-primary">Login</a>
-            <a href="https://amihaji.github.io/kitworks/setup.html"    class="btn btn-secondary disabled" id="btnsetting">Setup User</a>
-            <a href="https://amihaji.github.io/flc/index.html"         class="btn btn-secondary disabled" id="btnsetting">FLC Programme</a>
-            <a href="https://amihaji.github.io/wetools/index.html"     class="btn btn-secondary disabled" id="btnwetools">WE Tools</a>
-            <a href="https://amihaji.github.io/wetools/DashWE.html"    class="btn btn-secondary disabled" id="btnfollowup">FollowUp Tools</a>
-            <a href="https://amihaji.github.io/crmtools/index.html"    class="btn btn-secondary disabled" id="btncrmtools">CRM Tools</a>
-            <a href="https://amihaji.github.io/estihtools/index.html"  class="btn btn-secondary disabled" id="btnestihtools">EstiH Tools</a>
-            <button class="btn btn-danger logout-btn">Logout</button>
-        </div>
-    </div>
+<div class="btn-group-vertical text-primary d-flex">
+<a href="https://amihaji.github.io/flc/index.html" id="flc" class="btn btn-warning mb-2 rounded disabled app-btn"><i class="fas fa-dumbbell"></i> Fat Loss Challange Programme</a>
+<a href="https://amihaji.github.io/estihtools/index.html" id="estihtools" class="btn btn-primary mb-2 rounded disabled app-btn"><i class="fas fa-clipboard-check"></i> EstiH Tools</a>
+<a href="https://amihaji.github.io/wetools/index.html" id="wetools" class="btn btn-primary mb-2 rounded disabled app-btn"><i class="fas fa-heartbeat"></i> WE Tools</a>
+<a href="https://amihaji.github.io/wetools/DashWE.html" id="dashwetools" class="btn btn-primary mb-2 rounded disabled app-btn"><i class="fas fa-list-check"></i> FollowUp Tools</a>
+<a href="https://amihaji.github.io/crmtools/index.html" id="crmtools" class="btn btn-primary mb-2 rounded disabled app-btn"><i class="fas fa-users"></i> CRM Tools</a>
+<a href="https://amihaji.github.io/kitworks/setup.html" id="setup" class="btn btn-primary mb-2 rounded disabled app-btn"><i class="fas fa-cog"></i> Setting</a>
+<a href="https://amihaji.github.io/kitworks/FormUser.html" class="btn btn-secondary mb-2 rounded always-enabled"><i class="fas fa-sign-in-alt"></i> Login</a>
 </div>
 
-<script>
-// *********  URL Google Apps Script JSONP **********
-const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbzZ4zcCygki0V5ssAhS94d8lc9tT5aiHwlr-9YdyLmmY6EaYyZpxXfjPsL1Ne7vF4kkNg/exec';
-// **************************************************
-document.addEventListener("DOMContentLoaded", function() {
-    manageMenuAccess();
+<footer class="footer mb-3 text-white text-center p-2 rounded" style="background-color: #002266;">KitWorks Versi 1.0 Copyright © 2025 <a href="https://www.beratidealku.com" class="text-white">www.beratidealku.com</a> - All rights reserved</footer>
+</div>
+</div>
+</div>
 
-    document.querySelectorAll('.logout-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            sessionStorage.clear();
-            location.reload();
-        });
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbzZ-ED3cr5_iovTE7MdUW_EA7JfBdji8fnfyWVCc5mI-kbwJudzXkGRyzpyoxQ2KECcXg/exec';
+
+document.addEventListener("DOMContentLoaded", function() {
+    applyAccessControl();
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+        sessionStorage.clear();
+        location.reload();
     });
 });
 
-function manageMenuAccess() {
+function applyAccessControl() {
     const userId = sessionStorage.getItem('userId');
     const userToken = sessionStorage.getItem('userToken');
+
+    document.querySelectorAll('.app-btn').forEach(btn => {
+        if (!btn.classList.contains('always-enabled')) {
+            btn.classList.add('disabled');
+        }
+    });
 
     if (userId && userToken) {
         const callbackName = 'cb_' + Date.now();
         const script = document.createElement('script');
         script.src = `${URL_APPS_SCRIPT}?action=getUserAccess&userId=${encodeURIComponent(userId)}&token=${encodeURIComponent(userToken)}&callback=${callbackName}`;
 
-        window[callbackName] = (response) => {
+        window[callbackName] = function(response) {
             if (response.status === 'success') {
-                const access = response.access; // { estihtools: "Y", wetools: "N", ... }
-                for (const [app, status] of Object.entries(access)) {
-                    const btn = document.getElementById(`btn${app}`);
-                    if (btn && status === 'Y') {
-                        btn.classList.remove('disabled');
-                        btn.classList.replace('btn-secondary', 'btn-success');
+                const access = response.access;
+                Object.entries(access).forEach(([key, value]) => {
+                    if (value === "Y") {
+                        const btn = document.getElementById(key);
+                        if (btn) {
+                            btn.classList.remove('disabled');
+                        }
                     }
-                }
+                });
             } else {
-                console.error(response.message);
+                console.log(response.message);
                 sessionStorage.clear();
             }
             document.body.removeChild(script);
             delete window[callbackName];
         };
+
         script.onerror = () => {
             console.error("Gagal mengambil hak akses user.");
             document.body.removeChild(script);
             delete window[callbackName];
         };
+
         document.body.appendChild(script);
     }
 }
 </script>
-
 </body>
 </html>
