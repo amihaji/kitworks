@@ -1,238 +1,110 @@
-<!----------------------------------------------------------------------------------------
-Aplikasi KitWorks Versi 1.0 GitHUB
-
-Dibuat dengan menggunakan : 
-- HTML Bootstrap versi 5.0
-- CSS dan JScript
-- Google Script Aplication
-
-Terdiri atas beberapa file :
-- Database : Sheet "TabelUser"
-- index.html (program utama) ditempatkan di GitHUB
-- formUser.html ditempatkan di GitHUB
-- code.gs (program server side)
-
-Fitur Aplikasi:
-- Form Main Menu KItWorks
-- EstiHTools : Aplikasi Estimasi Harga
-- WeTools : Wellness Evaluation, aplikasi Cek Kebugaran
-- DashWETools : Dashboard WE, Aplikasi Follow UP hasil WE
-- CRMTools : Dashboard CRM, Aplikasi Customer Relation Management
-- Setup : Setting User
----------------------------------------------------------------------------------------->
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <base target="_top">
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
-  <title>Aplikasi Main Menu - KitWorks Versi 1.0</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-   
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KitWorks - Main Menu</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+
 <style>
-/* Style body */    
-body {
-  /* background-image: url('../images/Header_WETools.jpg'); */
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-attachment: fixed;
-  background-color: #f8f9fa;
-  min-height: 50vh;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+body { background-color: #f8f9fa; }
+.title-box { 
+  background-color: #003366; 
+  color: white; 
+  padding: 10px 15px; 
+  border-radius: 5px; 
+  display: flex; 
+  align-items: center; 
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2); 
 }
-/* style header image */
-.header-image img { max-width: 100%; height: auto; }
-
-/* Style Form dan Page */
-.page { display: none; }
-.page.active { display: block; }
-.form-icon { margin-right: 10px; }
-/* .progress-bar { background-color: #0b5ed7; } */
-
-/* Style message box */
-.message-box { padding: 10px; border-radius: 5px; font-size: 0.95rem; margin-top: 1rem; }
-.message-error { background-color: #f8d7da; color: #842029; border: 1px solid #f5c2c7; }
-.message-success { background-color: #dbeafe; color: #1e3a8a; border: 1px solid #93c5fd; }
-
-/* Styel footer */
-.footer a:hover { color: #ff4d4d !important; }
-
-/* Style spinner */
-#loadingSpinner { display: none; text-align: center; padding: 20px; }
-#loadingSpinner .spinner-border { width: 3rem; height: 3rem; border-width: 0.25em; }
-
-/* Judul Header dan Menu */
-.brand-title { font-size: 12px; font:wide; color: #023581; line-height: 1; }
-.brand-subtitle { font-size: 10px; color: #6c757d; line-height: 1; }
-
-/* Styling untuk Ikon Sosial Media */
-.social-icon {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  transition: background-color 0.3s ease-in-out;
+.title-box i { margin-right: 10px; }
+.button-box { 
+  background: white; 
+  border-radius: 5px; 
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1); 
+  padding: 15px; 
+  margin: 20px auto; 
+  max-width: 400px; 
 }
-.social-icon i { color: #555; transition: color 0.3s ease-in-out; }
-.social-icon:hover { background-color: #f0f0f0; }
-.social-icon:hover i { color: #dc3545; }
-
-/* Styling untuk Menu Utama */
-.main-menu-link {
-    font-weight: 500;
-    padding: 8px 12px !important;
-    border-radius: 6px;
-    transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
-}
-.main-menu-link:hover,
-.main-menu-link.active {
-    color: #dc3545 !important; 
-    background-color: #f0f0f0;
-}
-
-/* Untuk membuat sudut navbar mengikuti card */
-.card > header:first-child > .navbar {
-    border-top-left-radius: var(--bs-card-border-radius);
-    border-top-right-radius: var(--bs-card-border-radius);
-}
-
-/* --- Tampilan Mobile (Vertikal) --- */
-@media (max-width: 591.98px) {
-    .navbar-collapse {
-    align-items: stretch;   /* stretch agar item bisa membentang penuh */
-    padding-top: 1rem;
-  }
-  /* Mengatur ulang posisi ikon medsos di mobile agar tetap di atas */
-  .navbar-collapse .mx-auto {
-      margin-left: 0 !important;
-      margin-right: 0 !important;
-      flex-direction: row;
-      margin-bottom: 1rem;
-  }
-  /* Membuat item menu utama vertikal membentang penuh */
-  .navbar-nav:not(.mx-auto) .nav-item {
-      width: 100%;        /* Item <li> sekarang akan selebar container */
-  }
-  .navbar-nav:not(.mx-auto) .main-menu-link {
-      width: 100%;       /* Link <a> di dalamnya juga ikut membentang */
-      text-align: left;  /* Pastikan teks tetap rata kiri */
-  }
+.btn.disabled { 
+  pointer-events: none; 
+  opacity: 0.5; 
 }
 </style>
 </head>
-
 <body>
-<div class="container mt-5 mb-5">
-  <div class="row justify-content-center">
-      <div class="card mx-auto card shadow p-0" style="max-width:789px">
 
-        <!-- HEADER MENU -->
-        <header class=>
-          <!-- Navbar ini akan memiliki background abu-abu yang membentang penuh -->
-          <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
-              <!-- Bagian 1: Logo dan Nama Brand -->
-              <a class="navbar-brand d-flex align-items-center" href="#">
-                <img src="images/Logo_Kitworks.png" alt="Logo" width="90" class="me-2">
-                <!-- <div class="d-none d-md-block"> -->
-                <div class="d-md-block">
-                  <div class="brand-title">Aplication for Everyone</div>
-                  <div class="brand-subtitle">anytime and anywhere</div>
-                </div>
-              </a>
-
-              <!-- Tombol Hamburger untuk Mobile -->
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation" width="100%">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-
-              <!-- Bagian 2 & 3: Menu dan Social Media -->
-              <div class="collapse navbar-collapse" id="mainNavbar">
-                <!-- Social Media Icons -->
-                <ul class="navbar-nav mx-auto">
-                  <li class="nav-item"><a class="nav-link social-icon" href="https://facebook.com/beratidealku"   target="_blank" title="Facebook"><i class="fab fa-facebook-f fa-lg"></i></a></li>
-                  <li class="nav-item"><a class="nav-link social-icon" href="https://www.instagram.com/hestyamin" target="_blank" title="Instagram"><i class="fab fa-instagram fa-lg"></i></a></li>
-                  <li class="nav-item"><a class="nav-link social-icon" href="https://www.youtube.com"             target="_blank" title="YouTube"><i class="fab fa-youtube fa-lg"></i></a></li>
-                </ul>
-                <!-- Menu Navigasi Utama -->
-                <ul class="navbar-nav">
-                  <li class="nav-item"><a class="nav-link main-menu-link" href="#about">About</a></li>
-                  <li class="nav-item"><a class="nav-link main-menu-link" href="#">Logout</a></li>
-                </ul>
-              </div>
-            </div>
-          </nav>
-        </header>
-   
-        <!-- HEADER IMAGE -->
-        <div class="header-image">
-            <!-- <img src="images/Logo_Kitworks.png" alt="Header Image" class="img-fluid">-->
-        </div>       
-        
-        <div class="card-body">
-          <div class="card-title text-white text-center p-1 rounded shadow mb-3" style="background-color: #002266;">
-            <h4>Main Menu - KitWorks</h4>
-          </div>
-          <div class="btn-group-vertical text-primary d-flex">
-            <a href="https://amihaji.github.io/flc/index.html"         class="btn btn-warning mb-2 rounded disabled">   <i class="fas fa-dumbbell"></i>  Fat Loss Challange Programme</a>
-            <a href="https://amihaji.github.io/estihtools/index.html"  class="btn btn-primary mb-2 rounded disabled">   <i class="fas fa-clipboard-check"></i>  EstiH Tools</a>
-            <a href="https://amihaji.github.io/wetools/index.html"     class="btn btn-primary mb-2 rounded disabled">   <i class="fas fa-heartbeat"></i>  WE Tools</a>
-            <a href="https://amihaji.github.io/wetools/DashWE.html"    class="btn btn-primary mb-2 rounded disabled">   <i class="fas fa-list-check"></i>  FollowUp Tools</a>
-            <a href="https://amihaji.github.io/crmtools/index.html"    class="btn btn-primary mb-2 rounded disabled">   <i class="fas fa-users"></i>  CRM Tools</a>
-            <a href="https://amihaji.github.io/kitworks/setup.html"    class="btn btn-primary mb-2 rounded disabled">   <i class="fas fa-cog"></i>  Setting</a>
-            <a href="https://amihaji.github.io/kitworks/FormUser.html" class="btn btn-secondary mb-2 rounded">          <i class="far "></i>  Login</a>
-          </div>
-
-        <footer class="footer mb-3 text-white text-center p-2 rounded" style="background-color: #002266; margin-left: 1px; margin-right: 1px;">
-          KitWorks Versi 1.0 © 2025. <a href="https://www.beratidealku.com" class="text-white">www.beratidealku.com</a> - All rights reserved
-        </footer>
+<div class="container mt-4">
+    <div class="title-box">
+        <i class="fas fa-cogs"></i>
+        <h4 class="mb-0">KitWorks - Main Menu</h4>
     </div>
-  </div>
+
+    <div class="button-box text-center">
+        <div class="d-grid gap-2">
+            <a href="https://amihaji.github.io/kitworks/FormUser.html" class="btn btn-primary">Login</a>
+            <a href="https://amihaji.github.io/kitworks/setup.html"    class="btn btn-secondary disabled" id="btnsetting">Setup User</a>
+            <a href="https://amihaji.github.io/flc/index.html"         class="btn btn-secondary disabled" id="btnsetting">FLC Programme</a>
+            <a href="https://amihaji.github.io/wetools/index.html"     class="btn btn-secondary disabled" id="btnwetools">WE Tools</a>
+            <a href="https://amihaji.github.io/wetools/DashWE.html"    class="btn btn-secondary disabled" id="btnfollowup">FollowUp Tools</a>
+            <a href="https://amihaji.github.io/crmtools/index.html"    class="btn btn-secondary disabled" id="btncrmtools">CRM Tools</a>
+            <a href="https://amihaji.github.io/estihtools/index.html"  class="btn btn-secondary disabled" id="btnestihtools">EstiH Tools</a>
+            <button class="btn btn-danger logout-btn">Logout</button>
+        </div>
+    </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
 <script>
-//***********  Deklarasi variabel global ****************
-const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbyALtnW1lskrHALbI7DUYUK-62ujP2eti3Ii9MFC9bNA84m_ceDN7M3v0ydsO0B9boS/exec';
-// ******************************************************
+// *********  URL Google Apps Script JSONP **********
+const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbzZ4zcCygki0V5ssAhS94d8lc9tT5aiHwlr-9YdyLmmY6EaYyZpxXfjPsL1Ne7vF4kkNg/exec';
+// **************************************************
+document.addEventListener("DOMContentLoaded", function() {
+    manageMenuAccess();
 
-// **********************
-// Untuk tampilkan pesan
-// **********************
-function showMessage(page, text, type) {
-    const msgBoxId = (page === 3) ? "hasilAnalisa" : "formMessage" + page;
-    const msgBox = document.getElementById(msgBoxId);
-    if (msgBox) {
-        msgBox.innerHTML = `<div class="message-box ${type === 'error' ? 'message-error' : 'message-success'}">${text}</div>`;
-        if (page === 3) msgBox.style.display = 'block';
-        msgBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    document.querySelectorAll('.logout-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            sessionStorage.clear();
+            location.reload();
+        });
+    });
+});
+
+function manageMenuAccess() {
+    const userId = sessionStorage.getItem('userId');
+    const userToken = sessionStorage.getItem('userToken');
+
+    if (userId && userToken) {
+        const callbackName = 'cb_' + Date.now();
+        const script = document.createElement('script');
+        script.src = `${URL_APPS_SCRIPT}?action=getUserAccess&userId=${encodeURIComponent(userId)}&token=${encodeURIComponent(userToken)}&callback=${callbackName}`;
+
+        window[callbackName] = (response) => {
+            if (response.status === 'success') {
+                const access = response.access; // { estihtools: "Y", wetools: "N", ... }
+                for (const [app, status] of Object.entries(access)) {
+                    const btn = document.getElementById(`btn${app}`);
+                    if (btn && status === 'Y') {
+                        btn.classList.remove('disabled');
+                        btn.classList.replace('btn-secondary', 'btn-success');
+                    }
+                }
+            } else {
+                console.error(response.message);
+                sessionStorage.clear();
+            }
+            document.body.removeChild(script);
+            delete window[callbackName];
+        };
+        script.onerror = () => {
+            console.error("Gagal mengambil hak akses user.");
+            document.body.removeChild(script);
+            delete window[callbackName];
+        };
+        document.body.appendChild(script);
     }
 }
-
-// ********************
-// Untuk mereset form  
-// ********************
-function resetForm() {
-    document.getElementById("fitnessForm").reset();
-    navigate(null, 1);
-    document.getElementById("loadingSpinner").style.display = "none";
-    document.getElementById("hasilAnalisa").style.display = "none";
-    document.getElementById("tampilCTA").style.display = "none";
-    btnKirim.innerHTML = '<i class="fas fa-share-square me-2"></i>KIRIM HASIL SURVEY';
-    btnKirim.disabled = false;
-    window.dataTerakhir = null;
-    showMessage(1, "Form berhasil direset. Silakan isi kembali.", "success");
-}
 </script>
+
 </body>
 </html>
