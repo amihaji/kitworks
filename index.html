@@ -1,70 +1,107 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>KitWorks</title>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
-<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-<style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aplikasi Main Menu - KitWorks Versi 1.0</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
 body { background-color: #f8f9fa; }
-.button-grid { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; padding: 20px; }
-.button-grid button { width: 200px; }
-</style>
+.brand-title { font-size: 12px; font:wide; color: #023581; line-height: 1; }
+.brand-subtitle { font-size: 10px; color: #6c757d; line-height: 1; }
+.footer a:hover { color: #ff4d4d !important; }
+.main-menu-link { font-weight: 500; padding: 8px 12px !important; border-radius: 6px; }
+.main-menu-link:hover, .main-menu-link.active { color: #dc3545 !important; background-color: #f0f0f0; }
+.social-icon { display: inline-flex; justify-content: center; align-items: center; width: 40px; height: 40px; border-radius: 50%; }
+.social-icon i { color: #555; transition: color 0.3s ease-in-out; }
+.social-icon:hover { background-color: #f0f0f0; }
+.social-icon:hover i { color: #dc3545; }
+@media (max-width: 591.98px) {
+  .navbar-nav:not(.mx-auto) .nav-item, .navbar-nav:not(.mx-auto) .main-menu-link { width: 100%; }
+}
+  </style>
 </head>
 <body>
-<div class="container text-center mt-5">
-    <h2>KitWorks Main Menu</h2>
-    <div class="button-grid mt-4">
-        <button id="btnDashWE" class="btn btn-primary" disabled>DashWE</button>
-        <button id="btnSetup" class="btn btn-success" disabled>Setup User</button>
-        <button id="btnTools" class="btn btn-info" disabled>WE Tools</button>
-        <button id="btnSurvey" class="btn btn-warning" disabled>Survey</button>
-        <button id="btnLogin" class="btn btn-dark">Login</button>
-        <button id="btnLogout" class="btn btn-danger" disabled>Logout</button>
+<div class="container mt-5 mb-5">
+  <div class="row justify-content-center">
+    <div class="card mx-auto shadow p-0" style="max-width:789px">
+      <!-- HEADER -->
+      <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+              <img src="images/Logo_Kitworks.png" alt="Logo" width="90" class="me-2">
+              <div class="d-md-block">
+                <div class="brand-title">Aplication for Everyone</div>
+                <div class="brand-subtitle">anytime and anywhere</div>
+              </div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNavbar">
+              <ul class="navbar-nav mx-auto">
+                <li class="nav-item"><a class="nav-link social-icon" href="https://facebook.com/beratidealku" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+                <li class="nav-item"><a class="nav-link social-icon" href="https://www.instagram.com/hestyamin" target="_blank"><i class="fab fa-instagram"></i></a></li>
+                <li class="nav-item"><a class="nav-link social-icon" href="https://www.youtube.com" target="_blank"><i class="fab fa-youtube"></i></a></li>
+              </ul>
+              <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link main-menu-link" href="#about">About</a></li>
+                <li class="nav-item"><a class="nav-link main-menu-link" href="#" onclick="logout()">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="card-body">
+        <div class="card-title text-white text-center p-1 rounded shadow mb-3" style="background-color: #002266;">
+          <h4>Main Menu - KitWorks</h4>
+        </div>
+        <div class="btn-group-vertical text-primary d-flex">
+          <a href="https://amihaji.github.io/flc/index.html" class="btn btn-warning mb-2 rounded disabled" id="btnFLC"><i class="fas fa-dumbbell"></i> Fat Loss Challenge</a>
+          <a href="https://amihaji.github.io/estihtools/index.html" class="btn btn-primary mb-2 rounded disabled" id="btnEstiH"><i class="fas fa-clipboard-check"></i> EstiH Tools</a>
+          <a href="https://amihaji.github.io/wetools/index.html" class="btn btn-primary mb-2 rounded disabled" id="btnWE"><i class="fas fa-heartbeat"></i> WE Tools</a>
+          <a href="https://amihaji.github.io/wetools/DashWE.html" class="btn btn-primary mb-2 rounded disabled" id="btnDashWE"><i class="fas fa-list-check"></i> FollowUp Tools</a>
+          <a href="https://amihaji.github.io/crmtools/index.html" class="btn btn-primary mb-2 rounded disabled" id="btnCRM"><i class="fas fa-users"></i> CRM Tools</a>
+          <a href="https://amihaji.github.io/kitworks/setup.html" class="btn btn-primary mb-2 rounded disabled" id="btnSetup"><i class="fas fa-cog"></i> Setting</a>
+          <a href="FormUser.html" class="btn btn-secondary mb-2 rounded" id="btnLogin"><i class="fas fa-sign-in-alt"></i> Login</a>
+        </div>
+        <footer class="footer mt-3 text-white text-center p-2 rounded" style="background-color: #002266;">
+          KitWorks Versi 1.0 © 2025 <a href="https://www.beratidealku.com" class="text-white">www.beratidealku.com</a>
+        </footer>
+      </div>
     </div>
+  </div>
 </div>
 
 <script>
-const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbxb1FPyfHrv7tPZ_6ro3R5zQUVTleIBLYSwFBfHVsyHhgH_FU-rLBpgJ3KszWxqtZrp_A/exec';
-
-document.getElementById('btnLogin').addEventListener('click', () => {
-    window.location.href = 'FormUser.html';
-});
-
-document.getElementById('btnLogout').addEventListener('click', () => {
-    sessionStorage.clear();
-    alert('Anda telah logout.');
-    location.reload();
-});
-
-// Cek apakah user sudah login
-const userId = sessionStorage.getItem('userId');
-const userToken = sessionStorage.getItem('userToken');
-
-if (userId && userToken) {
-    document.getElementById('btnLogin').disabled = true;
-    document.getElementById('btnLogout').disabled = false;
-
-    const callbackName = 'cb_' + Date.now();
-    const script = document.createElement('script');
-    script.src = `${URL_APPS_SCRIPT}?action=getUserAccess&userId=${userId}&token=${userToken}&callback=${callbackName}`;
-
-    window[callbackName] = function(response) {
-        if (response.status === 'success') {
-            if (response.access.dashwe === 'Y') document.getElementById('btnDashWE').disabled = false;
-            if (response.access.setupuser === 'Y') document.getElementById('btnSetup').disabled = false;
-            if (response.access.wetools === 'Y') document.getElementById('btnTools').disabled = false;
-            if (response.access.survey === 'Y') document.getElementById('btnSurvey').disabled = false;
-        } else {
-            alert(response.message || 'Gagal mendapatkan hak akses.');
+// Ambil hak akses dari sessionStorage setelah login
+document.addEventListener('DOMContentLoaded', function () {
+  const userToken = sessionStorage.getItem('userToken');
+  if (userToken) {
+    try {
+      const akses = JSON.parse(sessionStorage.getItem('aksesList') || '{}');
+      for (const key in akses) {
+        const btn = document.getElementById(key);
+        if (btn && akses[key] === "Y") {
+          btn.classList.remove('disabled');
         }
-        document.body.removeChild(script);
-        delete window[callbackName];
-    };
+      }
+      document.getElementById('btnLogin').classList.add('disabled');
+    } catch (e) {
+      console.error('Error parsing aksesList', e);
+    }
+  }
+});
 
-    document.body.appendChild(script);
+// Logout clear session dan refresh
+function logout() {
+  sessionStorage.clear();
+  location.reload();
 }
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
