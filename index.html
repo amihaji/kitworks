@@ -46,6 +46,28 @@ body { background-color: #f8f9fa; }
   background-color: #f0f0f0; 
 }
 .social-icon:hover i { color: #dc3545; }
+
+/* Reusable button group style */
+.btn-group {
+  display: flex;
+  margin-bottom: 0.5rem;
+}
+.button-group-icon {
+  display: flex;
+  align-items: center;
+}
+.button-group-icon i {
+  color: black;
+  background-color: #ebebeb;
+  border-radius: 5px 0px 0px 5px;
+  padding: 0.75rem 1rem;
+}
+.btn-group .icon {
+  border-radius: 0px 5px 5px 0px;
+  flex-grow: 1;
+  text-align: left;
+}
+
 @media (max-width: 591.98px) {
   .navbar-nav:not(.mx-auto) .nav-item, .navbar-nav:not(.mx-auto) .main-menu-link { 
     width: 100%; 
@@ -89,23 +111,56 @@ body { background-color: #f8f9fa; }
         <div class="card-title text-white text-center p-1 rounded shadow mb-3" style="background-color: #002266;">
           <h4>Main Menu - KitWorks</h4>
         </div>
-        
-        <!-- <div class="btn-group-vertical text-primary d-flex"> -->
         <div class="d-grid gap-2">
           
           <div class="btn-group">  
             <span class="button-group-btn">
-              <i class="fas fa-dumbbell px-3 py-3" style="color:black; background-color:#ebebeb; border-radius:5px 0px 0px 5px;"></i>
+              <i class="fas fa-dumbbell"></i>
             </span>            
-            <a href="https://amihaji.github.io/flc/index.html" class="btn btn-warning disabled" id="btnFLC"><wide> Fat Loss Challenge<wide></a>
+            <a href="https://amihaji.github.io/flc/index.html" class="btn btn-warning disabled" id="btnFLC"> Fat Loss Challenge</a>
           </div>
           
-          <a href="https://amihaji.github.io/estihtools/index.html" class="btn btn-primary mb-2 rounded disabled" id="btnEstiH"><i class="fas fa-clipboard-check"></i> EstiH Tools</a>
-            <a href="https://amihaji.github.io/wetools/index.html" class="btn btn-primary mb-2 rounded disabled" id="btnWE"><i class="fas fa-heartbeat"></i> WE Tools</a>
-            <a href="https://amihaji.github.io/wetools/DashWE.html" class="btn btn-primary mb-2 rounded disabled" id="btnDashWE"><i class="fas fa-list-check"></i> FollowUp Tools</a>
-            <a href="https://amihaji.github.io/crmtools/index.html" class="btn btn-primary mb-2 rounded disabled" id="btnCRM"><i class="fas fa-users"></i> CRM Tools</a>
-            <a href="https://amihaji.github.io/kitworks/setup.html" class="btn btn-primary mb-2 rounded disabled" id="btnSetup"><i class="fas fa-cog"></i> Setting</a>
-            <a href="FormUser.html" class="btn btn-secondary mb-2 rounded" id="btnLogin"><i class="fas fa-sign-in-alt"></i> Login</a>
+          <div class="btn-group">  
+            <span class="button-group-btn">
+              <i class="fas fa-clipboard-check"></i>
+            </span>            
+            <a href="https://amihaji.github.io/estihtools/index.html" class="btn btn-primary disabled" id="btnEstiH"> EstiH Tools</a>
+          </div>
+          
+          <div class="btn-group">  
+            <span class="button-group-icon">
+              <i class="fas fa-heartbeat"></i>
+            </span>            
+            <a href="https://amihaji.github.io/wetools/index.html" class="btn btn-primary disabled" id="btnWE"> WE Tools</a>
+          </div>
+          
+          <div class="btn-group">  
+            <span class="button-group-icon">
+              <i class="fas fa-list-check"></i>
+            </span>            
+            <a href="https://amihaji.github.io/wetools/DashWE.html" class="btn btn-primary disabled" id="btnDashWE"> FollowUp Tools</a>
+          </div>
+          
+          <div class="btn-group">  
+            <span class="button-group-icon">
+              <i class="fas fa-users"></i>
+            </span>            
+            <a href="https://amihaji.github.io/crmtools/index.html" class="btn btn-primary disabled" id="btnCRM"> CRM Tools</a>
+          </div>
+          
+          <div class="btn-group">  
+            <span class="button-group-icon">
+              <i class="fas fa-cog"></i>
+            </span>            
+            <a href="https://amihaji.github.io/kitworks/setup.html" class="btn btn-primary disabled" id="btnSetup"> Setting</a>
+          </div>
+          
+          <div class="btn-group">  
+            <span class="button-group-icon">
+              <i class="fas fa-sign-in-alt"></i>
+            </span>            
+            <a href="FormUser.html" class="btn btn-secondary" id="btnLogin"> Login</a>
+          </div>
         </div>
         <footer class="footer mt-3 text-white text-center p-2 rounded" style="background-color: #002266;">
           KitWorks Versi 1.0 © 2025 <a href="https://www.beratidealku.com" class="text-white">www.beratidealku.com</a>
