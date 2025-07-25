@@ -85,6 +85,31 @@ body { background-color: #f8f9fa; }
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* About Form Overlay */
+.about-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  display: none; /* Hidden by default */
+}
+
+.about-form {
+  width: 100%;
+  max-width: 350px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
 .menu-buttons {
   display: grid; /* Visible by default */
 }
@@ -216,8 +241,31 @@ body { background-color: #f8f9fa; }
   </div>
 </div>
 
+<!-- About Overlay -->
+<div class="about-overlay" id="aboutOverlay">
+  <div class="about-form">
+    <h5 class="mb-4">Program Aplikasi KitWorks Versi 1.0</h5>
+    <p>Copyright © 2025 www.beratidealku.com</p>
+    <p>Allright Reserved</p>
+    <p>Hanya digunakan untuk kalangan interen</p>
+    <div class="d-grid mt-4">
+      <button id="btnCloseAbout" class="btn btn-primary">OK</button>
+    </div>
+  </div>
+</div>
+
 <script>
 const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycby46ltuXXMXzJm62nnxYuCdLHtFMUulKPFyenhk5RGE0owoP-XK8ljGt_r-AIogmNcbHA/exec';
+
+// Show About form
+function showAbout() {
+  document.getElementById('aboutOverlay').style.display = 'flex';
+}
+
+// Hide About form
+function hideAbout() {
+  document.getElementById('aboutOverlay').style.display = 'none';
+}
 
 // Toggle login form visibility
 function toggleLogin() {
@@ -242,6 +290,15 @@ function updateLoginButton() {
 
 // Ambil hak akses dari sessionStorage setelah login
 document.addEventListener('DOMContentLoaded', function () {
+  // Event listener untuk tombol About
+  document.querySelector('a[href="#about"]').addEventListener('click', function(e) {
+    e.preventDefault();
+    showAbout();
+  });
+  
+  // Event listener untuk tombol Close About
+  document.getElementById('btnCloseAbout').addEventListener('click', hideAbout);
+  
   const userToken = sessionStorage.getItem('userToken');
   if (userToken) {
     try {
