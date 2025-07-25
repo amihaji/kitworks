@@ -68,6 +68,27 @@ body { background-color: #f8f9fa; }
   align-items: center;      /* Center Vertikal */
 }  
 
+/* Login Form Overlay */
+.login-overlay {
+  position: relative;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  display: none; /* Hidden by default, shown when login button clicked */
+}
+
+.login-form {
+  width: 100%;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.menu-buttons {
+  display: grid; /* Visible by default */
+}
+
 @media (max-width: 591.98px) {
   .navbar-nav:not(.mx-auto) .nav-item, .navbar-nav:not(.mx-auto) .main-menu-link { 
     width: 100%; 
@@ -101,7 +122,6 @@ body { background-color: #f8f9fa; }
               </ul>
               <ul class="navbar-nav">
                 <li class="nav-item"><a class="nav-link main-menu-link" href="#about">About</a></li>
-                <li class="nav-item"><a class="nav-link main-menu-link" href="#" onclick="logout()">Logout</a></li>
               </ul>
             </div>
           </div>
@@ -111,7 +131,33 @@ body { background-color: #f8f9fa; }
         <div class="card-title text-white text-center p-1 rounded shadow mb-3" style="background-color: #002266;">
           <h4>Main Menu - KitWorks</h4>
         </div>
-        <div class="d-grid gap-2">
+        
+        <!-- Login Overlay -->
+        <div class="login-overlay" id="loginOverlay">
+          <div class="login-form">
+            <h4 class="text-center mb-4">Login KitWorks</h4>
+            <div class="mb-3">
+              <label for="userId" class="form-label">User ID</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                <input type="text" class="form-control" id="userId" name="userId" required minlength="4" maxlength="6">
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="userPass" class="form-label">Password</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                <input type="password" class="form-control" id="userPass" name="userPass" required minlength="6" maxlength="10">
+              </div>
+            </div>
+            <div class="d-grid">
+              <button id="btnLoginSubmit" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i> Login</button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Menu Buttons -->
+        <div class="d-grid gap-2 menu-buttons" id="menuButtons">
           
           <div class="btn-group">  
             <span class="button-group-icon">
@@ -159,7 +205,7 @@ body { background-color: #f8f9fa; }
             <span class="button-group-icon">
               <i class="fas fa-sign-in-alt"></i>
             </span>            
-            <a href="FormUser.html" class="btn btn-secondary" id="btnLogin" style="text-shadow: #e4e4e4; text-align: left"> Login</a>
+            <a href="#" class="btn btn-primary" id="btnLogin" style="text-shadow: #e4e4e4; text-align: left" onclick="toggleLogin()">Login</a>
           </div>
         </div>
         <footer class="footer mt-3 text-white text-center p-2 rounded" style="background-color: #002266;">
@@ -171,6 +217,29 @@ body { background-color: #f8f9fa; }
 </div>
 
 <script>
+const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycby46ltuXXMXzJm62nnxYuCdLHtFMUulKPFyenhk5RGE0owoP-XK8ljGt_r-AIogmNcbHA/exec';
+
+// Toggle login form visibility
+function toggleLogin() {
+  const loginOverlay = document.getElementById('loginOverlay');
+  const btnLogin = document.getElementById('btnLogin');
+  
+  if (loginOverlay.style.display === 'block') {
+    loginOverlay.style.display = 'none';
+    btnLogin.textContent = 'Login';
+  } else {
+    loginOverlay.style.display = 'block';
+    btnLogin.textContent = 'Tutup';
+  }
+}
+
+// Update login button after successful login
+function updateLoginButton() {
+  const btnLogin = document.getElementById('btnLogin');
+  btnLogin.textContent = 'Logout';
+  btnLogin.onclick = logout;
+}
+
 // Ambil hak akses dari sessionStorage setelah login
 document.addEventListener('DOMContentLoaded', function () {
   const userToken = sessionStorage.getItem('userToken');
@@ -183,17 +252,88 @@ document.addEventListener('DOMContentLoaded', function () {
           btn.classList.remove('disabled');
         }
       }
-      document.getElementById('btnLogin').classList.add('disabled');
+      // Update login button to show logout
+      updateLoginButton();
     } catch (e) {
       console.error('Error parsing aksesList', e);
     }
   }
+  
+  // Event listener untuk tombol login
+  document.getElementById('btnLoginSubmit').addEventListener('click', function() {
+    const userId = document.getElementById('userId').value.trim();
+    const userPass = document.getElementById('userPass').value.trim();
+
+    if (!userId || !userPass) {
+      alert('User ID dan Password harus diisi.');
+      return;
+    }
+
+    const callbackName = 'cb_' + Date.now();
+    const script = document.createElement('script');
+    script.src = `${URL_APPS_SCRIPT}?action=checkLogin&userId=${encodeURIComponent(userId)}&userPass=${encodeURIComponent(userPass)}&callback=${callbackName}`;
+
+    window[callbackName] = function(response) {
+      if (response.status === 'success' && response.loggedIn) {
+        // Simpan session login
+        sessionStorage.setItem('userId', response.userId);
+        sessionStorage.setItem('userToken', response.token);
+        sessionStorage.setItem('userLevel', response.level);
+
+        // Simpan hak akses
+        if (response.access) {
+          sessionStorage.setItem('aksesList', JSON.stringify(response.access));
+        }
+
+        // Aktifkan tombol-tombol menu sesuai hak akses
+        const akses = response.access || {};
+        for (const key in akses) {
+          const btn = document.getElementById(key);
+          if (btn && akses[key] === "Y") {
+            btn.classList.remove('disabled');
+          }
+        }
+
+        // Sembunyikan form login dan update tombol login menjadi logout
+        document.getElementById('loginOverlay').style.display = 'none';
+        updateLoginButton();
+      } else {
+        alert(response.message || 'User ID atau Password salah.');
+      }
+      document.body.removeChild(script);
+      delete window[callbackName];
+    };
+
+    script.onerror = () => {
+      alert('Gagal terhubung ke server.');
+      document.body.removeChild(script);
+      delete window[callbackName];
+    };
+
+    document.body.appendChild(script);
+  });
 });
 
 // Logout clear session dan refresh
 function logout() {
   sessionStorage.clear();
-  location.reload();
+  
+  // Disable semua tombol menu
+  const buttons = ['btnFLC', 'btnEstiH', 'btnWE', 'btnDashWE', 'btnCRM', 'btnSetup'];
+  buttons.forEach(id => {
+    const btn = document.getElementById(id);
+    if (btn) {
+      btn.classList.add('disabled');
+    }
+  });
+  
+  // Reset login button
+  const btnLogin = document.getElementById('btnLogin');
+  btnLogin.textContent = 'Login';
+  btnLogin.onclick = toggleLogin;
+  
+  // Hide login form if it's open
+  document.getElementById('loginOverlay').style.display = 'none';
 }
 </script>
 
