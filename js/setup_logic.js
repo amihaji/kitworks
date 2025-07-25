@@ -1,4 +1,4 @@
-const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbweR8fwdpj93XRr8995GT55GLWJwc8vQUikUB-2XLXF2VSezbTD0tiEuL8FGXHz-fk4Og/exec';
+const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbwkHgOVxtE_qQGCO7eDWmMyLZuPGxxq6oU6ST-TZqPYuq-8-iJOPEYH1_BO8QssedbkHA/exec';
 
 // LOAD DATA USER
 function loadUserTable() {
