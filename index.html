@@ -76,7 +76,6 @@ body { background-color: #f8f9fa; }
   margin-bottom: 20px;
   display: none; /* Hidden by default, shown when login button clicked */
 }
-
 .login-form {
   width: 100%;
   padding: 20px;
@@ -99,7 +98,6 @@ body { background-color: #f8f9fa; }
   z-index: 1000;
   display: none; /* Hidden by default */
 }
-
 .about-form {
   width: 100%;
   max-width: 350px;
@@ -114,13 +112,22 @@ body { background-color: #f8f9fa; }
   display: grid; /* Visible by default */
 }
 
+/* --- Tampilan Mobile (Vertikal) --- */
 @media (max-width: 591.98px) {
+  /* Mengatur ulang posisi ikon medsos di mobile agar tetap di atas */
+  .navbar-collapse .mx-auto {
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+      flex-direction: row;
+      margin-bottom: 1rem;
+  }
   .navbar-nav:not(.mx-auto) .nav-item, .navbar-nav:not(.mx-auto) .main-menu-link { 
     width: 100%; 
   }
 }
-  </style>
+</style>
 </head>
+
 <body>
 <div class="container mt-5 mb-5">
   <div class="row justify-content-center">
