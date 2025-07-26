@@ -119,6 +119,12 @@ tr:hover .action-icon {
     <a href="https://amihaji.github.io/kitworks/index.html" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Close</a>
 </div>
 
+  <!-- Loading Overlay -->
+  <div id="loadingOverlay" class="loading-overlay" style="display:none;">
+      <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+      </div>
+  </div>
   <div class="table-box">
     <div class="table-wrapper">
         <table class="table table-hover table-striped table-bordered align-middle text-center">
@@ -142,13 +148,7 @@ tr:hover .action-icon {
                 </tr>
             </thead>
             <tbody id="userTableBody"><tr><td colspan="15">Memuat data...</td></tr></tbody>
-            <!-- Loading Overlay -->
-            <div id="loadingOverlay" class="loading-overlay" style="display:none;">
-              <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-            </div>
-          </table>
+        </table>
       </div>
   </div>
 </div>
@@ -197,7 +197,7 @@ tr:hover .action-icon {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <SCRIPT>
 // ********* Deklarasi  Public **********
-const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbyA58d5atuP-wHDL9Zb4_v-vHnBPN1MTeqjRldYxJjSufBvKaMz7XgTKRyEn8es3xQrpg/exec';
+const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbxagc_r9QfvqUlXZPTnhmzf7hPrUiMHrebNR1JQX4N5dL3xRLbT5k2h-FB6wsjbYdQ_Sg/exec';
 // **************************************
 
 // Tampilkan Loading Overlay
@@ -372,43 +372,26 @@ document.getElementById('addUserButton').addEventListener('click', () => {
 
 function unlockUser(userId) {
   if (!confirm("Anda yakin untuk unlock user ini?")) return;
-
-  fetch(`${URL_APPS_SCRIPT}?action=unlockUser&userId=${encodeURIComponent(userId)}&callback=unlockCallback`)
-    .then(response => response.text())
-    .then(script => {
-      const jsonData = JSON.parse(script.replace(/^unlockCallback\((.*)\);?$/, '$1'));
-
-      if (jsonData.status === 'success') {
-        alert(jsonData.message);
-
-        // Simpan ke localStorage agar flag "kirim" aktif
-        localStorage.setItem('notifReady_' + userId, 'true');
-
-        // Update tampilan baris terkait
-        const row = document.getElementById(`row_${userId}`);
-        if (row) {
-          const cells = row.getElementsByTagName("td");
-
-          // Kolom ke-7 adalah field "Salah"
-          if (cells.length >= 7) {
-            cells[6].textContent = "0";
-          }
-
-          // Update ikon:
-          row.querySelector('.fa-edit')?.classList.add('disabled');
-          row.querySelector('.fa-trash-alt')?.classList.add('disabled');
-          row.querySelector('.fa-unlock')?.classList.add('disabled');
-          row.querySelector('.fa-paper-plane')?.classList.remove('disabled');
-        }
-
-      } else {
-        alert("Reset Login gagal untuk user " + userId);
+  const callbackName = 'cbUnlock_' + Date.now();
+  window[callbackName] = (res) => {
+    if (res.status === 'success') {
+      alert(res.message);
+      localStorage.setItem('notifReady_' + userId, 'true');
+      const row = document.getElementById(`row_${userId}`);
+      if (row) {
+        const cols = row.getElementsByTagName('td');
+        if (cols.length >= 7) cols[6].textContent = '0';
+        row.querySelector('.fa-edit')?.classList.add('disabled');
+        row.querySelector('.fa-trash-alt')?.classList.add('disabled');
+        row.querySelector('.fa-unlock')?.classList.add('disabled');
+        row.querySelector('.fa-paper-plane')?.classList.remove('disabled');
       }
-    })
-    .catch(err => {
-      console.error("Unlock error", err);
-      alert("Terjadi kesalahan saat unlock user.");
-    });
+    } else alert("Reset Login gagal: " + res.message);
+    delete window[callbackName];
+  };
+  const script = document.createElement('script');
+  script.src = `${URL_APPS_SCRIPT}?action=unlockUser&userId=${encodeURIComponent(userId)}&callback=${callbackName}`;
+  document.body.appendChild(script);
 }
 
 
