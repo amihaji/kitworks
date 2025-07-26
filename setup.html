@@ -246,6 +246,7 @@ function loadUserTable() {
             }
 
             const tr = document.createElement('tr');
+            tr.id = `row_${userId}`; // Tambahkan ID
 
             tr.innerHTML = `
                 <td>${userId}</td>
