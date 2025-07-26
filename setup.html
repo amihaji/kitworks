@@ -24,6 +24,7 @@ body {
 /* Pengaturan Icon-icon */
 /************************/
 /* Default semua icon (enabled & disabled) tidak terlihat */
+/* Ikon default (hidden) */
 .action-icon {
     display: inline-flex;
     justify-content: center;
@@ -38,19 +39,19 @@ body {
     border-radius: 50%;
     padding: 4px;
 }
-/* Saat pointer berada di baris, semua ikon (termasuk yang disabled) muncul */
+
+/* Saat hover ke baris, semua icon termasuk yang disabled akan muncul */
 tr:hover .action-icon {
     opacity: 1;
 }
-/* Hover untuk ikon aktif */
+/* Hover efek untuk ikon aktif */
 .action-icon:hover {
     color: red;
     background-color: #e0e0e0;
 }
-/* Ikon yang disabled tetap terlihat, tapi tidak bisa diklik */
+/* Disabled icon – tidak bisa diklik dan tidak bereaksi saat hover */
 .action-icon.disabled {
     pointer-events: none;
-    opacity: 1 !important;
     color: #bbb !important;
     background-color: transparent !important;
 }
