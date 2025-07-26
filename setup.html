@@ -40,6 +40,14 @@ tr:hover .action-icon {
     color: red; 
     background-color: #e0e0e0; 
 }
+tr:hover .action-icon {
+    opacity: 1;
+}
+.action-icon.disabled {
+    pointer-events: none;
+    opacity: 0 !important;
+}
+
 .sticky-header th { 
     position: sticky; 
     top: 0; 
@@ -137,13 +145,6 @@ tr:hover .action-icon {
 </div>
 </div>
 
-
-  <!-- Loading Overlay -->
-  <div id="loadingOverlay" class="loading-overlay" style="display:none;">
-    <div class="spinner-border text-primary" role="status">
-      <span class="visually-hidden">Loading...</span>
-    </div>
-  </div>
 <!-- Modal Add/Edit -->
 <div class="modal fade" id="userModal" tabindex="-1" aria-hidden="true">
 <div class="modal-dialog">
@@ -198,7 +199,7 @@ function showLoading(show) {
 }
 
 // LOAD DATA USER
-function loadUserTable() {
+function BACKUP_loadUserTable() {
   showLoading(true);
   const callbackName = 'cb_' + Date.now();
   const script = document.createElement('script');
@@ -232,6 +233,83 @@ function loadUserTable() {
   document.body.appendChild(script);
 }
 
+function loadUserTable() {
+    const callbackName = 'cb_' + Date.now();
+    const script = document.createElement('script');
+    script.src = `${URL_APPS_SCRIPT}?action=getTabelUser&callback=${callbackName}`;
+
+    window[callbackName] = function(data) {
+        const tbody = document.getElementById('userTableBody');
+        tbody.innerHTML = '';
+
+        if (!data || data.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="14">Tidak ada data user.</td></tr>';
+            return;
+        }
+
+        data.forEach(row => {
+            const [userId, namaUser, emailUser, hpUser, passUser, levelUser, salah,
+                login, setting, flc, estih, we, followup, crm] = row;
+
+            let editState   = '';
+            let deleteState = '';
+            let unlockState = 'disabled';
+            let kirimState  = 'disabled';
+
+            const salahCount = parseInt(salah) || 0;
+            const unlockFlag = localStorage.getItem('notifReady_' + userId);
+
+            if (salahCount >= 3) {
+                editState   = 'disabled';
+                deleteState = 'disabled';
+                unlockState = '';
+                kirimState  = 'disabled';
+            } else if (unlockFlag === 'true') {
+                editState   = 'disabled';
+                deleteState = 'disabled';
+                unlockState = 'disabled';
+                kirimState  = '';
+            }
+
+            const tr = document.createElement('tr');
+
+            tr.innerHTML = `
+                <td>${userId}</td>
+                <td>${namaUser}</td>
+                <td>${emailUser}</td>
+                <td>${hpUser}</td>
+                <td>${passUser}</td>
+                <td>${levelUser}</td>
+                <td>${salah}</td>
+                <td>${login}</td>
+                <td>${setting}</td>
+                <td>${flc}</td>
+                <td>${estih}</td>
+                <td>${we}</td>
+                <td>${followup}</td>
+                <td>${crm}</td>
+                <td class="actions-col">
+                    <i class="fas fa-edit action-icon ${editState}" title="Edit User" onclick="editUser('${userId}')"></i>
+                    <i class="fas fa-trash-alt action-icon ${deleteState}" title="Hapus User" onclick="deleteUser('${userId}')"></i>
+                    <i class="fas fa-unlock action-icon ${unlockState}" title="Unlock User" onclick="unlockUser('${userId}')"></i>
+                    <i class="fas fa-paper-plane action-icon ${kirimState}" title="Kirim Notifikasi" onclick="sendNotif('${userId}','${namaUser}','${emailUser}','${hpUser}','${passUser}')"></i>
+                </td>
+            `;
+
+            tbody.appendChild(tr);
+        });
+
+        delete window[callbackName];
+        document.body.removeChild(script);
+    };
+
+    script.onerror = function() {
+        alert('Gagal mengambil data user');
+        delete window[callbackName];
+    };
+
+    document.body.appendChild(script);
+}
 
 // ADD & EDIT USER
 document.getElementById('userForm').addEventListener('submit', function (e) {
@@ -318,6 +396,70 @@ document.getElementById('addUserButton').addEventListener('click', () => {
   new bootstrap.Modal(document.getElementById('userModal')).show();
 });
 
+function unlockUser(userId) {
+    if (!confirm('Yakin ingin unlock user ini?')) return;
+
+    fetch(`${URL_APPS_SCRIPT}?action=unlockUser&userId=${encodeURIComponent(userId)}&callback=unlockCallback`, {
+        method: 'GET',
+        mode: 'no-cors'
+    });
+
+    window.unlockCallback = function(response) {
+        if (response.status === 'success') {
+            // Set localStorage agar kirim bisa aktif
+            localStorage.setItem('notifReady_' + userId, 'true');
+
+            // Update tampilan icon
+            const row = document.querySelector(`#userTableBody tr td:first-child:contains('${userId}')`)?.parentNode;
+            if (row) updateRowIcons(row, 'unlock');
+        } else {
+            alert('Unlock gagal: ' + response.message);
+        }
+    };
+}
+
+function sendNotif(userId, namaUser, emailUser, hpUser, passUser) {
+    if (!confirm('Kirim notifikasi ke user ini?')) return;
+
+    const callbackName = 'cbNotif_' + Date.now();
+
+    window[callbackName] = function(response) {
+        if (response.status === 'success') {
+            alert('Notifikasi berhasil dikirim');
+            localStorage.removeItem('notifReady_' + userId);
+
+            // Update tampilan icon
+            const row = document.querySelector(`#userTableBody tr td:first-child:contains('${userId}')`)?.parentNode;
+            if (row) updateRowIcons(row, 'kirim');
+        } else {
+            alert('Gagal mengirim notifikasi: ' + response.message);
+        }
+
+        delete window[callbackName];
+    };
+
+    const script = document.createElement('script');
+    script.src = `${URL_APPS_SCRIPT}?action=sendNotifUser&userId=${encodeURIComponent(userId)}&userName=${encodeURIComponent(namaUser)}&userEmail=${encodeURIComponent(emailUser)}&userHP=${encodeURIComponent(hpUser)}&userPass=${encodeURIComponent(passUser)}&callback=${callbackName}`;
+    document.body.appendChild(script);
+}
+
+function updateRowIcons(row, mode) {
+    const icons = row.querySelectorAll('.action-icon');
+
+    const [editIcon, delIcon, unlockIcon, kirimIcon] = icons;
+
+    if (mode === 'unlock') {
+        editIcon.classList.add('disabled');
+        delIcon.classList.add('disabled');
+        unlockIcon.classList.add('disabled');
+        kirimIcon.classList.remove('disabled');
+    } else if (mode === 'kirim') {
+        editIcon.classList.remove('disabled');
+        delIcon.classList.remove('disabled');
+        unlockIcon.classList.add('disabled');
+        kirimIcon.classList.add('disabled');
+    }
+}
 </SCRIPT>
 </body>
 </html>
