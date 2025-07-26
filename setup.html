@@ -396,8 +396,10 @@ function unlockUser(userId) {
 }
 
 function sendNotif(userId, userName, userEmail, userHP, userPass) {
+    console.log("Mengirim notifikasi ke:", userId, userName, userEmail, userHP, userPass);
+  
     if (!confirm('Kirim notifikasi reset ke user ini?')) return;
-
+    
     const callback = 'cb_' + Date.now();
     const script = document.createElement('script');
     script.src = `${URL_APPS_SCRIPT}?action=sendNotifUser` +
