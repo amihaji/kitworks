@@ -207,40 +207,6 @@ function showLoading(show) {
 }
 
 // LOAD DATA USER
-function BACKUP_loadUserTable() {
-  showLoading(true);
-  const callbackName = 'cb_' + Date.now();
-  const script = document.createElement('script');
-  script.src = `${URL_APPS_SCRIPT}?action=getTabelUser&callback=${callbackName}`;
-
-  window[callbackName] = function (data) {
-    const tbody = document.getElementById('userTableBody');
-    tbody.innerHTML = '';
-
-    if (!data || data.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="15">Tidak ada data user.</td></tr>';
-    } else {
-      data.forEach(row => {
-        let html = '<tr>';
-        row.forEach(cell => html += `<td>${cell}</td>`);
-        html += '</tr>';
-        tbody.innerHTML += html;
-      });
-    }
-
-    showLoading(false);
-    document.body.removeChild(script);
-    delete window[callbackName];
-  };
-
-  script.onerror = () => {
-    alert('Gagal mengambil data.');
-    showLoading(false);
-  };
-
-  document.body.appendChild(script);
-}
-
 function loadUserTable() {
     const callbackName = 'cb_' + Date.now();
     const script = document.createElement('script');
@@ -404,42 +370,47 @@ document.getElementById('addUserButton').addEventListener('click', () => {
   new bootstrap.Modal(document.getElementById('userModal')).show();
 });
 
-
 function unlockUser(userId) {
-    if (!confirm("Anda yakin untuk unlock user ini?")) return;
+  if (!confirm("Anda yakin untuk unlock user ini?")) return;
 
-    fetch(`${URL_APPS_SCRIPT}?action=unlockUser&userId=${encodeURIComponent(userId)}&callback=unlockCallback`)
-        .then(response => response.text())
-        .then(script => {
-            const jsonData = JSON.parse(script.replace(/^unlockCallback\((.*)\);?$/, '$1'));
+  fetch(`${URL_APPS_SCRIPT}?action=unlockUser&userId=${encodeURIComponent(userId)}&callback=unlockCallback`)
+    .then(response => response.text())
+    .then(script => {
+      const jsonData = JSON.parse(script.replace(/^unlockCallback\((.*)\);?$/, '$1'));
 
-            if (jsonData.status === 'success') {
-                alert(jsonData.message);
+      if (jsonData.status === 'success') {
+        alert(jsonData.message);
 
-                // Update langsung pada baris UI
-                const row = document.getElementById(`row_${userId}`);
-                if (row) {
-                    // Update field "Salah" jadi 0 di kolom ke-7 (index ke-6)
-                    row.cells[6].textContent = "0";
+        // Simpan ke localStorage agar flag "kirim" aktif
+        localStorage.setItem('notifReady_' + userId, 'true');
 
-                    // Update ikon-ikon:
-                    row.querySelector('.fa-edit')?.classList.add('disabled');
-                    row.querySelector('.fa-trash-alt')?.classList.add('disabled');
-                    row.querySelector('.fa-unlock')?.classList.add('disabled');
-                    row.querySelector('.fa-paper-plane')?.classList.remove('disabled');
+        // Update tampilan baris terkait
+        const row = document.getElementById(`row_${userId}`);
+        if (row) {
+          const cells = row.getElementsByTagName("td");
 
-                    // Set flag lokal agar tombol Kirim aktif
-                    localStorage.setItem('notifReady_' + userId, 'true');
-                }
-            } else {
-                alert("Reset Login gagal untuk user " + userId);
-            }
-        })
-        .catch(err => {
-            console.error("Unlock error", err);
-            alert("Terjadi kesalahan saat unlock user.");
-        });
+          // Kolom ke-7 adalah field "Salah"
+          if (cells.length >= 7) {
+            cells[6].textContent = "0";
+          }
+
+          // Update ikon:
+          row.querySelector('.fa-edit')?.classList.add('disabled');
+          row.querySelector('.fa-trash-alt')?.classList.add('disabled');
+          row.querySelector('.fa-unlock')?.classList.add('disabled');
+          row.querySelector('.fa-paper-plane')?.classList.remove('disabled');
+        }
+
+      } else {
+        alert("Reset Login gagal untuk user " + userId);
+      }
+    })
+    .catch(err => {
+      console.error("Unlock error", err);
+      alert("Terjadi kesalahan saat unlock user.");
+    });
 }
+
 
 function sendNotif(userId, namaUser, emailUser, hpUser, passUser) {
     if (!confirm('Kirim notifikasi ke user ini?')) return;
