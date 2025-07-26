@@ -103,6 +103,13 @@ tr:hover .action-icon {
     <a href="https://amihaji.github.io/kitworks/index.html" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Close</a>
 </div>
 
+<!-- Loading Overlay -->
+<div id="loadingOverlay" class="loading-overlay" style="display:none;">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+
 <div class="table-box">
     <div class="table-wrapper">
         <table class="table table-hover table-striped table-bordered align-middle text-center">
@@ -131,6 +138,13 @@ tr:hover .action-icon {
 </div>
 </div>
 
+
+  <!-- Loading Overlay -->
+  <div id="loadingOverlay" class="loading-overlay" style="display:none;">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
 <!-- Modal Add/Edit -->
 <div class="modal fade" id="userModal" tabindex="-1" aria-hidden="true">
 <div class="modal-dialog">
@@ -177,6 +191,12 @@ tr:hover .action-icon {
 // ********* Deklarasi  Public **********
 const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbypSUXNHfgWvnBR6VrOolL3VpGKCDCJBRug7PcQ16X02ipwxENspffS601OQAUFY6Qzjg/exec';
 // **************************************
+
+// Tampilkan Loading Overlay
+function showLoading(show) {
+  const overlay = document.getElementById('loadingOverlay');
+  if (overlay) overlay.style.display = show ? 'flex' : 'none';
+}
 
 // LOAD DATA USER
 function loadUserTable() {
