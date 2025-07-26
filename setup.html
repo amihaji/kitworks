@@ -175,103 +175,44 @@ tr:hover .action-icon {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <SCRIPT>
 // ********* Deklarasi  Public **********
-const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbzSsDLAbQ99n8lS4bjRISE-zhXNPjGQK5uFtOOeqFoxnZKFJ-07Kd8X5hZ6xdYXgetkZA/exec';
+const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbypSUXNHfgWvnBR6VrOolL3VpGKCDCJBRug7PcQ16X02ipwxENspffS601OQAUFY6Qzjg/exec';
 // **************************************
 
-
 // LOAD DATA USER
-function BACKUP_loadUserTable() {
-  fetch(`${URL_APPS_SCRIPT}?action=getTabelUser`)
-    .then(res => res.json())
-    .then(data => {
-      const tbody = document.getElementById('userTableBody');
-      tbody.innerHTML = '';
-      if (data.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="15">Tidak ada data user.</td></tr>';
-        return;
-      }
-      data.forEach(row => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${row[0]}</td><td>${row[1]}</td><td>${row[2]}</td><td>${row[3]}</td>
-          <td>${row[4]}</td><td>${row[5]}</td><td>${row[6]}</td>
-          <td>${row[7]}</td><td>${row[8]}</td><td>${row[9]}</td>
-          <td>${row[10]}</td><td>${row[11]}</td><td>${row[12]}</td><td>${row[13]}</td>
-          <td>
-            <i class="fas fa-edit action-icon" onclick="editUser('${row.join("','")}')"></i>
-            <i class="fas fa-trash-alt action-icon" onclick="deleteUser('${row[0]}')"></i>
-          </td>`;
-        tbody.appendChild(tr);
-      });
-    });
-}
-
 function loadUserTable() {
-    showLoading(true);
-    const callbackName = 'cb_' + Date.now();
-    window[callbackName] = (data) => {
-        // Panggil fungsi renderTabelUser(data) untuk menampilkan tabel
-        renderTabelUser(data);
-        showLoading(false);
-        delete window[callbackName];
-        document.body.removeChild(script);
-    };
-    const script = document.createElement('script');
-    script.src = `${URL_APPS_SCRIPT}?action=getTabelUser&callback=${callbackName}`;
-    document.body.appendChild(script);
-}
+  showLoading(true);
+  const callbackName = 'cb_' + Date.now();
+  const script = document.createElement('script');
+  script.src = `${URL_APPS_SCRIPT}?action=getTabelUser&callback=${callbackName}`;
 
-function renderTabelUser(data) {
+  window[callbackName] = function (data) {
     const tbody = document.getElementById('userTableBody');
     tbody.innerHTML = '';
 
     if (!data || data.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="15">Tidak ada data user.</td></tr>';
-        return;
+      tbody.innerHTML = '<tr><td colspan="15">Tidak ada data user.</td></tr>';
+    } else {
+      data.forEach(row => {
+        let html = '<tr>';
+        row.forEach(cell => html += `<td>${cell}</td>`);
+        html += '</tr>';
+        tbody.innerHTML += html;
+      });
     }
 
-    data.forEach(row => {
-        const userId = row[0];
-        const namaUser = row[1];
-        const emailUser = row[2];
-        const hpUser = row[3];
-        const passUser = row[4];
-        const levelUser = row[5];
-        const salah = row[6];
-        const aksesLogin = row[7];
-        const aksesSetting = row[8];
-        const aksesFLC = row[9];
-        const aksesEstiH = row[10];
-        const aksesWE = row[11];
-        const aksesFollowup = row[12];
-        const aksesCRM = row[13];
+    showLoading(false);
+    document.body.removeChild(script);
+    delete window[callbackName];
+  };
 
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td>${userId}</td>
-            <td>${namaUser}</td>
-            <td>${emailUser}</td>
-            <td>${hpUser}</td>
-            <td>${passUser}</td>
-            <td>${levelUser}</td>
-            <td>${salah}</td>
-            <td>${aksesLogin}</td>
-            <td>${aksesSetting}</td>
-            <td>${aksesFLC}</td>
-            <td>${aksesEstiH}</td>
-            <td>${aksesWE}</td>
-            <td>${aksesFollowup}</td>
-            <td>${aksesCRM}</td>
-            <td>
-                <i class="fas fa-edit action-icon" title="Edit" onclick="editUser('${userId}')"></i>
-                <i class="fas fa-trash-alt action-icon" title="Hapus" onclick="deleteUser('${userId}')"></i>
-                <i class="fas fa-unlock action-icon disabled-action" title="Unlock" onclick="unlockUser('${userId}')"></i>
-                <i class="fas fa-paper-plane action-icon disabled-action" title="Kirim" onclick="sendNotif('${userId}')"></i>
-            </td>
-        `;
-        tbody.appendChild(tr);
-    });
+  script.onerror = () => {
+    alert('Gagal mengambil data.');
+    showLoading(false);
+  };
+
+  document.body.appendChild(script);
 }
+
 
 // ADD & EDIT USER
 document.getElementById('userForm').addEventListener('submit', function (e) {
