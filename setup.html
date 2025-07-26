@@ -197,7 +197,7 @@ tr:hover .action-icon {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <SCRIPT>
 // ********* Deklarasi  Public **********
-const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbypSUXNHfgWvnBR6VrOolL3VpGKCDCJBRug7PcQ16X02ipwxENspffS601OQAUFY6Qzjg/exec';
+const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbyA58d5atuP-wHDL9Zb4_v-vHnBPN1MTeqjRldYxJjSufBvKaMz7XgTKRyEn8es3xQrpg/exec';
 // **************************************
 
 // Tampilkan Loading Overlay
@@ -404,26 +404,41 @@ document.getElementById('addUserButton').addEventListener('click', () => {
   new bootstrap.Modal(document.getElementById('userModal')).show();
 });
 
+
 function unlockUser(userId) {
-    if (!confirm('Yakin ingin unlock user ini?')) return;
+    if (!confirm("Anda yakin untuk unlock user ini?")) return;
 
-    fetch(`${URL_APPS_SCRIPT}?action=unlockUser&userId=${encodeURIComponent(userId)}&callback=unlockCallback`, {
-        method: 'GET',
-        mode: 'no-cors'
-    });
+    fetch(`${URL_APPS_SCRIPT}?action=unlockUser&userId=${encodeURIComponent(userId)}&callback=unlockCallback`)
+        .then(response => response.text())
+        .then(script => {
+            const jsonData = JSON.parse(script.replace(/^unlockCallback\((.*)\);?$/, '$1'));
 
-    window.unlockCallback = function(response) {
-        if (response.status === 'success') {
-            // Set localStorage agar kirim bisa aktif
-            localStorage.setItem('notifReady_' + userId, 'true');
+            if (jsonData.status === 'success') {
+                alert(jsonData.message);
 
-            // Update tampilan icon
-            const row = document.querySelector(`#userTableBody tr td:first-child:contains('${userId}')`)?.parentNode;
-            if (row) updateRowIcons(row, 'unlock');
-        } else {
-            alert('Unlock gagal: ' + response.message);
-        }
-    };
+                // Update langsung pada baris UI
+                const row = document.getElementById(`row_${userId}`);
+                if (row) {
+                    // Update field "Salah" jadi 0 di kolom ke-7 (index ke-6)
+                    row.cells[6].textContent = "0";
+
+                    // Update ikon-ikon:
+                    row.querySelector('.fa-edit')?.classList.add('disabled');
+                    row.querySelector('.fa-trash-alt')?.classList.add('disabled');
+                    row.querySelector('.fa-unlock')?.classList.add('disabled');
+                    row.querySelector('.fa-paper-plane')?.classList.remove('disabled');
+
+                    // Set flag lokal agar tombol Kirim aktif
+                    localStorage.setItem('notifReady_' + userId, 'true');
+                }
+            } else {
+                alert("Reset Login gagal untuk user " + userId);
+            }
+        })
+        .catch(err => {
+            console.error("Unlock error", err);
+            alert("Terjadi kesalahan saat unlock user.");
+        });
 }
 
 function sendNotif(userId, namaUser, emailUser, hpUser, passUser) {
