@@ -19,33 +19,38 @@ body {
     text-align: center; 
     white-space: nowrap; 
 }
-.action-icon { 
-    display: inline-flex; 
-    justify-content: center; 
-    align-items: center; 
-    width: 25px; 
-    height: 25px; 
-    opacity: 0; 
-    transition: opacity 0.2s; 
-    margin: 0 5px; 
-    cursor: pointer; 
-    color: #6c757d; 
-    border-radius: 50%; 
-    padding: 4px; 
-}
-tr:hover .action-icon { 
-    opacity: 1; 
-}
-.action-icon:hover { 
-    color: red; 
-    background-color: #e0e0e0; 
+
+/************************/
+/* Pengaturan Icon-icon */
+/************************/
+.action-icon {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 25px;
+    height: 25px;
+    opacity: 0;
+    transition: opacity 0.2s, color 0.2s, background-color 0.2s;
+    margin: 0 5px;
+    cursor: pointer;
+    color: #6c757d;
+    border-radius: 50%;
+    padding: 4px;
 }
 tr:hover .action-icon {
     opacity: 1;
 }
+/* Saat hover icon aktif */
+.action-icon:hover {
+    color: red;
+    background-color: #e0e0e0;
+}
+/* Untuk icon yang disabled, tetap tampil tapi tidak bisa diklik */
 .action-icon.disabled {
     pointer-events: none;
-    opacity: 0 !important;
+    opacity: 1 !important;         /* tampil penuh */
+    color: #bbb !important;      /* warna abu-abu pudar */
+    background-color: transparent !important;
 }
 
 .sticky-header th { 
@@ -111,7 +116,7 @@ tr:hover .action-icon {
     <a href="https://amihaji.github.io/kitworks/index.html" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Close</a>
 </div>
 
-<div class="table-box">
+  <div class="table-box">
     <div class="table-wrapper">
         <table class="table table-hover table-striped table-bordered align-middle text-center">
             <thead class="sticky-header">
@@ -134,15 +139,15 @@ tr:hover .action-icon {
                 </tr>
             </thead>
             <tbody id="userTableBody"><tr><td colspan="15">Memuat data...</td></tr></tbody>
-        </table>
-        <!-- Loading Overlay -->
-        <div id="loadingOverlay" class="loading-overlay" style="display:none;">
-          <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-        </div>
-    </div>
-</div>
+            <!-- Loading Overlay -->
+            <div id="loadingOverlay" class="loading-overlay" style="display:none;">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          </table>
+      </div>
+  </div>
 </div>
 
 <!-- Modal Add/Edit -->
