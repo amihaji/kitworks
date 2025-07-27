@@ -197,7 +197,7 @@ tr:hover .action-icon {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <SCRIPT>
 // ********* Deklarasi  Public **********
-const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbzk--pnsQI7GU1sdgCJ7EFWA3B-gJAmovA-rEPmzLwMnlZCpyN7HtQHr_oND3n0i5GkBQ/exec';
+const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbyzpt6-OmMZkfZXfLUBpmE0b_WMSopK3i1mNYu-W9sFFhbox-Ms8Y0n8tPeHjkHjVPmfw/exec';
 // **************************************
 
 // Tampilkan Loading Overlay
@@ -410,13 +410,12 @@ function sendNotif(userId, userName, userEmail, userHP, userPass) {
 
     window[callback] = function (response) {
         console.log("Respon kirim:", response);
-        alert(response.message);
-
         if (response.status === 'success') {
-            // Reset localStorage
+            alert("✅ " + response.message);
             localStorage.removeItem('notifReady_' + userId);
-            // Reload ulang tabel agar icon berubah
-            loadUserTable();
+            loadUserTable(); // reload tampilan icon
+        } else {
+            alert("❌ " + response.message);
         }
 
         delete window[callback];
