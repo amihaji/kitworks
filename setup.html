@@ -396,39 +396,41 @@ function unlockUser(userId) {
 }
 
 function sendNotif(userId, userName, userEmail, userHP, userPass) {
-  console.log("Mengirim notifikasi ke:", userId, userName, userEmail, userHP, userPass);
+    console.log("Mengirim notifikasi ke:", userId, userName, userEmail, userHP, userPass);
 
-  const callback = 'cb_' + Date.now();
-  const script = document.createElement('script');
-  script.src = `${URL_APPS_SCRIPT}?action=sendNotifUser` +
-    `&userId=${encodeURIComponent(userId)}` +
-    `&userName=${encodeURIComponent(userName)}` +
-    `&userEmail=${encodeURIComponent(userEmail)}` +
-    `&userHP=${encodeURIComponent(userHP)}` +
-    `&userPass=${encodeURIComponent(userPass)}` +
-    `&callback=${callback}`;
+    const callback = 'cb_' + Date.now();
+    const script = document.createElement('script');
+    script.src = `${URL_APPS_SCRIPT}?action=sendNotifUser` +
+        `&userId=${encodeURIComponent(userId)}` +
+        `&userName=${encodeURIComponent(userName)}` +
+        `&userEmail=${encodeURIComponent(userEmail)}` +
+        `&userHP=${encodeURIComponent(userHP)}` +
+        `&userPass=${encodeURIComponent(userPass)}` +
+        `&callback=${callback}`;
 
-  window[callback] = function(response) {
-    alert(response.message);
-    // Reset ikon ke default jika sukses
-    if (response.status === 'success') {
-      localStorage.removeItem('notifReady_' + userId);
-      loadUserTable();
-    }
-    delete window[callback];
-    document.body.removeChild(script);
-  };
+    window[callback] = function (response) {
+        console.log("Respon kirim:", response);
+        alert(response.message);
 
-  script.onerror = () => {
-    alert("Gagal terhubung ke server.");
-    delete window[callback];
-    document.body.removeChild(script);
-  };
+        if (response.status === 'success') {
+            // Reset localStorage
+            localStorage.removeItem('notifReady_' + userId);
+            // Reload ulang tabel agar icon berubah
+            loadUserTable();
+        }
 
-  document.body.appendChild(script);
+        delete window[callback];
+        document.body.removeChild(script);
+    };
+
+    script.onerror = () => {
+        alert("Gagal terhubung ke server");
+        delete window[callback];
+        document.body.removeChild(script);
+    };
+
+    document.body.appendChild(script);
 }
-
-
 
 function updateRowIcons(row, mode) {
     const icons = row.querySelectorAll('.action-icon');
