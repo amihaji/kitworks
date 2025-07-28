@@ -109,7 +109,7 @@ tr:hover .action-icon {
     padding: 10px 15px;
     border-radius: 6px;
     margin-bottom: 15px;
-    font-weight: bold;
+    font-size: medium;
     display: none;
 }
 .notification-error { background-color: #d9534f; color: white; }
@@ -306,7 +306,8 @@ function loadUserTable() {
     };
 
     script.onerror = function() {
-        alert('Gagal mengambil data user');
+        //alert('Gagal mengambil data user');
+        showNotification('error', 'Gagal mengambil data user!');
         delete window[callbackName];
     };
 
@@ -345,7 +346,8 @@ document.getElementById('userForm').addEventListener('submit', function (e) {
         bootstrap.Modal.getInstance(document.getElementById('userModal')).hide();
         loadUserTable();
       } else {
-        alert('Gagal menyimpan data');
+        //alert('Gagal menyimpan data');
+        showNotification('warning', 'Gagal menyimpnan data!');
       }
     });
 });
@@ -384,7 +386,9 @@ function deleteUser(userId) {
         if (data.status === 'success') {
           loadUserTable();
         } else {
-          alert('Gagal menghapus user');
+          // alert('Gagal menghapus user');
+          showNotification('warning', 'Gagal menghapus data!');
+          
         }
       });
   }
@@ -403,7 +407,8 @@ function unlockUser(userId) {
   const callbackName = 'cbUnlock_' + Date.now();
   window[callbackName] = (res) => {
     if (res.status === 'success') {
-      alert(res.message);
+      // alert(res.message);
+      showNotification('success', res.message);
       localStorage.setItem('notifReady_' + userId, 'true');
       const row = document.getElementById(`row_${userId}`);
       if (row) {
@@ -414,7 +419,8 @@ function unlockUser(userId) {
         row.querySelector('.fa-unlock')?.classList.add('disabled');
         row.querySelector('.fa-paper-plane')?.classList.remove('disabled');
       }
-    } else alert("Reset Login gagal: " + res.message);
+    //} else alert("Reset Login gagal: " + res.message);
+    } else showNotification('error', "Reset Login gagal: " + res.message);
     delete window[callbackName];
   };
   const script = document.createElement('script');
@@ -438,11 +444,13 @@ function sendNotif(userId, userName, userEmail, userHP, userPass) {
     window[callback] = function (response) {
         console.log("Respon kirim:", response);
         if (response.status === 'success') {
-            alert("✅ " + response.message);
+            //alert("✅ " + response.message);
+            showNotification('success', "Berhasil " + response.message);
             localStorage.removeItem('notifReady_' + userId);
             loadUserTable(); // reload tampilan icon
         } else {
-            alert("❌ " + response.message);
+            //alert("❌ " + response.message);
+            showNotification('error', "Gagal " + response.message);
         }
 
         delete window[callback];
@@ -450,7 +458,8 @@ function sendNotif(userId, userName, userEmail, userHP, userPass) {
     };
 
     script.onerror = () => {
-        alert("Gagal terhubung ke server");
+        // alert("Gagal terhubung ke server");
+        showNotification('error', "Gagal terhubung ke server");
         delete window[callback];
         document.body.removeChild(script);
     };
