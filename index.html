@@ -388,7 +388,7 @@ document.addEventListener('DOMContentLoaded', function () {
         updateLoginButton();
       } else {
         //alert(response.message || 'User ID atau Password salah.');
-        showNotification('error', 'User ID atau Password salah!');
+        showNotification('error', response.message || 'User ID atau Password salah!');
       }
       document.body.removeChild(script);
       delete window[callbackName];
