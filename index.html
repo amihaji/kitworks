@@ -119,23 +119,6 @@ body {
   color: #ff4d4d !important; 
 }
 
-.notif-message {
-  max-width: 500px;
-  margin: 20px auto;
-  padding: 10px 15px;
-  border-radius: 5px;
-  font-weight: bold;
-  display: none;
-}
- .notif-error { background: #dc3545; color: white; }
- .notif-success { background: #007bff; color: white; }
- .notif-warning { background: #ffc107; color: black; }
-
-#loginSpinner {
-  display: none;
-  margin-top: 10px;
-}
-
 /* --- Tampilan Mobile (Vertikal) --- */
 @media (max-width: 591.98px) {
   /* Mengatur ulang posisi ikon medsos di mobile agar tetap di atas */
@@ -149,10 +132,24 @@ body {
     width: 100%; 
   }
 }
+
+/* Notifikasi Message Box */
+.notification-message {
+    padding: 10px 15px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    font-weight: bold;
+    display: none;
+}
+.notification-error { background-color: #d9534f; color: white; }
+.notification-success { background-color: #0275d8; color: white; }
+.notification-warning { background-color: #f0ad4e; color: black; }
+
 </style>
 </head>
 
 <body>
+<div id="notificationBox" class="notification-message"></div>
 <div class="container mt-5 mb-5">
   <div class="row justify-content-center">
     <div class="card mx-auto shadow p-0" style="max-width:789px">
@@ -209,10 +206,6 @@ body {
             <div class="d-grid">
               <button id="btnLoginSubmit" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i> Login</button>
             </div>
-
-            <!-- Tampilkan spinner -->
-            <div class="notif-message" id="notifBoxIndex"></div>
-            <div id="loginSpinner"><i class="fas fa-spinner fa-spin"></i> Logging in...</div>
           </div>
         </div>
         
@@ -289,9 +282,10 @@ body {
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 // ********* Deklarasi  Public **********
-const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbzmLTQ1LuVJEt7NyUFQcDrSA6zBIaNEDOIOfbowFZ4ee7p3O4E_QOMSr1Ojucdrb0uLuA/exec';
+const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbwQ6lwWT-GvHtv2wXdp3DrCuSaWiPNSh76gM1WODUoJMKgW_UEr4BVLrCL9xJOKWq5oYA/exec';
 // **************************************
 
 // Show About form
@@ -408,45 +402,6 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
-// Fungsi tampilkan pesan
-function showNotifIndex(type, message) {
-  const box = document.getElementById('notifBoxIndex');
-  box.className = 'notif-message notif-' + type;
-  box.textContent = message;
-  box.style.display = 'block';
-  setTimeout(() => box.style.display = 'none', 3000);
-}
-
-function doLogin() {
-  const userId = document.getElementById("loginUser").value.trim();
-  const userPass = document.getElementById("loginPass").value.trim();
-  if (!userId || !userPass) {
-    showNotifIndex("warning", "User ID dan Password harus diisi!");
-    return;
-  }
-
-  document.getElementById("loginSpinner").style.display = "block";
-
-  const callbackName = "cb_" + Date.now();
-  const script = document.createElement("script");
-  script.src = `${URL_APPS_SCRIPT}?action=checkLogin&userId=${encodeURIComponent(userId)}&userPass=${encodeURIComponent(userPass)}&callback=${callbackName}`;
-
-  window[callbackName] = function (res) {
-    document.getElementById("loginSpinner").style.display = "none";
-    if (res.status === "success") {
-      showNotifIndex("success", "Login berhasil!");
-      setTimeout(() => location.reload(), 1000);
-    } else {
-      showNotifIndex("error", res.message || "Login gagal!");
-    }
-
-    delete window[callbackName];
-    document.body.removeChild(script);
-  };
-
-  document.body.appendChild(script);
-}
-
 // Logout clear session dan refresh
 function logout() {
   sessionStorage.clear();
@@ -468,8 +423,20 @@ function logout() {
   // Hide login form if it's open
   document.getElementById('loginOverlay').style.display = 'none';
 }
-</script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+function showNotification(type, message, duration = 3000) {
+    const box = document.getElementById('notificationBox');
+    box.className = 'notification-message'; // reset class
+    if (type === 'error') box.classList.add('notification-error');
+    else if (type === 'success') box.classList.add('notification-success');
+    else if (type === 'warning') box.classList.add('notification-warning');
+
+    box.innerText = message;
+    box.style.display = 'block';
+
+    setTimeout(() => { box.style.display = 'none'; }, duration);
+}
+
+</script>
 </body>
 </html>
