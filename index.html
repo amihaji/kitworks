@@ -353,7 +353,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const userPass = document.getElementById('userPass').value.trim();
 
     if (!userId || !userPass) {
-      alert('User ID dan Password harus diisi.');
+      //alert('User ID dan Password harus diisi.');
+      showNotification('warning', 'User ID dan Password harus diisi!');
       return;
     }
 
@@ -386,14 +387,16 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('loginOverlay').style.display = 'none';
         updateLoginButton();
       } else {
-        alert(response.message || 'User ID atau Password salah.');
+        //alert(response.message || 'User ID atau Password salah.');
+        showNotification('error', 'User ID atau Password salah!');
       }
       document.body.removeChild(script);
       delete window[callbackName];
     };
 
     script.onerror = () => {
-      alert('Gagal terhubung ke server.');
+      // alert('Gagal terhubung ke server.');
+      showNotification('error', 'Gagal terhubung ke server!');
       document.body.removeChild(script);
       delete window[callbackName];
     };
