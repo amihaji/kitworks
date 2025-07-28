@@ -149,7 +149,6 @@ body {
 </head>
 
 <body>
-<div id="notificationBox" class="notification-message"></div>
 <div class="container mt-5 mb-5">
   <div class="row justify-content-center">
     <div class="card mx-auto shadow p-0" style="max-width:789px">
@@ -203,6 +202,7 @@ body {
                 <input type="password" class="form-control" id="userPass" name="userPass" required minlength="6" maxlength="10">
               </div>
             </div>
+            <div id="notificationBox" class="notification-message"></div>
             <div class="d-grid">
               <button id="btnLoginSubmit" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i> Login</button>
             </div>
@@ -427,7 +427,7 @@ function logout() {
   document.getElementById('loginOverlay').style.display = 'none';
 }
 
-function showNotification(type, message, duration = 3000) {
+function showNotification(type, message, duration = 2000) {
     const box = document.getElementById('notificationBox');
     box.className = 'notification-message'; // reset class
     if (type === 'error') box.classList.add('notification-error');
