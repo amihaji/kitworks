@@ -307,7 +307,7 @@ function loadUserTable() {
 
     script.onerror = function() {
         //alert('Gagal mengambil data user');
-        showNotification('error', 'Gagal mengambil data user!');
+        showNotification('error', '❌ Gagal mengambil data user!');
         showLoading(false);  // Tambah ini
         delete window[callbackName];
     };
@@ -348,7 +348,7 @@ document.getElementById('userForm').addEventListener('submit', function (e) {
         loadUserTable();
       } else {
         //alert('Gagal menyimpan data');
-        showNotification('warning', 'Gagal menyimpnan data!');
+        showNotification('warning', '❌ Gagal menyimpnan data!');
       }
     });
 });
@@ -388,7 +388,7 @@ function deleteUser(userId) {
           loadUserTable();
         } else {
           // alert('Gagal menghapus user');
-          showNotification('warning', 'Gagal menghapus data!');
+          showNotification('warning', '❌ Gagal menghapus data!');
           
         }
       });
@@ -409,7 +409,7 @@ function unlockUser(userId) {
   window[callbackName] = (res) => {
     if (res.status === 'success') {
       // alert(res.message);
-      showNotification('success', res.message);
+      showNotification('success', "✅ Sukses " + res.message);
       localStorage.setItem('notifReady_' + userId, 'true');
       const row = document.getElementById(`row_${userId}`);
       if (row) {
@@ -421,7 +421,7 @@ function unlockUser(userId) {
         row.querySelector('.fa-paper-plane')?.classList.remove('disabled');
       }
     //} else alert("Reset Login gagal: " + res.message);
-    } else showNotification('error', "Reset Login gagal: " + res.message);
+    } else showNotification('error', "❌ Reset Login gagal: " + res.message);
       delete window[callbackName];
   };
   const script = document.createElement('script');
@@ -446,12 +446,12 @@ function sendNotif(userId, userName, userEmail, userHP, userPass) {
         console.log("Respon kirim:", response);
         if (response.status === 'success') {
             //alert("✅ " + response.message);
-            showNotification('success', "Berhasil " + response.message);
+            showNotification('success', "✅ Berhasil " + response.message);
             localStorage.removeItem('notifReady_' + userId);
             loadUserTable(); // reload tampilan icon
         } else {
             //alert("❌ " + response.message);
-            showNotification('error', "Gagal " + response.message);
+            showNotification('error', "❌ Gagal " + response.message);
         }
 
         delete window[callback];
@@ -460,7 +460,7 @@ function sendNotif(userId, userName, userEmail, userHP, userPass) {
 
     script.onerror = () => {
         // alert("Gagal terhubung ke server");
-        showNotification('error', "Gagal terhubung ke server");
+        showNotification('error', "❌ Gagal terhubung ke server");
         delete window[callback];
         document.body.removeChild(script);
     };
