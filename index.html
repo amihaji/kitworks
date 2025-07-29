@@ -2,180 +2,198 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>KitWorks Main Menu</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>KitWorks</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
     body {
       font-family: Arial, sans-serif;
-      padding: 20px;
-      background: #f0f0f0;
+      margin: 0;
+      padding: 0;
+      background: #f0f2f5;
     }
-    h2 {
-      margin-bottom: 10px;
-    }
-    .login-box {
-      background: white;
-      padding: 20px;
-      max-width: 400px;
+    .container {
+      max-width: 900px;
       margin: auto;
-      border-radius: 10px;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #003366;
+    }
+    .menu {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 30px;
+    }
+    .menu button {
+      background-color: #003366;
+      color: white;
+      border: none;
+      padding: 15px 25px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      display: flex;
+      align-items: center;
+    }
+    .menu button:disabled {
+      background-color: #aaa;
+      cursor: not-allowed;
+    }
+    .menu button i {
+      margin-right: 10px;
+    }
+
+    .login-form {
+      max-width: 400px;
+      margin: 30px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 8px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    .login-box input {
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    input[type="text"], input[type="password"] {
       width: 100%;
-      margin-bottom: 10px;
       padding: 10px;
-      border-radius: 5px;
+      border-radius: 6px;
       border: 1px solid #ccc;
     }
-    .login-box button {
+
+    #btnLogin {
       width: 100%;
       padding: 10px;
-      background: #007BFF;
-      border: none;
+      background-color: #003366;
       color: white;
-      border-radius: 5px;
-      font-weight: bold;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
       cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
-    .login-box button .spinner {
+
+    #btnLogin .spinner {
+      display: none;
+      margin-left: 8px;
+    }
+
+    #btnLogin.btn-loading .spinner {
+      display: inline-block;
+    }
+
+    #btnLogin.btn-loading .btn-text {
       display: none;
     }
 
-    .spinner i {
-      margin-right: 5px;
-    }
-
-    .default-text {
-      display: inline;
-    }
-
-    /* Tombol disabled */
-    .disabled-button {
-      opacity: 0.5;
-      pointer-events: none;
-    }
-
-    /* Notifikasi box */
-    .notif-box {
-      padding: 10px;
-      margin: 10px auto;
-      max-width: 500px;
-      border-radius: 8px;
+    .notification {
+      margin: 15px auto;
+      padding: 10px 15px;
+      border-radius: 6px;
       font-weight: bold;
-      text-align: center;
+      width: fit-content;
     }
+
     .notif-error {
-      background-color: #e74c3c;
+      background-color: #dc3545;
       color: white;
     }
+
     .notif-success {
-      background-color: #3498db;
+      background-color: #007bff;
       color: white;
     }
+
     .notif-warning {
       background-color: orange;
       color: black;
     }
-
   </style>
 </head>
 <body>
-  <div id="mainContainer">
-    <h1>Selamat Datang di KitWorks</h1>
-    <div style="margin-top: 20px;">
-      <button onclick="showLoginForm()">Login</button>
-      <button id="btnSetup" class="disabled-button" onclick="window.location.href='setup.html'">Setting Konfigurasi</button>
-      <button onclick="showNotification('Silakan login terlebih dahulu.', 'warning')">Tentang</button>
+  <div class="container">
+    <h1>KitWorks</h1>
+
+    <div id="notifArea"></div>
+
+    <div class="login-form" id="loginForm">
+      <div class="form-group">
+        <input type="text" id="userId" placeholder="User ID" />
+      </div>
+      <div class="form-group">
+        <input type="password" id="userPass" placeholder="Password" />
+      </div>
+      <button id="btnLogin">
+        <span class="btn-text">Login</span>
+        <span class="spinner"><i class="fas fa-spinner fa-spin"></i></span>
+      </button>
+    </div>
+
+    <div class="menu" id="mainMenu" style="display:none;">
+      <button id="btnMenu1"><i class="fas fa-cog"></i> Setup User</button>
+      <button id="btnMenu2"><i class="fas fa-chart-line"></i> Laporan</button>
+      <button id="btnMenu3"><i class="fas fa-sign-out-alt"></i> Logout</button>
     </div>
   </div>
 
   <script>
     const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbwJUBnUrtKsH5Z5onko_Q4orQWva0VA8wnRefJWDnGjeBdMjomvpld6vuLynXlYCqDrbg/exec';
 
-    function showLoginForm() {
-      const container = document.getElementById("mainContainer");
-
-      container.innerHTML = `
-        <div class="login-box">
-          <h2>Login User</h2>
-          <input type="text" id="userId" placeholder="User ID">
-          <input type="password" id="userPass" placeholder="Password">
-          <button id="loginButton">
-            <span class="default-text">Login</span>
-            <span class="spinner"><i class="fa fa-spinner fa-spin"></i> Loading...</span>
-          </button>
-        </div>
-        <div id="notifArea"></div>
-      `;
-
-      const loginBtn = document.getElementById("loginButton");
-      loginBtn.addEventListener("click", handleLogin);
+    function showNotification(type, message) {
+      const notif = document.createElement('div');
+      notif.className = 'notification notif-' + type;
+      notif.innerText = message;
+      const area = document.getElementById('notifArea');
+      area.innerHTML = '';
+      area.appendChild(notif);
+      setTimeout(() => notif.remove(), 4000);
     }
 
-    function handleLogin() {
+    document.getElementById("btnLogin").addEventListener("click", function () {
+      const btn = this;
       const userId = document.getElementById("userId").value.trim();
       const userPass = document.getElementById("userPass").value.trim();
-      const loginBtn = document.getElementById("loginButton");
 
       if (!userId || !userPass) {
-        showNotification("User ID dan Password wajib diisi.", "warning");
+        showNotification("warning", "Harap isi User ID dan Password");
         return;
       }
 
-      // Ubah tombol jadi spinner
-      loginBtn.querySelector(".default-text").style.display = "none";
-      loginBtn.querySelector(".spinner").style.display = "inline-block";
+      btn.classList.add("btn-loading");
 
       const callbackName = "cb_" + Date.now();
       const script = document.createElement("script");
-      script.src = `${URL_APPS_SCRIPT}?action=checkLogin&userId=${userId}&userPass=${userPass}&callback=${callbackName}`;
-
-      window[callbackName] = function(res) {
-        // Reset tombol kembali normal
-        loginBtn.querySelector(".default-text").style.display = "inline";
-        loginBtn.querySelector(".spinner").style.display = "none";
-
-        if (res.status === "success") {
-          showNotification("Login berhasil. Akses diberikan.", "success");
-          enableButtons(); // misal: aktifkan tombol menu
-        } else {
-          showNotification(res.message || "Login gagal.", "error");
-        }
-
+      script.src = `${URL_APPS_SCRIPT}?action=checkLogin&userId=${encodeURIComponent(userId)}&userPass=${encodeURIComponent(userPass)}&callback=${callbackName}`;
+      window[callbackName] = function (res) {
+        btn.classList.remove("btn-loading");
         document.body.removeChild(script);
         delete window[callbackName];
+
+        if (res.status === "success") {
+          showNotification("success", "Login berhasil!");
+          document.getElementById("loginForm").style.display = "none";
+          document.getElementById("mainMenu").style.display = "flex";
+        } else {
+          showNotification("error", res.message || "Login gagal");
+        }
       };
 
-      script.onerror = function() {
-        showNotification("Gagal menghubungi server.", "error");
-        loginBtn.querySelector(".default-text").style.display = "inline";
-        loginBtn.querySelector(".spinner").style.display = "none";
-        document.body.removeChild(script);
+      script.onerror = function () {
+        btn.classList.remove("btn-loading");
+        showNotification("error", "Tidak dapat menghubungi server");
       };
 
       document.body.appendChild(script);
-    }
-
-    function enableButtons() {
-      document.getElementById("btnSetup")?.classList.remove("disabled-button");
-    }
-
-    function showNotification(message, type = "success") {
-      const notifArea = document.getElementById("notifArea") || document.createElement("div");
-      notifArea.id = "notifArea";
-      notifArea.innerHTML = `
-        <div class="notif-box notif-${type}">
-          ${message}
-        </div>
-      `;
-      if (!document.getElementById("notifArea")) {
-        document.body.appendChild(notifArea);
-      }
-      setTimeout(() => {
-        notifArea.innerHTML = '';
-      }, 5000);
-    }
+    });
   </script>
 </body>
 </html>
