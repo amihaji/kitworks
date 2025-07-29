@@ -6,144 +6,280 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f0f2f5;
-    }
-    .container {
-      max-width: 900px;
-      margin: auto;
-      padding: 20px;
-    }
-    h1 {
-      text-align: center;
-      color: #003366;
-    }
-    .menu {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      justify-content: center;
-      margin-top: 30px;
-    }
-    .menu button {
-      background-color: #003366;
-      color: white;
-      border: none;
-      padding: 15px 25px;
-      font-size: 16px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-      display: flex;
-      align-items: center;
-    }
-    .menu button:disabled {
-      background-color: #aaa;
-      cursor: not-allowed;
-    }
-    .menu button i {
-      margin-right: 10px;
-    }
+   
+body { 
+  background-color: #f8f9fa; 
+}
+.brand-title { 
+  font-size: 12px; 
+  font:wide; color: #023581; 
+  line-height: 1; 
+}
+.brand-subtitle { 
+  font-size: 10px; 
+  color: #6c757d; 
+  line-height: 1; 
+}
 
-    .login-form {
-      max-width: 400px;
-      margin: 30px auto;
-      padding: 20px;
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
+/* Main Menu Navbar */
+.main-menu-link { 
+  font-weight: 500; 
+  padding: 8px 12px !important; 
+  border-radius: 6px; 
+}
+.main-menu-link:hover, .main-menu-link.active { 
+  color: #dc3545 !important; 
+  background-color: #f0f0f0; 
+}
 
-    .form-group {
-      margin-bottom: 15px;
-    }
+/* Icon-icon Medsos */
+.social-icon { 
+  display: inline-flex; 
+  justify-content: center; 
+  align-items: center; 
+  width: 40px; 
+  height: 40px; 
+  border-radius: 50%; 
+}
+.social-icon i { 
+  color: #555; 
+  transition: color 0.3s ease-in-out; 
+}
+.social-icon:hover { 
+  background-color: #f0f0f0; 
+}
+.social-icon:hover i { color: #dc3545; }
 
-    input[type="text"], input[type="password"] {
-      width: 100%;
-      padding: 10px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
+/* Login Form Overlay */
+.login-overlay {
+  position: relative;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  display: none; /* Hidden by default, shown when login button clicked */
+}
+.login-form {
+  width: 100%;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
-    #btnLogin {
-      width: 100%;
-      padding: 10px;
-      background-color: #003366;
-      color: white;
-      font-size: 16px;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+/* About Form Overlay */
+.about-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  display: none; /* Hidden by default */
+}
+.about-form {
+  width: 100%;
+  max-width: 350px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
 
-    #btnLogin .spinner {
-      display: none;
-      margin-left: 8px;
-    }
+/* Main Menu Buttons */
+.menu-buttons {
+  display: grid; /* Visible by default */
+}
 
-    #btnLogin.btn-loading .spinner {
-      display: inline-block;
-    }
+/* Button Group ikon */
+.button-group-icon {
+  display: flex;
+  justify-content: center; /* Center ikon di dalam container */
+  align-items: center;     /* Center ikon di dalam container */
+}
+.button-group-icon i {
+  color: black;
+  background-color: #ebebeb;
+  width: 40px;
+  height: 40px;
+  border-radius: 5px 0px 0px 5px;
+  padding: 0.75rem;
+  display: flex;
+  justify-content: center;  /* Center Horizontal */ 
+  align-items: center;      /* Center Vertikal */
+}  
 
-    #btnLogin.btn-loading .btn-text {
-      display: none;
-    }
+/* Footer */
+.footer a:hover { 
+  color: #ff4d4d !important; 
+}
 
-    .notification {
-      margin: 15px auto;
-      padding: 10px 15px;
-      border-radius: 6px;
-      font-weight: bold;
-      width: fit-content;
-    }
+/* --- Tampilan Mobile (Vertikal) --- */
+@media (max-width: 591.98px) {
+  /* Mengatur ulang posisi ikon medsos di mobile agar tetap di atas */
+  .navbar-collapse .mx-auto {
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+      flex-direction: row;
+      margin-bottom: 1rem;
+  }
+  .navbar-nav:not(.mx-auto) .nav-item, .navbar-nav:not(.mx-auto) .main-menu-link { 
+    width: 100%; 
+  }
+}
 
-    .notif-error {
-      background-color: #dc3545;
-      color: white;
-    }
+/* Notifikasi Message Box */
+.notification-message {
+    padding: 10px 15px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    font-size: medium;
+    display: none;
+}
+.notification-error { background-color: #d9534f; color: white; }
+.notification-success { background-color: #0275d8; color: white; }
+.notification-warning { background-color: #f0ad4e; color: black; }
 
-    .notif-success {
-      background-color: #007bff;
-      color: white;
-    }
-
-    .notif-warning {
-      background-color: orange;
-      color: black;
-    }
-  </style>
+</style>
 </head>
+
 <body>
-  <div class="container">
-    <h1>KitWorks</h1>
-
-    <div id="notifArea"></div>
-
-    <div class="login-form" id="loginForm">
-      <div class="form-group">
-        <input type="text" id="userId" placeholder="User ID" />
+<div class="container mt-5 mb-5">
+  <div class="row justify-content-center">
+    <div class="card mx-auto shadow p-0" style="max-width:789px">
+      <!-- HEADER -->
+      <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+              <img src="images/Logo_Kitworks.png" alt="Logo" width="90" class="me-2">
+              <div class="d-md-block">
+                <div class="brand-title">Aplication for Everyone</div>
+                <div class="brand-subtitle">anytime and anywhere</div>
+              </div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNavbar">
+              <ul class="navbar-nav mx-auto">
+                <li class="nav-item"><a class="nav-link social-icon" href="https://facebook.com/beratidealku" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+                <li class="nav-item"><a class="nav-link social-icon" href="https://www.instagram.com/hestyamin" target="_blank"><i class="fab fa-instagram"></i></a></li>
+                <li class="nav-item"><a class="nav-link social-icon" href="https://www.youtube.com" target="_blank"><i class="fab fa-youtube"></i></a></li>
+              </ul>
+              <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link main-menu-link" href="#about">About</a></li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </header>
+      <div class="card-body">
+        <div class="card-title text-white text-center p-1 rounded shadow mb-3" style="background-color: #002266;">
+          <h4>Main Menu - KitWorks</h4>
+        </div>
+        
+        <!-- Login Overlay -->
+        <div class="login-overlay" id="loginOverlay">
+          <div class="login-form">
+            <h4 class="text-center mb-4">Silahkan Login</h4>
+            <div class="mb-3">
+              <label for="userId" class="form-label">User ID</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                <input type="text" class="form-control" id="userId" name="userId" required minlength="4" maxlength="6">
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="userPass" class="form-label">Password</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                <input type="password" class="form-control" id="userPass" name="userPass" required minlength="6" maxlength="10">
+              </div>
+            </div>
+            <div id="notificationBox" class="notification-message"></div>
+            <div class="d-grid">
+              <button id="btnLoginSubmit" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i> Login</button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Menu Buttons -->
+        <div class="d-grid gap-2 menu-buttons" id="menuButtons">
+          
+          <div class="btn-group">  
+            <span class="button-group-icon">
+              <i class="fas fa-dumbbell"></i>
+            </span>            
+            <a href="https://amihaji.github.io/flc/index.html" class="btn btn-warning disabled" id="btnFLC" style="text-shadow: #e4e4e4; text-align: left">FLC - Fat Loss Challange</a>
+          </div>
+          
+          <div class="btn-group">  
+            <span class="button-group-icon">
+              <i class="fas fa-clipboard-check"></i>
+            </span>            
+            <a href="https://amihaji.github.io/estihtools/index.html" class="btn btn-primary disabled" id="btnEstiH" style="text-shadow: #e4e4e4; text-align: left">EstiHTools - Estimasi Harga Produk</a>
+          </div>
+          
+          <div class="btn-group">  
+            <span class="button-group-icon">
+              <i class="fas fa-heartbeat"></i>
+            </span>            
+            <a href="https://amihaji.github.io/wetools/index.html" class="btn btn-primary disabled" id="btnWE" style="text-shadow: #e4e4e4; text-align: left">WETools - Cek Evaluasi Kebugaran</a>
+          </div>
+          
+          <div class="btn-group">  
+            <span class="button-group-icon">
+              <i class="fas fa-list-check"></i>
+            </span>            
+            <a href="https://amihaji.github.io/wetools/DashWE.html" class="btn btn-primary disabled" id="btnDashWE" style="text-shadow: #e4e4e4; text-align: left">FollowTools - Followup Hasil WE</a>
+          </div>
+          
+          <div class="btn-group">  
+            <span class="button-group-icon">
+              <i class="fas fa-users"></i>
+            </span>            
+            <a href="https://amihaji.github.io/crmtools/index.html" class="btn btn-primary disabled" id="btnCRM" style="text-shadow: #e4e4e4; text-align: left">CRMTools - Management Pelanggan</a>
+          </div>
+          
+          <div class="btn-group">  
+            <span class="button-group-icon">
+              <i class="fas fa-cog"></i>
+            </span>            
+            <a href="https://amihaji.github.io/kitworks/setup.html" class="btn btn-primary disabled" id="btnSetup" style="text-shadow: #e4e4e4; text-align: left">Setting Konfigurasi</a>
+          </div>
+          
+          <div class="btn-group">  
+            <span class="button-group-icon">
+              <i class="fas fa-sign-in-alt"></i>
+            </span>            
+            <a href="#" class="btn btn-primary" id="btnLogin" style="text-shadow: #e4e4e4; text-align: left" onclick="toggleLogin()">Login</a>
+          </div>
+        </div>
+        <footer class="footer mt-3 text-white text-center p-2 rounded" style="background-color: #002266;">
+          KitWorks Versi 1.0 © 2025 <a href="https://www.beratidealku.com" class="text-white">www.beratidealku.com</a>
+        </footer>
       </div>
-      <div class="form-group">
-        <input type="password" id="userPass" placeholder="Password" />
-      </div>
-      <button id="btnLogin">
-        <span class="btn-text">Login</span>
-        <span class="spinner"><i class="fas fa-spinner fa-spin"></i></span>
-      </button>
-    </div>
-
-    <div class="menu" id="mainMenu" style="display:none;">
-      <button id="btnMenu1"><i class="fas fa-cog"></i> Setup User</button>
-      <button id="btnMenu2"><i class="fas fa-chart-line"></i> Laporan</button>
-      <button id="btnMenu3"><i class="fas fa-sign-out-alt"></i> Logout</button>
     </div>
   </div>
+</div>
+
+<!-- About Overlay -->
+<div class="about-overlay" id="aboutOverlay">
+  <div class="about-form">
+    <h5 class="mb-2">Aplikasi KitWorks Versi 1.0</h5>
+    <br>Copyright © 2025 <a href="https://www.beratidealku.com" class="text-black">www.beratidealku.com</a>
+    <br>Allright Reserved
+    <br>Hanya digunakan untuk kalangan interen
+    <div class="d-grid mt-4">
+      <button id="btnCloseAbout" class="btn btn-primary">OK</button>
+    </div>
+  </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
