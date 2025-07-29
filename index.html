@@ -2,503 +2,180 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aplikasi Main Menu - KitWorks Versi 1.0</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <title>KitWorks Main Menu</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f0f0f0;
+    }
+    h2 {
+      margin-bottom: 10px;
+    }
+    .login-box {
+      background: white;
+      padding: 20px;
+      max-width: 400px;
+      margin: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .login-box input {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .login-box button {
+      width: 100%;
+      padding: 10px;
+      background: #007BFF;
+      border: none;
+      color: white;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .login-box button .spinner {
+      display: none;
+    }
 
-<style>
-body { 
-  background-color: #f8f9fa; 
-}
-.brand-title { 
-  font-size: 12px; 
-  font:wide; color: #023581; 
-  line-height: 1; 
-}
-.brand-subtitle { 
-  font-size: 10px; 
-  color: #6c757d; 
-  line-height: 1; 
-}
+    .spinner i {
+      margin-right: 5px;
+    }
 
-/* Main Menu Navbar */
-.main-menu-link { 
-  font-weight: 500; 
-  padding: 8px 12px !important; 
-  border-radius: 6px; 
-}
-.main-menu-link:hover, .main-menu-link.active { 
-  color: #dc3545 !important; 
-  background-color: #f0f0f0; 
-}
+    .default-text {
+      display: inline;
+    }
 
-/* Icon-icon Medsos */
-.social-icon { 
-  display: inline-flex; 
-  justify-content: center; 
-  align-items: center; 
-  width: 40px; 
-  height: 40px; 
-  border-radius: 50%; 
-}
-.social-icon i { 
-  color: #555; 
-  transition: color 0.3s ease-in-out; 
-}
-.social-icon:hover { 
-  background-color: #f0f0f0; 
-}
-.social-icon:hover i { color: #dc3545; }
+    /* Tombol disabled */
+    .disabled-button {
+      opacity: 0.5;
+      pointer-events: none;
+    }
 
-/* Login Form Overlay */
-.login-overlay {
-  position: relative;
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  display: none; /* Hidden by default, shown when login button clicked */
-}
-.login-form {
-  width: 100%;
-  padding: 20px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
+    /* Notifikasi box */
+    .notif-box {
+      padding: 10px;
+      margin: 10px auto;
+      max-width: 500px;
+      border-radius: 8px;
+      font-weight: bold;
+      text-align: center;
+    }
+    .notif-error {
+      background-color: #e74c3c;
+      color: white;
+    }
+    .notif-success {
+      background-color: #3498db;
+      color: white;
+    }
+    .notif-warning {
+      background-color: orange;
+      color: black;
+    }
 
-/* About Form Overlay */
-.about-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  display: none; /* Hidden by default */
-}
-.about-form {
-  width: 100%;
-  max-width: 350px;
-  padding: 20px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-/* Main Menu Buttons */
-.menu-buttons {
-  display: grid; /* Visible by default */
-}
-
-/* Button Group ikon */
-.button-group-icon {
-  display: flex;
-  justify-content: center; /* Center ikon di dalam container */
-  align-items: center;     /* Center ikon di dalam container */
-}
-.button-group-icon i {
-  color: black;
-  background-color: #ebebeb;
-  width: 40px;
-  height: 40px;
-  border-radius: 5px 0px 0px 5px;
-  padding: 0.75rem;
-  display: flex;
-  justify-content: center;  /* Center Horizontal */ 
-  align-items: center;      /* Center Vertikal */
-}  
-
-/* Footer */
-.footer a:hover { 
-  color: #ff4d4d !important; 
-}
-
-/* Tampilan Spinner */
-.spinner-border-sm {
-    width: 1rem;
-    height: 1rem;
-    margin-left: 5px;
-    display: none;
-  }
-
-/* Notifikasi Message Box */
-.notification-message {
-    padding: 10px 15px;
-    border-radius: 6px;
-    margin-bottom: 15px;
-    font-size: medium;
-    display: none;
-}
-.notification-error { background-color: #d9534f; color: white; }
-.notification-success { background-color: #0275d8; color: white; }
-.notification-warning { background-color: #f0ad4e; color: black; }
-
-/* --- Tampilan Mobile (Vertikal) --- */
-@media (max-width: 591.98px) {
-  /* Mengatur ulang posisi ikon medsos di mobile agar tetap di atas */
-  .navbar-collapse .mx-auto {
-      margin-left: 0 !important;
-      margin-right: 0 !important;
-      flex-direction: row;
-      margin-bottom: 1rem;
-  }
-  .navbar-nav:not(.mx-auto) .nav-item, .navbar-nav:not(.mx-auto) .main-menu-link { 
-    width: 100%; 
-  }
-}
-</style>
+  </style>
 </head>
-
 <body>
-<div class="container mt-5 mb-5">
-  <div class="row justify-content-center">
-    <div class="card mx-auto shadow p-0" style="max-width:789px">
-      <!-- HEADER -->
-      <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <div class="container-fluid">
-            <a class="navbar-brand d-flex align-items-center" href="#">
-              <img src="images/Logo_Kitworks.png" alt="Logo" width="90" class="me-2">
-              <div class="d-md-block">
-                <div class="brand-title">Aplication for Everyone</div>
-                <div class="brand-subtitle">anytime and anywhere</div>
-              </div>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="mainNavbar">
-              <ul class="navbar-nav mx-auto">
-                <li class="nav-item"><a class="nav-link social-icon" href="https://facebook.com/beratidealku" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
-                <li class="nav-item"><a class="nav-link social-icon" href="https://www.instagram.com/hestyamin" target="_blank"><i class="fab fa-instagram"></i></a></li>
-                <li class="nav-item"><a class="nav-link social-icon" href="https://www.youtube.com" target="_blank"><i class="fab fa-youtube"></i></a></li>
-              </ul>
-              <ul class="navbar-nav">
-                <li class="nav-item"><a class="nav-link main-menu-link" href="#about">About</a></li>
-              </ul>
-            </div>
-          </div>
-        </nav>
-      </header>
-      <div class="card-body">
-        <div class="card-title text-white text-center p-1 rounded shadow mb-3" style="background-color: #002266;">
-          <h4>Main Menu - KitWorks</h4>
-        </div>
-        
-        <!-- Login Overlay -->
-        <div class="login-overlay" id="loginOverlay">
-          <div class="login-form">
-            <h4 class="text-center mb-4">Silahkan Login</h4>
-            <div class="mb-3">
-              <label for="userId" class="form-label">User ID</label>
-              <div class="input-group">
-                <span class="input-group-text"><i class="fas fa-user"></i></span>
-                <input type="text" class="form-control" id="userId" name="userId" required minlength="4" maxlength="6">
-              </div>
-            </div>
-            <div class="mb-3">
-              <label for="userPass" class="form-label">Password</label>
-              <div class="input-group">
-                <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                <input type="password" class="form-control" id="userPass" name="userPass" required minlength="6" maxlength="10">
-              </div>
-            </div>
-            <div id="notificationBox" class="notification-message"></div>
-            <div class="d-grid">
-              <!-- 
-              <button id="btnLoginSubmit" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i> Login</button>
-               -->
-              <button id="loginButton" class="btn btn-primary w-100">
-                <i class="fas fa-sign-in-alt"></i> Login <span class="spinner-border spinner-border-sm" id="loginSpinner" role="status"></span>
-              </button>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Menu Buttons -->
-        <div class="d-grid gap-2 menu-buttons" id="menuButtons">
-          
-          <div class="btn-group">  
-            <span class="button-group-icon">
-              <i class="fas fa-dumbbell"></i>
-            </span>            
-            <a href="https://amihaji.github.io/flc/index.html" class="btn btn-warning disabled" id="btnFLC" style="text-shadow: #e4e4e4; text-align: left">FLC - Fat Loss Challange</a>
-          </div>
-          
-          <div class="btn-group">  
-            <span class="button-group-icon">
-              <i class="fas fa-clipboard-check"></i>
-            </span>            
-            <a href="https://amihaji.github.io/estihtools/index.html" class="btn btn-primary disabled" id="btnEstiH" style="text-shadow: #e4e4e4; text-align: left">EstiHTools - Estimasi Harga Produk</a>
-          </div>
-          
-          <div class="btn-group">  
-            <span class="button-group-icon">
-              <i class="fas fa-heartbeat"></i>
-            </span>            
-            <a href="https://amihaji.github.io/wetools/index.html" class="btn btn-primary disabled" id="btnWE" style="text-shadow: #e4e4e4; text-align: left">WETools - Cek Evaluasi Kebugaran</a>
-          </div>
-          
-          <div class="btn-group">  
-            <span class="button-group-icon">
-              <i class="fas fa-list-check"></i>
-            </span>            
-            <a href="https://amihaji.github.io/wetools/DashWE.html" class="btn btn-primary disabled" id="btnDashWE" style="text-shadow: #e4e4e4; text-align: left">FollowTools - Followup Hasil WE</a>
-          </div>
-          
-          <div class="btn-group">  
-            <span class="button-group-icon">
-              <i class="fas fa-users"></i>
-            </span>            
-            <a href="https://amihaji.github.io/crmtools/index.html" class="btn btn-primary disabled" id="btnCRM" style="text-shadow: #e4e4e4; text-align: left">CRMTools - Management Pelanggan</a>
-          </div>
-          
-          <div class="btn-group">  
-            <span class="button-group-icon">
-              <i class="fas fa-cog"></i>
-            </span>            
-            <a href="https://amihaji.github.io/kitworks/setup.html" class="btn btn-primary disabled" id="btnSetup" style="text-shadow: #e4e4e4; text-align: left">Setting Konfigurasi</a>
-          </div>
-          
-          <div class="btn-group">  
-            <span class="button-group-icon">
-              <i class="fas fa-sign-in-alt"></i>
-            </span>            
-            <a href="#" class="btn btn-primary" id="btnLogin" style="text-shadow: #e4e4e4; text-align: left" onclick="toggleLogin()">Login</a>
-          </div>
-        </div>
-        <footer class="footer mt-3 text-white text-center p-2 rounded" style="background-color: #002266;">
-          KitWorks Versi 1.0 © 2025 <a href="https://www.beratidealku.com" class="text-white">www.beratidealku.com</a>
-        </footer>
-      </div>
+  <div id="mainContainer">
+    <h1>Selamat Datang di KitWorks</h1>
+    <div style="margin-top: 20px;">
+      <button onclick="showLoginForm()">Login</button>
+      <button id="btnSetup" class="disabled-button" onclick="window.location.href='setup.html'">Setting Konfigurasi</button>
+      <button onclick="showNotification('Silakan login terlebih dahulu.', 'warning')">Tentang</button>
     </div>
   </div>
-</div>
 
-<!-- About Overlay -->
-<div class="about-overlay" id="aboutOverlay">
-  <div class="about-form">
-    <h5 class="mb-2">Aplikasi KitWorks Versi 1.0</h5>
-    <br>Copyright © 2025 <a href="https://www.beratidealku.com" class="text-black">www.beratidealku.com</a>
-    <br>Allright Reserved
-    <br>Hanya digunakan untuk kalangan interen
-    <div class="d-grid mt-4">
-      <button id="btnCloseAbout" class="btn btn-primary">OK</button>
-    </div>
-  </div>
-</div>
+  <script>
+    const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbwJUBnUrtKsH5Z5onko_Q4orQWva0VA8wnRefJWDnGjeBdMjomvpld6vuLynXlYCqDrbg/exec';
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-// ********* Deklarasi  Public **********
-const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbwJUBnUrtKsH5Z5onko_Q4orQWva0VA8wnRefJWDnGjeBdMjomvpld6vuLynXlYCqDrbg/exec';
-// **************************************
+    function showLoginForm() {
+      const container = document.getElementById("mainContainer");
 
-// Show About form
-function showAbout() {
-  document.getElementById('aboutOverlay').style.display = 'flex';
-}
+      container.innerHTML = `
+        <div class="login-box">
+          <h2>Login User</h2>
+          <input type="text" id="userId" placeholder="User ID">
+          <input type="password" id="userPass" placeholder="Password">
+          <button id="loginButton">
+            <span class="default-text">Login</span>
+            <span class="spinner"><i class="fa fa-spinner fa-spin"></i> Loading...</span>
+          </button>
+        </div>
+        <div id="notifArea"></div>
+      `;
 
-// Hide About form
-function hideAbout() {
-  document.getElementById('aboutOverlay').style.display = 'none';
-}
+      const loginBtn = document.getElementById("loginButton");
+      loginBtn.addEventListener("click", handleLogin);
+    }
 
-// Toggle login form visibility
-function toggleLogin() {
-  const loginOverlay = document.getElementById('loginOverlay');
-  const btnLogin = document.getElementById('btnLogin');
-  
-  if (loginOverlay.style.display === 'block') {
-    loginOverlay.style.display = 'none';
-    btnLogin.textContent = 'Login';
-  } else {
-    loginOverlay.style.display = 'block';
-    btnLogin.textContent = 'Tutup';
-  }
-}
+    function handleLogin() {
+      const userId = document.getElementById("userId").value.trim();
+      const userPass = document.getElementById("userPass").value.trim();
+      const loginBtn = document.getElementById("loginButton");
 
-// Update login button after successful login
-function updateLoginButton() {
-  const btnLogin = document.getElementById('btnLogin');
-  btnLogin.textContent = 'Logout';
-  btnLogin.onclick = logout;
-}
-
-// Ambil hak akses dari sessionStorage setelah login
-document.addEventListener('DOMContentLoaded', function () {
-  // Event listener untuk tombol About
-  document.querySelector('a[href="#about"]').addEventListener('click', function(e) {
-    e.preventDefault();
-    showAbout();
-  });
-  
-  // Event listener untuk tombol Close About
-  document.getElementById('btnCloseAbout').addEventListener('click', hideAbout);
-  
-  const userToken = sessionStorage.getItem('userToken');
-  if (userToken) {
-    try {
-      const akses = JSON.parse(sessionStorage.getItem('aksesList') || '{}');
-      for (const key in akses) {
-        const btn = document.getElementById(key);
-        if (btn && akses[key] === "Y") {
-          btn.classList.remove('disabled');
-        }
+      if (!userId || !userPass) {
+        showNotification("User ID dan Password wajib diisi.", "warning");
+        return;
       }
-      // Update login button to show logout
-      updateLoginButton();
-    } catch (e) {
-      console.error('Error parsing aksesList', e);
-    }
-  }
-  
-  // Event listener untuk tombol login
- document.getElementById('btnLoginSubmit').addEventListener('click', function() {
-    const userId = document.getElementById('userId').value.trim();
-    const userPass = document.getElementById('userPass').value.trim();
 
-    if (!userId || !userPass) {
-      //alert('User ID dan Password harus diisi.');
-      showNotification('warning', 'User ID dan Password harus diisi!');
-      return;
-    }
+      // Ubah tombol jadi spinner
+      loginBtn.querySelector(".default-text").style.display = "none";
+      loginBtn.querySelector(".spinner").style.display = "inline-block";
 
-    const callbackName = 'cb_' + Date.now();
-    const script = document.createElement('script');
-    script.src = `${URL_APPS_SCRIPT}?action=checkLogin&userId=${encodeURIComponent(userId)}&userPass=${encodeURIComponent(userPass)}&callback=${callbackName}`;
+      const callbackName = "cb_" + Date.now();
+      const script = document.createElement("script");
+      script.src = `${URL_APPS_SCRIPT}?action=checkLogin&userId=${userId}&userPass=${userPass}&callback=${callbackName}`;
 
-    window[callbackName] = function(response) {
-      if (response.status === 'success' && response.loggedIn) {
-        // Simpan session login
-        sessionStorage.setItem('userId', response.userId);
-        sessionStorage.setItem('userToken', response.token);
-        sessionStorage.setItem('userLevel', response.level);
+      window[callbackName] = function(res) {
+        // Reset tombol kembali normal
+        loginBtn.querySelector(".default-text").style.display = "inline";
+        loginBtn.querySelector(".spinner").style.display = "none";
 
-        // Simpan hak akses
-        if (response.access) {
-          sessionStorage.setItem('aksesList', JSON.stringify(response.access));
+        if (res.status === "success") {
+          showNotification("Login berhasil. Akses diberikan.", "success");
+          enableButtons(); // misal: aktifkan tombol menu
+        } else {
+          showNotification(res.message || "Login gagal.", "error");
         }
 
-        // Aktifkan tombol-tombol menu sesuai hak akses
-        const akses = response.access || {};
-        for (const key in akses) {
-          const btn = document.getElementById(key);
-          if (btn && akses[key] === "Y") {
-            btn.classList.remove('disabled');
-          }
-        }
+        document.body.removeChild(script);
+        delete window[callbackName];
+      };
 
-        // Sembunyikan form login dan update tombol login menjadi logout
-        document.getElementById('loginOverlay').style.display = 'none';
-        updateLoginButton();
-      } else {
-        //alert(response.message || 'User ID atau Password salah.');
-        showNotification('error', response.message || 'User ID atau Password salah!');
+      script.onerror = function() {
+        showNotification("Gagal menghubungi server.", "error");
+        loginBtn.querySelector(".default-text").style.display = "inline";
+        loginBtn.querySelector(".spinner").style.display = "none";
+        document.body.removeChild(script);
+      };
+
+      document.body.appendChild(script);
+    }
+
+    function enableButtons() {
+      document.getElementById("btnSetup")?.classList.remove("disabled-button");
+    }
+
+    function showNotification(message, type = "success") {
+      const notifArea = document.getElementById("notifArea") || document.createElement("div");
+      notifArea.id = "notifArea";
+      notifArea.innerHTML = `
+        <div class="notif-box notif-${type}">
+          ${message}
+        </div>
+      `;
+      if (!document.getElementById("notifArea")) {
+        document.body.appendChild(notifArea);
       }
-      document.body.removeChild(script);
-      delete window[callbackName];
-    };
-
-    script.onerror = () => {
-      // alert('Gagal terhubung ke server.');
-      showNotification('error', 'Gagal terhubung ke server!');
-      document.body.removeChild(script);
-      delete window[callbackName];
-    };
-
-    document.body.appendChild(script);
-  });
-});
-
-// Logout clear session dan refresh
-function logout() {
-  sessionStorage.clear();
-  
-  // Disable semua tombol menu
-  const buttons = ['btnFLC', 'btnEstiH', 'btnWE', 'btnDashWE', 'btnCRM', 'btnSetup'];
-  buttons.forEach(id => {
-    const btn = document.getElementById(id);
-    if (btn) {
-      btn.classList.add('disabled');
+      setTimeout(() => {
+        notifArea.innerHTML = '';
+      }, 5000);
     }
-  });
-  
-  // Reset login button
-  const btnLogin = document.getElementById('btnLogin');
-  btnLogin.textContent = 'Login';
-  btnLogin.onclick = toggleLogin;
-  
-  // Hide login form if it's open
-  document.getElementById('loginOverlay').style.display = 'none';
-}
-
-function showNotification(type, message, duration = 2000) {
-    const box = document.getElementById('notificationBox');
-    box.className = 'notification-message'; // reset class
-    if (type === 'error') box.classList.add('notification-error');
-    else if (type === 'success') box.classList.add('notification-success');
-    else if (type === 'warning') box.classList.add('notification-warning');
-
-    box.innerText = message;
-    box.style.display = 'block';
-
-    setTimeout(() => { box.style.display = 'none'; }, duration);
-}
-
-function handleLogin() {
-  const userId = document.getElementById('userId').value.trim();
-  const userPass = document.getElementById('userPass').value.trim();
-
-  if (!userId || !userPass) {
-    showNotification('warning', 'User ID dan Password wajib diisi!');
-    return;
-  }
-
-  const loginButton = document.getElementById('loginButton');
-  const loginSpinner = document.getElementById('loginSpinner');
-  loginButton.disabled = true;
-  loginSpinner.style.display = 'inline-block';
-
-  const callbackName = "cb_" + Date.now();
-  const script = document.createElement('script');
-  script.src = `${URL_APPS_SCRIPT}?action=checkLogin&userId=${encodeURIComponent(userId)}&userPass=${encodeURIComponent(userPass)}&callback=${callbackName}`;
-
-  window[callbackName] = function (res) {
-    loginButton.disabled = false;
-    loginSpinner.style.display = 'none';
-
-    if (res.status === "success") {
-      localStorage.setItem('kitworks_token', res.token);
-      localStorage.setItem('kitworks_userId', res.userId);
-      localStorage.setItem('kitworks_level', res.level);
-      localStorage.setItem('kitworks_access', JSON.stringify(res.access));
-      showNotification('success', 'Login berhasil!');
-      setTimeout(() => location.href = 'index.html', 1000);
-    } else {
-      showNotification('error', res.message);
-    }
-
-    delete window[callbackName];
-    document.body.removeChild(script);
-  };
-
-  script.onerror = function () {
-    loginButton.disabled = false;
-    loginSpinner.style.display = 'none';
-    showNotification('error', 'Gagal menghubungi server.');
-    delete window[callbackName];
-  };
-
-  document.body.appendChild(script);
-}
-
-</script>
+  </script>
 </body>
 </html>
