@@ -123,6 +123,25 @@ tr:hover .action-icon {
   justify-content: center;
 }
 
+/* Hak Akses */
+.hak-akses-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 5px;
+}
+.hak-akses-item {
+  display: flex;
+  align-items: center;
+  margin-right: 15px;
+}
+.hak-akses-item label {
+  margin-right: 5px;
+  font-weight: bold;
+  min-width: 70px;
+}
+
+/* Tampilan Vertikal */
 @media (max-width: 591.98px) {
     .sticky-header th { 
        font-size:15px;
@@ -208,60 +227,46 @@ tr:hover .action-icon {
             </select>
         </div>
         <div class="mb-2"><label>Salah</label><input type="number" id="userSalah" class="form-control" value="0" min="0" max="3" required></div>
-        <div class="mb-2">
-        
-        <label>Hak Akses, pilih (Y/N):</label>
-
-        <div class="form-check"><label>Login: </label>
-        <div>
-            <label class="form-check-label me-2"><input type="radio" name="aksesLogin" value="Y" class="form-check-input" required> Y</label>
-            <label class="form-check-label"><input type="radio" name="aksesLogin" value="N" class="form-check-input"> N</label>
+        <div class="form-group">
+            <label><strong>Hak Akses, pilih (Y/N):</strong></label>
+            <div class="hak-akses-group">
+                <div class="hak-akses-item">
+                <label>Login:</label>
+                    <label><input type="radio" name="aksesLogin" value="Y" checked> Y</label>
+                    <label><input type="radio" name="aksesLogin" value="N"> N</label>
+                </div>
+                <div class="hak-akses-item">
+                <label>Setting:</label>
+                    <label><input type="radio" name="aksesSetting" value="Y" checked> Y</label>
+                    <label><input type="radio" name="aksesSetting" value="N"> N</label>
+                </div>
+                <div class="hak-akses-item">
+                <label>FLC:</label>
+                    <label><input type="radio" name="aksesFLC" value="Y" checked> Y</label>
+                    <label><input type="radio" name="aksesFLC" value="N"> N</label>
+                </div>
+                <div class="hak-akses-item">
+                <label>EstiH:</label>
+                    <label><input type="radio" name="aksesEstiH" value="Y" checked> Y</label>
+                    <label><input type="radio" name="aksesEstiH" value="N"> N</label>
+                </div>
+                <div class="hak-akses-item">
+                <label>WE:</label>
+                    <label><input type="radio" name="aksesWE" value="Y" checked> Y</label>
+                    <label><input type="radio" name="aksesWE" value="N"> N</label>
+                </div>
+                <div class="hak-akses-item">
+                <label>Follow:</label>
+                    <label><input type="radio" name="aksesFollow" value="Y" checked> Y</label>
+                    <label><input type="radio" name="aksesFollow" value="N"> N</label>
+                </div>
+                <div class="hak-akses-item">
+                <label>CRM:</label>
+                    <label><input type="radio" name="aksesCRM" value="Y" checked> Y</label>
+                    <label><input type="radio" name="aksesCRM" value="N"> N</label>
+                </div>
+            </div>
         </div>
-        </div>
-        
-        <div class="form-check"><label>Setting: </label>
-        <div>
-            <label class="form-check-label me-2"><input type="radio" name="aksesSetting" value="Y" class="form-check-input" required> Y</label>
-            <label class="form-check-label"><input type="radio" name="aksesSetting" value="N" class="form-check-input"> N</label>
-        </div>
-        </div>
-        
-        <div class="form-check"><label>FLC: </label>
-        <div>
-            <label class="form-check-label me-2"><input type="radio" name="aksesFLC" value="Y" class="form-check-input" required> Y</label>
-            <label class="form-check-label"><input type="radio" name="aksesFLC" value="N" class="form-check-input"> N</label>
-        </div>
-        </div>
-        
-        <div class="form-check"><label>EstiH: </label>
-        <div>
-            <label class="form-check-label me-2"><input type="radio" name="aksesEstiH" value="Y" class="form-check-input" required> Y</label>
-            <label class="form-check-label"><input type="radio" name="aksesEstiH" value="N" class="form-check-input"> N</label>
-        </div>
-        </div>
-        
-        <div class="form-check"><label>WE: </label>
-        <div>
-            <label class="form-check-label me-2"><input type="radio" name="aksesWE" value="Y" class="form-check-input" required> Y</label>
-            <label class="form-check-label"><input type="radio" name="aksesWE" value="N" class="form-check-input"> N</label>
-        </div>
-        </div>
-        
-        <div class="form-check"><label>Follow: </label>
-        <div>
-            <label class="form-check-label me-2"><input type="radio" name="aksesFollowup" value="Y" class="form-check-input" required> Y</label>
-            <label class="form-check-label"><input type="radio" name="aksesFollowup" value="N" class="form-check-input"> N</label>
-        </div>
-        </div>
-        
-        <div class="form-check"><label>CRM: </label>
-        <div>
-            <label class="form-check-label me-2"><input type="radio" name="aksesCRM" value="Y" class="form-check-input" required> Y</label>
-            <label class="form-check-label"><input type="radio" name="aksesCRM" value="N" class="form-check-input"> N</label>
-        </div>
-        </div>
-    </div>
-
     </div>
     <div class="modal-footer">
         <button type="submit" class="btn btn-primary">Simpan</button>
