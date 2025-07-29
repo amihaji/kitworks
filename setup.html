@@ -62,7 +62,7 @@ tr:hover .action-icon {
     background-color: #003366; 
     color: white; 
     z-index: 2; 
-    font-size: medium;
+    font-size: 5px;
 }
 .title-box { 
     background-color: #003366; 
@@ -86,14 +86,7 @@ tr:hover .action-icon {
     flex-direction: row; 
     gap: 10px; 
 }
-@media (max-width: 591.98px) {
-    .btn-group-vertical-responsive { 
-        flex-direction: column; 
-    }
-    .btn-group-vertical-responsive button, .btn-group-vertical-responsive a { 
-        width: 100% !important; 
-    }
-}
+
 .table-box { 
     background: white; 
     border-radius: 5px; 
@@ -127,6 +120,15 @@ tr:hover .action-icon {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@media (max-width: 591.98px) {
+    .btn-group-vertical-responsive { 
+        flex-direction: column; 
+    }
+    .btn-group-vertical-responsive button, .btn-group-vertical-responsive a { 
+        width: 100% !important; 
+    }
 }
 
 </style>
