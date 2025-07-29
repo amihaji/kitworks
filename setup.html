@@ -446,7 +446,10 @@ function sendNotif(userId, userName, userEmail, userHP, userPass) {
             //alert("✅ " + response.message);
             showNotification('success', "✅ Berhasil " + response.message);
             localStorage.removeItem('notifReady_' + userId);
-            loadUserTable(); // reload tampilan icon
+
+            const tr = document.createElement('tr');
+            tr.id = `row_${userId}`; // Untuk mengupdate baris record di tabel 
+            //loadUserTable(); // reload tampilan icon
         } else {
             //alert("❌ " + response.message);
             showNotification('error', "❌ Gagal " + response.message);
