@@ -203,9 +203,15 @@ body {
               </div>
             </div>
             <div id="notificationBox" class="notification-message"></div>
+            <!--
             <div class="d-grid">
               <button id="btnLoginSubmit" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i> Login</button>
             </div>
+            -->
+            <button id="btnLoginSubmit" class="btn btn-primary w-100">
+              <span id="loginBtnText"><i class="fas fa-sign-in-alt"></i> Login</span>
+              <span id="loginBtnSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+            </button>
           </div>
         </div>
         
@@ -347,64 +353,68 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
   
-  // Event listener untuk tombol login
-  document.getElementById('btnLoginSubmit').addEventListener('click', function() {
-    const userId = document.getElementById('userId').value.trim();
-    const userPass = document.getElementById('userPass').value.trim();
+// Event listener untuk tombol login
+document.getElementById('btnLoginSubmit').addEventListener('click', function () {
+  const userId = document.getElementById('userId').value.trim();
+  const userPass = document.getElementById('userPass').value.trim();
+  const btnText = document.getElementById('loginBtnText');
+  const btnSpinner = document.getElementById('loginBtnSpinner');
 
-    if (!userId || !userPass) {
-      //alert('User ID dan Password harus diisi.');
-      showNotification('warning', 'User ID dan Password harus diisi!');
-      return;
+  if (!userId || !userPass) {
+    showNotification('warning', 'User ID dan Password harus diisi!');
+    return;
+  }
+
+  // Tampilkan spinner
+  btnText.classList.add('d-none');
+  btnSpinner.classList.remove('d-none');
+
+  const callbackName = 'cb_' + Date.now();
+  const script = document.createElement('script');
+  script.src = `${URL_APPS_SCRIPT}?action=checkLogin&userId=${encodeURIComponent(userId)}&userPass=${encodeURIComponent(userPass)}&callback=${callbackName}`;
+
+  window[callbackName] = function (response) {
+    // Sembunyikan spinner
+    btnText.classList.remove('d-none');
+    btnSpinner.classList.add('d-none');
+
+    if (response.status === 'success' && response.loggedIn) {
+      sessionStorage.setItem('userId', response.userId);
+      sessionStorage.setItem('userToken', response.token);
+      sessionStorage.setItem('userLevel', response.level);
+      if (response.access) {
+        sessionStorage.setItem('aksesList', JSON.stringify(response.access));
+      }
+
+      const akses = response.access || {};
+      for (const key in akses) {
+        const btn = document.getElementById(key);
+        if (btn && akses[key] === "Y") {
+          btn.classList.remove('disabled');
+        }
+      }
+
+      document.getElementById('loginOverlay').style.display = 'none';
+      updateLoginButton();
+    } else {
+      showNotification('error', response.message || 'User ID atau Password salah!');
     }
 
-    const callbackName = 'cb_' + Date.now();
-    const script = document.createElement('script');
-    script.src = `${URL_APPS_SCRIPT}?action=checkLogin&userId=${encodeURIComponent(userId)}&userPass=${encodeURIComponent(userPass)}&callback=${callbackName}`;
+    document.body.removeChild(script);
+    delete window[callbackName];
+  };
 
-    window[callbackName] = function(response) {
-      if (response.status === 'success' && response.loggedIn) {
-        // Simpan session login
-        sessionStorage.setItem('userId', response.userId);
-        sessionStorage.setItem('userToken', response.token);
-        sessionStorage.setItem('userLevel', response.level);
+  script.onerror = () => {
+    showNotification('error', 'Gagal terhubung ke server!');
+    btnText.classList.remove('d-none');
+    btnSpinner.classList.add('d-none');
+    document.body.removeChild(script);
+    delete window[callbackName];
+  };
 
-        // Simpan hak akses
-        if (response.access) {
-          sessionStorage.setItem('aksesList', JSON.stringify(response.access));
-        }
-
-        // Aktifkan tombol-tombol menu sesuai hak akses
-        const akses = response.access || {};
-        for (const key in akses) {
-          const btn = document.getElementById(key);
-          if (btn && akses[key] === "Y") {
-            btn.classList.remove('disabled');
-          }
-        }
-
-        // Sembunyikan form login dan update tombol login menjadi logout
-        document.getElementById('loginOverlay').style.display = 'none';
-        updateLoginButton();
-      } else {
-        //alert(response.message || 'User ID atau Password salah.');
-        showNotification('error', response.message || 'User ID atau Password salah!');
-      }
-      document.body.removeChild(script);
-      delete window[callbackName];
-    };
-
-    script.onerror = () => {
-      // alert('Gagal terhubung ke server.');
-      showNotification('error', 'Gagal terhubung ke server!');
-      document.body.removeChild(script);
-      delete window[callbackName];
-    };
-
-    document.body.appendChild(script);
-  });
+  document.body.appendChild(script);
 });
-
+ 
 // Logout clear session dan refresh
 function logout() {
   sessionStorage.clear();
