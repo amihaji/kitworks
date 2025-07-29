@@ -380,13 +380,23 @@ document.getElementById('userForm').addEventListener('submit', function (e) {
     userPass: document.getElementById('userPass').value.trim(),
     userLevel: document.getElementById('userLevel').value.trim(),
     userSalah: document.getElementById('userSalah').value.trim(),
-    aksesLogin: document.getElementById('aksesLogin').value.trim().toUpperCase(),
-    aksesSetting: document.getElementById('aksesSetting').value.trim().toUpperCase(),
-    aksesFLC: document.getElementById('aksesFLC').value.trim().toUpperCase(),
-    aksesEstiH: document.getElementById('aksesEstiH').value.trim().toUpperCase(),
-    aksesWE: document.getElementById('aksesWE').value.trim().toUpperCase(),
-    aksesFollowup: document.getElementById('aksesFollowup').value.trim().toUpperCase(),
-    aksesCRM: document.getElementById('aksesCRM').value.trim().toUpperCase()
+
+    //aksesLogin: document.getElementById('aksesLogin').value.trim().toUpperCase(),
+    //aksesSetting: document.getElementById('aksesSetting').value.trim().toUpperCase(),
+    //aksesFLC: document.getElementById('aksesFLC').value.trim().toUpperCase(),
+    //aksesEstiH: document.getElementById('aksesEstiH').value.trim().toUpperCase(),
+    //aksesWE: document.getElementById('aksesWE').value.trim().toUpperCase(),
+    //aksesFollowup: document.getElementById('aksesFollowup').value.trim().toUpperCase(),
+    //aksesCRM: document.getElementById('aksesCRM').value.trim().toUpperCase()
+
+    aksesLogin: document.querySelector('input[name="aksesLogin"]:checked')?.value || 'N',
+    aksesSetting: document.querySelector('input[name="aksesSetting"]:checked')?.value || 'N',
+    aksesFLC: document.querySelector('input[name="aksesFLC"]:checked')?.value || 'N',
+    aksesEstiH: document.querySelector('input[name="aksesEstiH"]:checked')?.value || 'N',
+    aksesWE: document.querySelector('input[name="aksesWE"]:checked')?.value || 'N',
+    aksesFollowup: document.querySelector('input[name="aksesFollowup"]:checked')?.value || 'N',
+    aksesCRM: document.querySelector('input[name="aksesCRM"]:checked')?.value || 'N',
+
   };
   fetch(URL_APPS_SCRIPT, {
     method: 'POST',
