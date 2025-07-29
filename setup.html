@@ -125,10 +125,6 @@ tr:hover .action-icon {
 
 @media (max-width: 591.98px) {
     .sticky-header th { 
-       /*position: sticky; 
-       top: 0; 
-       z-index: 2; 
-       */
        font-size:15px;
        white-space: nowrap;
     }
@@ -212,15 +208,66 @@ tr:hover .action-icon {
             </select>
         </div>
         <div class="mb-2"><label>Salah</label><input type="number" id="userSalah" class="form-control" value="0" min="0" max="3" required></div>
-        <div class="mb-2"><label>Hak Akses (Y/N)</label><div class="row g-2">
-            <div class="col"><input type="text" id="aksesLogin" class="form-control" placeholder="Login" maxlength="1" required></div>
-            <div class="col"><input type="text" id="aksesSetting" class="form-control" placeholder="Setting" maxlength="1" required></div>
-            <div class="col"><input type="text" id="aksesFLC" class="form-control" placeholder="FLC" maxlength="1" required></div>
-            <div class="col"><input type="text" id="aksesEstiH" class="form-control" placeholder="EstiH" maxlength="1" required></div>
-            <div class="col"><input type="text" id="aksesWE" class="form-control" placeholder="WE" maxlength="1" required></div>
-            <div class="col"><input type="text" id="aksesFollowup" class="form-control" placeholder="Followup" maxlength="1" required></div>
-            <div class="col"><input type="text" id="aksesCRM" class="form-control" placeholder="CRM" maxlength="1" required></div>
-        </div></div>
+        <div class="mb-2">
+        
+        <label>Hak Akses, pilih (Y/N):</label>
+        <div class="form-check">
+        <label>Login: </label>
+        <div>
+            <label class="form-check-label me-2"><input type="radio" name="aksesLogin" value="Y" class="form-check-input" required> Y</label>
+            <label class="form-check-label"><input type="radio" name="aksesLogin" value="N" class="form-check-input"> N</label>
+        </div>
+        </div>
+        
+        <div class="form-check">
+        <label>Setting: </label>
+        <div>
+            <label class="form-check-label me-2"><input type="radio" name="aksesSetting" value="Y" class="form-check-input" required> Y</label>
+            <label class="form-check-label"><input type="radio" name="aksesSetting" value="N" class="form-check-input"> N</label>
+        </div>
+        </div>
+        
+        <div class="form-check">
+        <label>FLC: </label>
+        <div>
+            <label class="form-check-label me-2"><input type="radio" name="aksesFLC" value="Y" class="form-check-input" required> Y</label>
+            <label class="form-check-label"><input type="radio" name="aksesFLC" value="N" class="form-check-input"> N</label>
+            </div>
+        </div>
+        
+        <div class="form-check">
+        <label>EstiH: </label>
+        <div>
+            <label class="form-check-label me-2"><input type="radio" name="aksesEstiH" value="Y" class="form-check-input" required> Y</label>
+            <label class="form-check-label"><input type="radio" name="aksesEstiH" value="N" class="form-check-input"> N</label>
+            </div>
+        </div>
+        
+        <div class="form-check">
+        <label>WE: </label>
+        <div>
+            <label class="form-check-label me-2"><input type="radio" name="aksesWE" value="Y" class="form-check-input" required> Y</label>
+            <label class="form-check-label"><input type="radio" name="aksesWE" value="N" class="form-check-input"> N</label>
+            </div>
+        </div>
+        
+        <div class="form-check">
+        <label>Follow: </label>
+        <div>
+            <label class="form-check-label me-2"><input type="radio" name="aksesFollowup" value="Y" class="form-check-input" required> Y</label>
+            <label class="form-check-label"><input type="radio" name="aksesFollowup" value="N" class="form-check-input"> N</label>
+        </div>
+        </div>
+        
+        <div class="form-check">
+        <label>CRM: </label>
+        <div>
+            <label class="form-check-label me-2"><input type="radio" name="aksesCRM" value="Y" class="form-check-input" required> Y</label>
+            <label class="form-check-label"><input type="radio" name="aksesCRM" value="N" class="form-check-input"> N</label>
+        </div>
+        </div>
+    </div>
+
     </div>
     <div class="modal-footer">
         <button type="submit" class="btn btn-primary">Simpan</button>
