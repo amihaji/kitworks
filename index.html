@@ -203,15 +203,15 @@ body {
               </div>
             </div>
             <div id="notificationBox" class="notification-message"></div>
-            <!--
             <div class="d-grid">
+              <!--
               <button id="btnLoginSubmit" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i> Login</button>
+               -->
+              <button id="btnLoginSubmit" class="btn btn-primary w-100">
+                <span id="loginBtnText"><i class="fas fa-sign-in-alt"></i> Login</span>
+                <span id="loginBtnSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+              </button>
             </div>
-            -->
-            <button id="btnLoginSubmit" class="btn btn-primary w-100">
-              <span id="loginBtnText"><i class="fas fa-sign-in-alt"></i> Login</span>
-              <span id="loginBtnSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
-            </button>
           </div>
         </div>
         
@@ -353,7 +353,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
   
-// Event listener untuk tombol login
+  // Event listener untuk tombol login
 document.getElementById('btnLoginSubmit').addEventListener('click', function () {
   const userId = document.getElementById('userId').value.trim();
   const userPass = document.getElementById('userPass').value.trim();
@@ -414,7 +414,8 @@ document.getElementById('btnLoginSubmit').addEventListener('click', function () 
 
   document.body.appendChild(script);
 });
- 
+});
+
 // Logout clear session dan refresh
 function logout() {
   sessionStorage.clear();
