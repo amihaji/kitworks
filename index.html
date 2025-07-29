@@ -119,19 +119,13 @@ body {
   color: #ff4d4d !important; 
 }
 
-/* --- Tampilan Mobile (Vertikal) --- */
-@media (max-width: 591.98px) {
-  /* Mengatur ulang posisi ikon medsos di mobile agar tetap di atas */
-  .navbar-collapse .mx-auto {
-      margin-left: 0 !important;
-      margin-right: 0 !important;
-      flex-direction: row;
-      margin-bottom: 1rem;
+/* Tampilan Spinner */
+.spinner-border-sm {
+    width: 1rem;
+    height: 1rem;
+    margin-left: 5px;
+    display: none;
   }
-  .navbar-nav:not(.mx-auto) .nav-item, .navbar-nav:not(.mx-auto) .main-menu-link { 
-    width: 100%; 
-  }
-}
 
 /* Notifikasi Message Box */
 .notification-message {
@@ -145,6 +139,19 @@ body {
 .notification-success { background-color: #0275d8; color: white; }
 .notification-warning { background-color: #f0ad4e; color: black; }
 
+/* --- Tampilan Mobile (Vertikal) --- */
+@media (max-width: 591.98px) {
+  /* Mengatur ulang posisi ikon medsos di mobile agar tetap di atas */
+  .navbar-collapse .mx-auto {
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+      flex-direction: row;
+      margin-bottom: 1rem;
+  }
+  .navbar-nav:not(.mx-auto) .nav-item, .navbar-nav:not(.mx-auto) .main-menu-link { 
+    width: 100%; 
+  }
+}
 </style>
 </head>
 
@@ -204,7 +211,12 @@ body {
             </div>
             <div id="notificationBox" class="notification-message"></div>
             <div class="d-grid">
+              <!-- 
               <button id="btnLoginSubmit" class="btn btn-primary"><i class="fas fa-sign-in-alt"></i> Login</button>
+               -->
+              <button id="loginButton" class="btn btn-primary w-100">
+                <i class="fas fa-sign-in-alt"></i> Login <span class="spinner-border spinner-border-sm" id="loginSpinner" role="status"></span>
+              </button>
             </div>
           </div>
         </div>
@@ -438,6 +450,53 @@ function showNotification(type, message, duration = 2000) {
     box.style.display = 'block';
 
     setTimeout(() => { box.style.display = 'none'; }, duration);
+}
+
+function handleLogin() {
+  const userId = document.getElementById('userId').value.trim();
+  const userPass = document.getElementById('userPass').value.trim();
+
+  if (!userId || !userPass) {
+    showNotification('warning', 'User ID dan Password wajib diisi!');
+    return;
+  }
+
+  const loginButton = document.getElementById('loginButton');
+  const loginSpinner = document.getElementById('loginSpinner');
+  loginButton.disabled = true;
+  loginSpinner.style.display = 'inline-block';
+
+  const callbackName = "cb_" + Date.now();
+  const script = document.createElement('script');
+  script.src = `${URL_APPS_SCRIPT}?action=checkLogin&userId=${encodeURIComponent(userId)}&userPass=${encodeURIComponent(userPass)}&callback=${callbackName}`;
+
+  window[callbackName] = function (res) {
+    loginButton.disabled = false;
+    loginSpinner.style.display = 'none';
+
+    if (res.status === "success") {
+      localStorage.setItem('kitworks_token', res.token);
+      localStorage.setItem('kitworks_userId', res.userId);
+      localStorage.setItem('kitworks_level', res.level);
+      localStorage.setItem('kitworks_access', JSON.stringify(res.access));
+      showNotification('success', 'Login berhasil!');
+      setTimeout(() => location.href = 'index.html', 1000);
+    } else {
+      showNotification('error', res.message);
+    }
+
+    delete window[callbackName];
+    document.body.removeChild(script);
+  };
+
+  script.onerror = function () {
+    loginButton.disabled = false;
+    loginSpinner.style.display = 'none';
+    showNotification('error', 'Gagal menghubungi server.');
+    delete window[callbackName];
+  };
+
+  document.body.appendChild(script);
 }
 
 </script>
