@@ -375,36 +375,61 @@ function loadUserTable() {
 }
 
 function handleAddUser() {
-  const userId    = document.getElementById('addUserId').value.trim();
-  const userName  = document.getElementById('addUserName').value.trim();
-  const userEmail = document.getElementById('addUserEmail').value.trim();
-  const userHP    = document.getElementById('addUserHP').value.trim();
-  const userPass  = document.getElementById('addUserPass').value.trim();
-  const userLevel = document.getElementById('addUserLevel').value.trim();
+    const userId     = document.getElementById('userId').value.trim();
+    const userName   = document.getElementById('userName').value.trim();
+    const userEmail  = document.getElementById('userEmail').value.trim();
+    const userHP     = document.getElementById('userHP').value.trim();
+    const userPass   = document.getElementById('userPass').value.trim();
+    const userLevel  = document.getElementById('userLevel').value.trim();
 
-  const akses = (id) => {
-    const radios = document.getElementsByName(id);
-    for (const r of radios) {
-      if (r.checked) return r.value;
+    // Ambil nilai radio Y/N untuk setiap hak akses
+    const aksesLogin     = document.querySelector('input[name="aksesLogin"]:checked')?.value || 'N';
+    const aksesSetting   = document.querySelector('input[name="aksesSetting"]:checked')?.value || 'N';
+    const aksesFLC       = document.querySelector('input[name="aksesFLC"]:checked')?.value || 'N';
+    const aksesEstiH     = document.querySelector('input[name="aksesEstiH"]:checked')?.value || 'N';
+    const aksesWE        = document.querySelector('input[name="aksesWE"]:checked')?.value || 'N';
+    const aksesFollowup  = document.querySelector('input[name="aksesFollowup"]:checked')?.value || 'N';
+    const aksesCRM       = document.querySelector('input[name="aksesCRM"]:checked')?.value || 'N';
+
+    if (!userId || !userName || !userPass) {
+        showNotification('Harap lengkapi data user (ID, Nama, Password)', 'warning');
+        return;
     }
-    return 'N';
-  };
 
-  const callbackName = 'cb_add_' + Date.now();
-  window[callbackName] = function (res) {
-    if (res.success) {
-      showNotification('✅ Berhasil ' + res.message, 'success');
-      document.getElementById('addUserForm').reset();
-      loadUserTable(); // reload tabel
-    } else {
-      showNotification('❌ Gagal ' + res.message, 'error');
-    }
-    delete window[callbackName];
-  };
+    const callbackName = 'cb_' + Date.now();
+    window[callbackName] = function(response) {
+        if (response.status === 'success') {
+            showNotification(response.message, 'success');
+            closeModal();  // tutup form
+            loadUserTable(); // refresh tabel
+        } else {
+            showNotification('Gagal menyimpan data user.', 'error');
+        }
+        delete window[callbackName];
+    };
 
-  const script = document.createElement('script');
-  script.src = `${URL_APPS_SCRIPT}?action=addUser&userId=${encodeURIComponent(userId)}&userName=${encodeURIComponent(userName)}&userEmail=${encodeURIComponent(userEmail)}&userHP=${encodeURIComponent(userHP)}&userPass=${encodeURIComponent(userPass)}&userLevel=${encodeURIComponent(userLevel)}&aksesLogin=${akses('aksesLogin')}&aksesSetting=${akses('aksesSetting')}&aksesFLC=${akses('aksesFLC')}&aksesEstiH=${akses('aksesEstiH')}&aksesWE=${akses('aksesWE')}&aksesFollowup=${akses('aksesFollowup')}&aksesCRM=${akses('aksesCRM')}&callback=${callbackName}`;
-  document.body.appendChild(script);
+    const script = document.createElement('script');
+    const baseUrl = URL_APPS_SCRIPT;
+    const params = new URLSearchParams({
+        action: 'addUser',
+        userId,
+        userName,
+        userEmail,
+        userHP,
+        userPass,
+        userLevel,
+        aksesLogin,
+        aksesSetting,
+        aksesFLC,
+        aksesEstiH,
+        aksesWE,
+        aksesFollowup,
+        aksesCRM,
+        callback: callbackName
+    });
+
+    script.src = `${baseUrl}?${params.toString()}`;
+    document.body.appendChild(script);
 }
 
 // EDIT USER MODAL
