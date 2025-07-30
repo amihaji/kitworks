@@ -207,7 +207,9 @@ tr:hover .action-icon {
 </div>
 
 <!-- Modal Add/Edit -->
-<div class="modal fade" id="userModal" tabindex="-1" aria-hidden="true">
+<!-- <div class="modal fade" id="userModal" tabindex="-1" aria-hidden="true"> -->
+<div class="modal fade" id="modalUser" tabindex="-1" data-mode="add">
+
 <div class="modal-dialog">
 <form id="userForm" class="modal-content">
     <div class="modal-header" style="background-color:#003366; color:white;">
@@ -272,7 +274,8 @@ tr:hover .action-icon {
     </div>
     <div class="modal-footer">
         <!-- <button type="submit" class="btn btn-primary">Simpan</button> -->
-        <button class="btn btn-primary" onclick="handleAddUser()">Simpan</button>
+        <!-- <button class="btn btn-primary" onclick="handleAddUser()">Simpan</button> -->
+        <button type="submit" class="btn btn-primary" id="saveUserBtn">Simpan</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
     </div>
 </form>
@@ -350,7 +353,23 @@ function loadUserTable() {
                 <td>${followup}</td>
                 <td>${crm}</td>
                 <td class="actions-col">
-                    <i class="fas fa-edit action-icon ${editState}" title="Edit User" onclick="editUser('${userId}')"></i>
+                    <!-- <i class="fas fa-edit action-icon ${editState}" title="Edit User" onclick="editUser('${userId}')"></i> -->
+                    <i class="fas fa-edit action-icon" title="Edit" onclick="showEditModal({
+                        userId: '${userId}',     
+                        userName: '${userName}', 
+                        userEmail: '${userEmail}', 
+                        userHP: '${userHP}',
+                        userPass: '${userPass}', 
+                        userLevel: '${userLevel}',
+                        aksesLogin: '${aksesLogin}', 
+                        aksesSetting: '${aksesSetting}', 
+                        aksesFLC: '${aksesFLC}',
+                        aksesEstiH: '${aksesEstiH}', 
+                        aksesWE: '${aksesWE}', 
+                        aksesFollowup: '${aksesFollowup}', 
+                        aksesCRM: '${aksesCRM}'
+                    })"></i>
+
                     <i class="fas fa-trash-alt action-icon ${deleteState}" title="Hapus User" onclick="deleteUser('${userId}')"></i>
                     <i class="fas fa-unlock action-icon ${unlockState}" title="Unlock User" onclick="unlockUser('${userId}')"></i>
                     <i class="fas fa-paper-plane action-icon ${kirimState}" title="Kirim Notifikasi" onclick="sendNotif('${userId}','${namaUser}','${emailUser}','${hpUser}','${passUser}')"></i>
@@ -374,7 +393,7 @@ function loadUserTable() {
     document.body.appendChild(script);
 }
 
-function handleAddUser() {
+function addUser() {
     const userId     = document.getElementById('userId').value.trim();
     const userName   = document.getElementById('userName').value.trim();
     const userEmail  = document.getElementById('userEmail').value.trim();
@@ -612,13 +631,37 @@ function showNotification(type, message, duration = 3000) {
     setTimeout(() => { box.style.display = 'none'; }, duration);
 }
 
-document.addEventListener('DOMContentLoaded', loadUserTable);
-document.getElementById('addUserButton').addEventListener('click', () => {
-  document.getElementById('mode').value = 'add';
-  document.getElementById('userForm').reset();
-  document.getElementById('userId').readOnly = false;
-  new bootstrap.Modal(document.getElementById('userModal')).show();
+document.getElementById("saveUserBtn").addEventListener("click", (e) => {
+   e.preventDefault();
+   const mode = document.getElementById("modalUser").getAttribute("data-mode");
+   if (mode === "edit") {
+      editUser(); // Panggil fungsi edit
+   } else {
+      addUser(); // Panggil fungsi tambah
+   }
 });
+
+function showEditModal(userData) {
+  // Isi input dari userData
+  document.getElementById("userId").value = userData.userId;
+  document.getElementById("userName").value = userData.userName;
+  document.getElementById("userEmail").value = userData.userEmail;
+  document.getElementById("userHP").value = userData.userHP;
+  document.getElementById("userPass").value = userData.userPass;
+  document.getElementById("userLevel").value = userData.userLevel;
+
+  // Set radio akses
+  const akses = ['Login','Setting','FLC','EstiH','WE','Followup','CRM'];
+  akses.forEach(aksesName => {
+    const val = userData['akses'+aksesName] || 'N';
+    const radio = document.querySelector(`input[name="akses${aksesName}"][value="${val}"]`);
+    if (radio) radio.checked = true;
+  });
+
+  // Tampilkan modal & ubah mode
+  document.getElementById("modalUser").setAttribute("data-mode", "edit");
+  new bootstrap.Modal(document.getElementById("modalUser")).show();
+}
 
 </SCRIPT>
 </body>
