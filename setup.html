@@ -281,7 +281,7 @@ tr:hover .action-icon {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <SCRIPT>
 // ********* Deklarasi  Public **********
-const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbz0t4yMJdHzXzb4ApLEf7LJCeqnIr_rC04Y5E79BFba7Ccxvk_vV0Q4xcDUSLFq1sW3jw/exec';
+const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbyr7bOjrM_VQnYAdMpPx3gzRXnNk1j2sZKQSWv8k2BoNRevFVIH6srHmDs_MtaYcOgQnA/exec';
 // **************************************
 
 // Tampilkan Loading Overlay
@@ -433,54 +433,48 @@ function handleAddUser() {
 }
 
 // EDIT USER MODAL
-function editUser(...fields) {
-  const [id, name, email, hp, pass, level, salah, login, setting, flc, estih, we, followup, crm] = fields;
-  document.getElementById('mode').value = 'edit';
-  document.getElementById('userId').value = id; document.getElementById('userId').readOnly = true;
-  document.getElementById('userName').value = name;
-  document.getElementById('userEmail').value = email;
-  document.getElementById('userHP').value = hp;
-  document.getElementById('userPass').value = pass;
-  document.getElementById('userLevel').value = level;
-  document.getElementById('userSalah').value = salah;
-  document.getElementById('aksesLogin').value = login;
-  document.getElementById('aksesSetting').value = setting;
-  document.getElementById('aksesFLC').value = flc;
-  document.getElementById('aksesEstiH').value = estih;
-  document.getElementById('aksesWE').value = we;
-  document.getElementById('aksesFollowup').value = followup;
-  document.getElementById('aksesCRM').value = crm;
-  new bootstrap.Modal(document.getElementById('userModal')).show();
-}
+function handleEditUser(e) {
+  const params = e.parameter;
+  const userId       = params.userId;
+  const userName     = params.userName;
+  const userEmail    = params.userEmail;
+  const userHP       = params.userHP;
+  const userPass     = params.userPass;
+  const userLevel    = params.userLevel;
+  const userSalah    = params.userSalah || '0';
+  const aksesLogin   = params.aksesLogin || 'N';
+  const aksesSetting = params.aksesSetting || 'N';
+  const aksesFLC     = params.aksesFLC || 'N';
+  const aksesEstiH   = params.aksesEstiH || 'N';
+  const aksesWE      = params.aksesWE || 'N';
+  const aksesFollowup= params.aksesFollowup || 'N';
+  const aksesCRM     = params.aksesCRM || 'N';
 
-// DELETE USER
-function deleteUser(userId) {
-  if (confirm(`Hapus user ${userId}?`)) {
-    fetch(URL_APPS_SCRIPT, {
-      method: 'POST',
-      body: JSON.stringify({ action: 'deleteUser', userId }),
-      headers: { 'Content-Type': 'application/json' }
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.status === 'success') {
-          loadUserTable();
-        } else {
-          // alert('Gagal menghapus user');
-          showNotification('warning', '❌ Gagal menghapus data!');
-          
-        }
-      });
+  const data = userSheet.getDataRange().getValues();
+  for (let i = 1; i < data.length; i++) {
+    if (data[i][0] === userId) {
+      userSheet.getRange(i + 1, 2, 1, 13).setValues([[
+        userName, userEmail, userHP, userPass, userLevel, userSalah,
+        aksesLogin, aksesSetting, aksesFLC, aksesEstiH, aksesWE, aksesFollowup, aksesCRM
+      ]]);
+      return jsonResponse({ status: 'success', message: 'User berhasil diedit' });
+    }
   }
+  return jsonResponse({ status: 'error', message: 'User tidak ditemukan' });
 }
 
-document.addEventListener('DOMContentLoaded', loadUserTable);
-document.getElementById('addUserButton').addEventListener('click', () => {
-  document.getElementById('mode').value = 'add';
-  document.getElementById('userForm').reset();
-  document.getElementById('userId').readOnly = false;
-  new bootstrap.Modal(document.getElementById('userModal')).show();
-});
+function handleDeleteUser(e) {
+  const userId = e.parameter.userId;
+  const data = userSheet.getDataRange().getValues();
+
+  for (let i = 1; i < data.length; i++) {
+    if (data[i][0] === userId) {
+      userSheet.deleteRow(i + 1);
+      return jsonResponse({ status: 'success', message: 'User berhasil dihapus' });
+    }
+  }
+  return jsonResponse({ status: 'error', message: 'User tidak ditemukan' });
+}
 
 function unlockUser(userId) {
   if (!confirm("Anda yakin untuk unlock user ini?")) return;
@@ -577,6 +571,15 @@ function showNotification(type, message, duration = 3000) {
 
     setTimeout(() => { box.style.display = 'none'; }, duration);
 }
+
+document.addEventListener('DOMContentLoaded', loadUserTable);
+document.getElementById('addUserButton').addEventListener('click', () => {
+  document.getElementById('mode').value = 'add';
+  document.getElementById('userForm').reset();
+  document.getElementById('userId').readOnly = false;
+  new bootstrap.Modal(document.getElementById('userModal')).show();
+});
+
 </SCRIPT>
 </body>
 </html>
