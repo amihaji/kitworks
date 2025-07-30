@@ -293,6 +293,14 @@ function showLoading(show) {
   if (overlay) overlay.style.display = show ? 'flex' : 'none';
 }
 
+document.addEventListener('DOMContentLoaded', loadUserTable);
+document.getElementById('addUserButton').addEventListener('click', () => {
+  document.getElementById('mode').value = 'add';
+  document.getElementById('userForm').reset();
+  document.getElementById('userId').readOnly = false;
+  new bootstrap.Modal(document.getElementById('userModal')).show();
+});
+
 // LOAD DATA USER
 function loadUserTable() {
     showLoading(true);  // Tambah ini
