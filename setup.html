@@ -483,11 +483,11 @@ function editUser() {
   const callbackName = 'cb_' + Date.now();
   window[callbackName] = function(res) {
     if (res.status === "success") {
-      showNotification("success", res.message || "✅ Data berhasil diupdate");
-      bootstrap.Modal.getInstance(document.getElementById("modalUser")).hide();
-      loadUserTable();
+       showNotification("success", res.message || "✅ Data berhasil diupdate");
+       bootstrap.Modal.getInstance(document.getElementById("modalUser")).hide();
+       loadUserTable();
     } else {
-      showNotification("error", res.message || "❌ Gagal update data");
+       showNotification("error", res.message || "❌ Gagal update data");
     }
     delete window[callbackName];
   };
@@ -511,8 +511,8 @@ function deleteUser(userId) {
   window[callback] = function(response) {
     // showNotification(response.message, response.status === 'success' ? 'success' : 'error');
     if (response.status === 'success') {
-      showNotification('success', "✅ Berhasil terhapus " + response.message);
-      loadUserTable(); // Refresh tabel
+       showNotification('success', "✅ " + response.message);
+       loadUserTable(); // Refresh tabel
     }
     delete window[callback];
   };
