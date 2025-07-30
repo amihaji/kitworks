@@ -284,7 +284,7 @@ tr:hover .action-icon {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <SCRIPT>
 // ********* Deklarasi  Public **********
-const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbx0POU6WnKL4CNsGW_sLSanwqE8ETfPYOu-jWDrALLmbt0Z0WH0M92iFH2zFk4m57SOxQ/exec';
+const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbw4yFEmQ5flLP3AYu90Fwpbl4LYtuYN6BymIDwTlh9ZgmBUBLj0UhOcGo3Lkzr3gEGYKw/exec';
 // **************************************
 
 // Tampilkan Loading Overlay
@@ -425,9 +425,9 @@ function addUser() {
 
     const callbackName = 'cb_' + Date.now();
     window[callbackName] = function(response) {
-        if (response.status === 'success') {
+        if (response.success) {
             showNotification('success', "✅ Berhasil menyimpan " + response.message);
-            closeModal();    // tutup form
+            bootstrap.Modal.getInstance(document.getElementById("modalUser")).hide();  // Tutup modal
             loadUserTable(); // refresh tabel
         } else {
             showNotification('error','❌ Gagal menyimpan data user');
@@ -457,64 +457,53 @@ function addUser() {
 
     script.src = `${baseUrl}?${params.toString()}`;
     document.body.appendChild(script);
+    bootstrap.Modal.getInstance(document.getElementById("modalUser")).hide();
 }
 
 // EDIT USER MODAL
 function editUser() {
-  const userId    = document.getElementById('editUserId').value.trim();
-  const userName  = document.getElementById('editUserName').value.trim();
-  const userEmail = document.getElementById('editUserEmail').value.trim();
-  const userHP    = document.getElementById('editUserHP').value.trim();
-  const userPass  = document.getElementById('editUserPass').value.trim();
-  const userLevel = document.getElementById('editUserLevel').value.trim();
+  const userId    = document.getElementById('userId').value.trim();
+  const userName  = document.getElementById('userName').value.trim();
+  const userEmail = document.getElementById('userEmail').value.trim();
+  const userHP    = document.getElementById('userHP').value.trim();
+  const userPass  = document.getElementById('userPass').value.trim();
+  const userLevel = document.getElementById('userLevel').value.trim();
 
-  // Ambil nilai dari radio button hak akses
-  const aksesLogin    = document.querySelector('input[name="editAksesLogin"]:checked')?.value || 'N';
-  const aksesSetting  = document.querySelector('input[name="editAksesSetting"]:checked')?.value || 'N';
-  const aksesFLC      = document.querySelector('input[name="editAksesFLC"]:checked')?.value || 'N';
-  const aksesEstiH    = document.querySelector('input[name="editAksesEstiH"]:checked')?.value || 'N';
-  const aksesWE       = document.querySelector('input[name="editAksesWE"]:checked')?.value || 'N';
-  const aksesFollowup = document.querySelector('input[name="editAksesFollowup"]:checked')?.value || 'N';
-  const aksesCRM      = document.querySelector('input[name="editAksesCRM"]:checked')?.value || 'N';
+  const aksesLogin    = document.querySelector('input[name="aksesLogin"]:checked')?.value || 'N';
+  const aksesSetting  = document.querySelector('input[name="aksesSetting"]:checked')?.value || 'N';
+  const aksesFLC      = document.querySelector('input[name="aksesFLC"]:checked')?.value || 'N';
+  const aksesEstiH    = document.querySelector('input[name="aksesEstiH"]:checked')?.value || 'N';
+  const aksesWE       = document.querySelector('input[name="aksesWE"]:checked')?.value || 'N';
+  const aksesFollowup = document.querySelector('input[name="aksesFollowup"]:checked')?.value || 'N';
+  const aksesCRM      = document.querySelector('input[name="aksesCRM"]:checked')?.value || 'N';
 
   if (!userId || !userName || !userPass) {
-    showNotification("warning","Perhatian! Lengkapi data sebelum simpan");
+    showNotification("warning","Lengkapi data sebelum simpan");
     return;
   }
 
-  const formData = new FormData();
-  formData.append("userId", userId);
-  formData.append("userName", userName);
-  formData.append("userEmail", userEmail);
-  formData.append("userHP", userHP);
-  formData.append("userPass", userPass);
-  formData.append("userLevel", userLevel);
-  formData.append("aksesLogin", aksesLogin);
-  formData.append("aksesSetting", aksesSetting);
-  formData.append("aksesFLC", aksesFLC);
-  formData.append("aksesEstiH", aksesEstiH);
-  formData.append("aksesWE", aksesWE);
-  formData.append("aksesFollowup", aksesFollowup);
-  formData.append("aksesCRM", aksesCRM);
-
-  fetch(URL_APPS_SCRIPT + "?action=handleEditUser", {
-    method: "POST",
-    body: formData
-  })
-  .then(res => res.json())
-  .then(res => {
+  const callbackName = 'cb_' + Date.now();
+  window[callbackName] = function(res) {
     if (res.status === "success") {
-      showNotification("User berhasil diperbarui.", "success");
-      document.getElementById('editModal').style.display = "none";
-      loadUserTable(); // refresh tabel
+      showNotification("success", res.message || "✅ Data berhasil diupdate");
+      bootstrap.Modal.getInstance(document.getElementById("modalUser")).hide();
+      loadUserTable();
     } else {
-      showNotification("Terjadi kesalahan: " + res.message, "error");
+      showNotification("error", res.message || "❌ Gagal update data");
     }
-  })
-  .catch(err => {
-    console.error(err);
-    showNotification("Gagal terhubung ke server.", "error");
+    delete window[callbackName];
+  };
+
+  const params = new URLSearchParams({
+    action: 'editUser',
+    userId, userName, userEmail, userHP, userPass, userLevel,
+    aksesLogin, aksesSetting, aksesFLC, aksesEstiH, aksesWE, aksesFollowup, aksesCRM,
+    callback: callbackName
   });
+
+  const script = document.createElement("script");
+  script.src = `${URL_APPS_SCRIPT}?${params.toString()}`;
+  document.body.appendChild(script);
 }
 
 function deleteUser(userId) {
@@ -526,8 +515,13 @@ function deleteUser(userId) {
 
   fetch(URL_APPS_SCRIPT, {
     method: "POST",
-    body: formData
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+        action: "deleteUser",
+        userId: userId
+    })
   })
+
   .then(res => res.json())
   .then(res => {
     if (res.status === "success") {
