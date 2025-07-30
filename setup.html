@@ -433,47 +433,87 @@ function handleAddUser() {
 }
 
 // EDIT USER MODAL
-function handleEditUser(e) {
-  const params = e.parameter;
-  const userId       = params.userId;
-  const userName     = params.userName;
-  const userEmail    = params.userEmail;
-  const userHP       = params.userHP;
-  const userPass     = params.userPass;
-  const userLevel    = params.userLevel;
-  const userSalah    = params.userSalah || '0';
-  const aksesLogin   = params.aksesLogin || 'N';
-  const aksesSetting = params.aksesSetting || 'N';
-  const aksesFLC     = params.aksesFLC || 'N';
-  const aksesEstiH   = params.aksesEstiH || 'N';
-  const aksesWE      = params.aksesWE || 'N';
-  const aksesFollowup= params.aksesFollowup || 'N';
-  const aksesCRM     = params.aksesCRM || 'N';
+function editUser() {
+  const userId    = document.getElementById('editUserId').value.trim();
+  const userName  = document.getElementById('editUserName').value.trim();
+  const userEmail = document.getElementById('editUserEmail').value.trim();
+  const userHP    = document.getElementById('editUserHP').value.trim();
+  const userPass  = document.getElementById('editUserPass').value.trim();
+  const userLevel = document.getElementById('editUserLevel').value.trim();
 
-  const data = userSheet.getDataRange().getValues();
-  for (let i = 1; i < data.length; i++) {
-    if (data[i][0] === userId) {
-      userSheet.getRange(i + 1, 2, 1, 13).setValues([[
-        userName, userEmail, userHP, userPass, userLevel, userSalah,
-        aksesLogin, aksesSetting, aksesFLC, aksesEstiH, aksesWE, aksesFollowup, aksesCRM
-      ]]);
-      return jsonResponse({ status: 'success', message: 'User berhasil diedit' });
-    }
+  // Ambil nilai dari radio button hak akses
+  const aksesLogin    = document.querySelector('input[name="editAksesLogin"]:checked')?.value || 'N';
+  const aksesSetting  = document.querySelector('input[name="editAksesSetting"]:checked')?.value || 'N';
+  const aksesFLC      = document.querySelector('input[name="editAksesFLC"]:checked')?.value || 'N';
+  const aksesEstiH    = document.querySelector('input[name="editAksesEstiH"]:checked')?.value || 'N';
+  const aksesWE       = document.querySelector('input[name="editAksesWE"]:checked')?.value || 'N';
+  const aksesFollowup = document.querySelector('input[name="editAksesFollowup"]:checked')?.value || 'N';
+  const aksesCRM      = document.querySelector('input[name="editAksesCRM"]:checked')?.value || 'N';
+
+  if (!userId || !userName || !userPass) {
+    showNotification("warning","Perhatian! Lengkapi data sebelum simpan");
+    return;
   }
-  return jsonResponse({ status: 'error', message: 'User tidak ditemukan' });
+
+  const formData = new FormData();
+  formData.append("userId", userId);
+  formData.append("userName", userName);
+  formData.append("userEmail", userEmail);
+  formData.append("userHP", userHP);
+  formData.append("userPass", userPass);
+  formData.append("userLevel", userLevel);
+  formData.append("aksesLogin", aksesLogin);
+  formData.append("aksesSetting", aksesSetting);
+  formData.append("aksesFLC", aksesFLC);
+  formData.append("aksesEstiH", aksesEstiH);
+  formData.append("aksesWE", aksesWE);
+  formData.append("aksesFollowup", aksesFollowup);
+  formData.append("aksesCRM", aksesCRM);
+
+  fetch(URL_APPS_SCRIPT + "?action=handleEditUser", {
+    method: "POST",
+    body: formData
+  })
+  .then(res => res.json())
+  .then(res => {
+    if (res.status === "success") {
+      showNotification("User berhasil diperbarui.", "success");
+      document.getElementById('editModal').style.display = "none";
+      loadUserTable(); // refresh tabel
+    } else {
+      showNotification("Terjadi kesalahan: " + res.message, "error");
+    }
+  })
+  .catch(err => {
+    console.error(err);
+    showNotification("Gagal terhubung ke server.", "error");
+  });
 }
 
-function handleDeleteUser(e) {
-  const userId = e.parameter.userId;
-  const data = userSheet.getDataRange().getValues();
+function deleteUser(userId) {
+  if (!confirm(`Yakin ingin menghapus user ${userId}?`)) return;
 
-  for (let i = 1; i < data.length; i++) {
-    if (data[i][0] === userId) {
-      userSheet.deleteRow(i + 1);
-      return jsonResponse({ status: 'success', message: 'User berhasil dihapus' });
+  const formData = new FormData();
+  formData.append("action", "deleteUser");
+  formData.append("userId", userId);
+
+  fetch(URL_APPS_SCRIPT, {
+    method: "POST",
+    body: formData
+  })
+  .then(res => res.json())
+  .then(res => {
+    if (res.status === "success") {
+      showNotification("info", res.message || "✅ User berhasil dihapus");
+      loadUserTable();
+    } else {
+      showNotification("warning", res.message || "❌ Gagal menghapus user");
     }
-  }
-  return jsonResponse({ status: 'error', message: 'User tidak ditemukan' });
+  })
+  .catch(err => {
+    console.error(err);
+    showNotification("error", "❌ Terjadi kesalahan saat menghapus user");
+  });
 }
 
 function unlockUser(userId) {
