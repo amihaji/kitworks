@@ -509,8 +509,9 @@ function deleteUser(userId) {
 
   const callback = 'cb_' + Date.now();
   window[callback] = function(response) {
-    showNotification(response.message, response.status === 'success' ? 'success' : 'error');
+    // showNotification(response.message, response.status === 'success' ? 'success' : 'error');
     if (response.status === 'success') {
+      showNotification('success', "✅ Berhasil terhapus " + response.message);
       loadUserTable(); // Refresh tabel
     }
     delete window[callback];
