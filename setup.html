@@ -108,9 +108,6 @@ tr:hover .action-icon {
     font-size: 12px;
     display: none;
 }
-.notification-error { background-color: #d9534f; color: white; }
-.notification-success { background-color: #0275d8; color: white; }
-.notification-warning { background-color: #f0ad4e; color: black; }
 
 /* Animasi muncul menggeser ke bawah untuk pesan di modal */
 @keyframes slideDownFade {
@@ -415,7 +412,7 @@ function loadUserTable() {
     };
 
     script.onerror = function() {
-        showNotification('error', '❌ Gagal mengambil data user!');
+        showModalNotification('error', 'Gagal mengambil data user!');
         showLoading(false);
         delete window[callbackName];
     };
@@ -431,13 +428,13 @@ function addUser() {
     const userLevel  = document.getElementById('userLevel').value.trim();
 
     // Ambil nilai radio Y/N untuk setiap hak akses
-    const aksesLogin     = document.querySelector('input[name="aksesLogin"]:checked')?.value || 'N';
-    const aksesSetting   = document.querySelector('input[name="aksesSetting"]:checked')?.value || 'N';
-    const aksesFLC       = document.querySelector('input[name="aksesFLC"]:checked')?.value || 'N';
-    const aksesEstiH     = document.querySelector('input[name="aksesEstiH"]:checked')?.value || 'N';
-    const aksesWE        = document.querySelector('input[name="aksesWE"]:checked')?.value || 'N';
-    const aksesFollowup  = document.querySelector('input[name="aksesFollowup"]:checked')?.value || 'N';
-    const aksesCRM       = document.querySelector('input[name="aksesCRM"]:checked')?.value || 'N';
+    const aksesLogin    = document.querySelector('input[name="aksesLogin"]:checked')?.value || 'N';
+    const aksesSetting  = document.querySelector('input[name="aksesSetting"]:checked')?.value || 'N';
+    const aksesFLC      = document.querySelector('input[name="aksesFLC"]:checked')?.value || 'N';
+    const aksesEstiH    = document.querySelector('input[name="aksesEstiH"]:checked')?.value || 'N';
+    const aksesWE       = document.querySelector('input[name="aksesWE"]:checked')?.value || 'N';
+    const aksesFollowup = document.querySelector('input[name="aksesFollowup"]:checked')?.value || 'N';
+    const aksesCRM      = document.querySelector('input[name="aksesCRM"]:checked')?.value || 'N';
 
     if (!userId || !userName || !userPass) {
         showModalNotification('warning','Harap lengkapi data user (ID, Nama, Password)');
@@ -534,9 +531,9 @@ function deleteUser(userId) {
 
   const callback = 'cb_' + Date.now();
   window[callback] = function(response) {
-    // showNotification(response.message, response.status === 'success' ? 'success' : 'error');
+    // showModalNotification(response.message, response.status === 'success' ? 'success' : 'error');
     if (response.status === 'success') {
-       showNotification('success', "✅ " + response.message);
+       showModalNotification('success', "Sukses " + response.message);
        loadUserTable(); // Refresh tabel
     }
     delete window[callback];
@@ -552,7 +549,7 @@ function unlockUser(userId) {
   const callbackName = 'cbUnlock_' + Date.now();
   window[callbackName] = (res) => {
     if (res.status === 'success') {
-      showNotification('success', "✅ Sukses " + res.message);
+      showModalNotification('success', "Sukses " + res.message);
       localStorage.setItem('notifReady_' + userId, 'true');
       const row = document.getElementById(`row_${userId}`);
       if (row) {
@@ -563,7 +560,7 @@ function unlockUser(userId) {
         row.querySelector('.fa-unlock')?.classList.add('disabled');
         row.querySelector('.fa-paper-plane')?.classList.remove('disabled');
       }
-    } else showNotification('error', "❌ Reset Login gagal: " + res.message);
+    } else showModalNotification('error', "Reset Login gagal: " + res.message);
       delete window[callbackName];
   };
   const script = document.createElement('script');
@@ -587,11 +584,11 @@ function sendNotif(userId, userName, userEmail, userHP, userPass) {
     window[callback] = function (response) {
         console.log("Respon kirim:", response);
         if (response.status === 'success') {
-            showNotification('success', "✅ Berhasil " + response.message);
+            showModalNotification('success', "Berhasil " + response.message);
             localStorage.removeItem('notifReady_' + userId);
             loadUserTable(); // reload tampilan icon
         } else {
-            showNotification('error', "❌ Gagal " + response.message);
+            showModalNotification('error', "Gagal " + response.message);
         }
 
         delete window[callback];
@@ -599,7 +596,7 @@ function sendNotif(userId, userName, userEmail, userHP, userPass) {
     };
 
     script.onerror = () => {
-        showNotification('error', "❌ Gagal terhubung ke server");
+        showModalNotification('error', "Gagal terhubung ke server");
         delete window[callback];
         document.body.removeChild(script);
     };
@@ -624,18 +621,6 @@ function updateRowIcons(row, mode) {
     }
 }
 
-// Pesan Untuk di Form Tabel User
-function showNotification(type, message, duration = 3000) {
-    const box = document.getElementById('notificationBox');
-    box.className = 'notification-message'; // reset class
-    if (type === 'error') box.classList.add('notification-error');
-    else if (type === 'success') box.classList.add('notification-success');
-    else if (type === 'warning') box.classList.add('notification-warning');
-    box.innerText = message;
-    box.style.display = 'block';
-    setTimeout(() => { box.style.display = 'none'; }, duration);
-}
-
 // Pesan Untuk di Form Modals Input dan Edit 
 function showModalNotification(type, message, duration = 3000) {
   const box  = document.getElementById('modalNotification');
@@ -656,7 +641,7 @@ function showModalNotification(type, message, duration = 3000) {
     box.classList.add('notification-warning');
     icon.classList.add('fas', 'fa-exclamation-circle');
   }
-  text.textContent = message;
+  text.textContent  = message;
   box.style.display = 'flex';
   setTimeout(() => {box.style.display = 'none';}, duration);
 }
@@ -673,18 +658,18 @@ document.getElementById("saveUserBtn").addEventListener("click", (e) => {
 
 function showEditModal(userData) {
   // Isi input dari userData
-  document.getElementById("userId").value = userData.userId;
+  document.getElementById("userId").value    = userData.userId;
   document.getElementById("userId").disabled = true;
-  document.getElementById("userName").value = userData.userName;
+  document.getElementById("userName").value  = userData.userName;
   document.getElementById("userEmail").value = userData.userEmail;
-  document.getElementById("userHP").value = userData.userHP;
-  document.getElementById("userPass").value = userData.userPass;
+  document.getElementById("userHP").value    = userData.userHP;
+  document.getElementById("userPass").value  = userData.userPass;
   document.getElementById("userLevel").value = userData.userLevel;
 
   // Set radio akses
   const akses = ['Login','Setting','FLC','EstiH','WE','Followup','CRM'];
   akses.forEach(aksesName => {
-    const val = userData['akses'+aksesName] || 'N';
+    const val   = userData['akses'+aksesName] || 'N';
     const radio = document.querySelector(`input[name="akses${aksesName}"][value="${val}"]`);
     if (radio) radio.checked = true;
   });
