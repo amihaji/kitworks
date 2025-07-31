@@ -115,7 +115,7 @@ tr:hover .action-icon {
   to { opacity: 1; transform: translateY(0); }
 }
 /* Pesan Notifikasi */
-#modalNotification {
+#pesanNotification {
   display: none;
   padding: 8px 12px;
   font-size: 14px;
@@ -126,7 +126,7 @@ tr:hover .action-icon {
   align-items: center;
   gap: 8px;
 }
-.modal-notif-icon {font-size: 18px;}
+.pesan-notif-icon {font-size: 18px;}
 .notification-error { background-color: #d9534f; color: white; }
 .notification-success { background-color: #0275d8; color: white; }
 .notification-warning { background-color: #f0ad4e; color: black; }
@@ -193,7 +193,7 @@ tr:hover .action-icon {
     <a href="https://amihaji.github.io/kitworks/index.html" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Close</a>
 </div>
 
-<div id="modalNotification" class="notification-message"></div>
+<div id="pesanNotification" class="notification-message"></div>
     <div class="table-box">
         <div class="table-wrapper">
         <table class="table table-hover table-striped table-bordered align-middle text-center">
@@ -292,8 +292,8 @@ tr:hover .action-icon {
     </div>
     <div class="modal-footer">
         <!-- Notifikasi Pesan -->
-        <div id="modalNotification" class="notification-message">
-            <i id="modalNotifIcon" class="modal-notif-icon"></i><span id="modalNotifText"></span>
+        <div id="pesanNotification" class="notification-message">
+            <i id="pesanNotifIcon" class="pesan-notif-icon"></i><span id="pesanNotifText"></span>
         </div>
         <button type="submit" class="btn btn-primary" id="saveUserBtn">Simpan</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -413,7 +413,7 @@ function loadUserTable() {
     };
 
     script.onerror = function() {
-        showModalNotification('error', 'Gagal mengambil data user!');
+        showPesan('error', 'Gagal mengambil data user!');
         showLoading(false);
         delete window[callbackName];
     };
@@ -438,7 +438,7 @@ function addUser() {
     const aksesCRM      = document.querySelector('input[name="aksesCRM"]:checked')?.value || 'N';
 
     if (!userId || !userName || !userPass) {
-        showModalNotification('warning','Harap lengkapi data user (ID, Nama, Password)');
+        showPesan('warning','Harap lengkapi data user (ID, Nama, Password)');
         return;
     }
 
@@ -447,7 +447,7 @@ function addUser() {
     for (let row of existingRows) {
     const cellUserId = row.children[0]?.textContent?.trim();
     if (cellUserId === userId) {
-        showModalNotification('warning', 'User ID sudah digunakan, gunakan ID lain');
+        showPesan('warning', 'User ID sudah digunakan, gunakan ID lain');
         return;
     }
     }
@@ -455,11 +455,11 @@ function addUser() {
     const callbackName = 'cb_' + Date.now();
     window[callbackName] = function(response) {
         if (response.success) {
-            showModalNotification('success', "Berhasil menyimpan " + response.message);
+            showPesan('success', "Berhasil menyimpan " + response.message);
             bootstrap.Modal.getInstance(document.getElementById("modalUser")).hide();  // Tutup modal
             loadUserTable(); // refresh tabel
         } else {
-            showModalNotification('error','Gagal menyimpan data user');
+            showPesan('error','Gagal menyimpan data user');
         }
         delete window[callbackName];
     };
@@ -496,21 +496,21 @@ function editUser() {
   const aksesCRM      = document.querySelector('input[name="aksesCRM"]:checked')?.value || 'N';
 
   if (!userId || !userName || !userPass) {
-    showModalNotification("warning","Lengkapi data sebelum simpan");
+    showPesan("warning","Lengkapi data sebelum simpan");
     return;
   }
 
   const callbackName = 'cb_' + Date.now();
   window[callbackName] = function(res) {
     if (res.status === "success") {
-       showModalNotification("success", res.message || "Data berhasil diupdate");
+       showPesan("success", res.message || "Data berhasil diupdate");
        bootstrap.Modal.getInstance(document.getElementById("modalUser")).hide();
        loadUserTable();
        // Reset mode ke add
        document.getElementById("modalUser").setAttribute("data-mode", "add"); 
 
     } else {
-       showModalNotification("error", res.message || "Gagal update data");
+       showPesan("error", res.message || "Gagal update data");
     }
     delete window[callbackName];
   };
@@ -532,9 +532,9 @@ function deleteUser(userId) {
 
   const callback = 'cb_' + Date.now();
   window[callback] = function(response) {
-    // showModalNotification(response.message, response.status === 'success' ? 'success' : 'error');
+    // showPesan(response.message, response.status === 'success' ? 'success' : 'error');
     if (response.status === 'success') {
-       showModalNotification('success', "Sukses " + response.message);
+       showPesan('success', "Sukses " + response.message);
        loadUserTable(); // Refresh tabel
     }
     delete window[callback];
@@ -550,7 +550,7 @@ function unlockUser(userId) {
   const callbackName = 'cbUnlock_' + Date.now();
   window[callbackName] = (res) => {
     if (res.status === 'success') {
-      showModalNotification('success', "Sukses " + res.message);
+      showPesan('success', "Sukses " + res.message);
       localStorage.setItem('notifReady_' + userId, 'true');
       const row = document.getElementById(`row_${userId}`);
       if (row) {
@@ -561,7 +561,7 @@ function unlockUser(userId) {
         row.querySelector('.fa-unlock')?.classList.add('disabled');
         row.querySelector('.fa-paper-plane')?.classList.remove('disabled');
       }
-    } else showModalNotification('error', "Reset Login gagal: " + res.message);
+    } else showPesan('error', "Reset Login gagal: " + res.message);
       delete window[callbackName];
   };
   const script = document.createElement('script');
@@ -585,11 +585,11 @@ function sendNotif(userId, userName, userEmail, userHP, userPass) {
     window[callback] = function (response) {
         console.log("Respon kirim:", response);
         if (response.status === 'success') {
-            showModalNotification('success', "Berhasil " + response.message);
+            showPesan('success', "Berhasil " + response.message);
             localStorage.removeItem('notifReady_' + userId);
             loadUserTable(); // reload tampilan icon
         } else {
-            showModalNotification('error', "Gagal " + response.message);
+            showPesan('error', "Gagal " + response.message);
         }
 
         delete window[callback];
@@ -597,7 +597,7 @@ function sendNotif(userId, userName, userEmail, userHP, userPass) {
     };
 
     script.onerror = () => {
-        showModalNotification('error', "Gagal terhubung ke server");
+        showPesan('error', "Gagal terhubung ke server");
         delete window[callback];
         document.body.removeChild(script);
     };
@@ -623,14 +623,14 @@ function updateRowIcons(row, mode) {
 }
 
 // Pesan Notifikasi  
-function showModalNotification(type, message, duration = 3000) {
-  const box  = document.getElementById('modalNotification');
-  const icon = document.getElementById('modalNotifIcon');
-  const text = document.getElementById('modalNotifText');
+function showPesan(type, message, duration = 3000) {
+  const box  = document.getElementById('pesanNotification');
+  const icon = document.getElementById('pesanNotifIcon');
+  const text = document.getElementById('pesanNotifText');
 
   // Reset class
   box.className  = 'notification-message';
-  icon.className = 'modal-notif-icon';
+  icon.className = 'pesan-notif-icon';
 
   if (type === 'error') {
     box.classList.add('notification-error');
