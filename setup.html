@@ -130,9 +130,9 @@ tr:hover .action-icon {
   gap: 8px;
 }
 .modal-notif-icon {font-size: 18px;}
-.notification-success {background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb;}
-.notification-error   {background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;}
-.notification-warning {background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba;}
+.notification-error { background-color: #d9534f; color: white; }
+.notification-success { background-color: #0275d8; color: white; }
+.notification-warning { background-color: #f0ad4e; color: black; }
 
 /* Spinner Untuk tabel user */
 .loading-overlay {
@@ -558,7 +558,6 @@ function deleteUser(userId) {
   script.src = `${URL_APPS_SCRIPT}?action=deleteUser&userId=${encodeURIComponent(userId)}&callback=${callback}`;
   document.body.appendChild(script);
 }
-
 
 function unlockUser(userId) {
   if (!confirm("Anda yakin untuk unlock user ini?")) return;
