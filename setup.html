@@ -238,11 +238,6 @@ tr:hover .action-icon {
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
     </div>
     <div class="modal-body">
-        <div id="modalNotification" class="notification-message">
-            <i id="modalNotifIcon" class="modal-notif-icon"></i>
-            <span id="modalNotifText"></span>
-        </div>
-
         <input type="hidden" id="mode" value="add">
         <div class="mb-2"><label>User ID</label><input type="text" id="userId" class="form-control" required></div>
         <div class="mb-2"><label>Nama User</label><input type="text" id="userName" class="form-control" required></div>
@@ -299,7 +294,10 @@ tr:hover .action-icon {
         </div>
     </div>
     <div class="modal-footer">
-        <!-- <div id="modalNotification" class="notification-message" style="display:none;"></div>-->
+        <!-- Notifikasi Pesan -->
+        <div id="modalNotification" class="notification-message">
+            <i id="modalNotifIcon" class="modal-notif-icon"></i><span id="modalNotifText"></span>
+        </div>
         <button type="submit" class="btn btn-primary" id="saveUserBtn">Simpan</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
     </div>
@@ -652,21 +650,19 @@ function showNotification(type, message, duration = 3000) {
     if (type === 'error') box.classList.add('notification-error');
     else if (type === 'success') box.classList.add('notification-success');
     else if (type === 'warning') box.classList.add('notification-warning');
-
     box.innerText = message;
     box.style.display = 'block';
-
     setTimeout(() => { box.style.display = 'none'; }, duration);
 }
 
-// Pesan Untuk di Form/ Modals Input dan Edit 
+// Pesan Untuk di Form Modals Input dan Edit 
 function showModalNotification(type, message, duration = 3000) {
-  const box = document.getElementById('modalNotification');
+  const box  = document.getElementById('modalNotification');
   const icon = document.getElementById('modalNotifIcon');
   const text = document.getElementById('modalNotifText');
 
   // Reset class
-  box.className = 'notification-message';
+  box.className  = 'notification-message';
   icon.className = 'modal-notif-icon';
 
   if (type === 'error') {
@@ -679,13 +675,9 @@ function showModalNotification(type, message, duration = 3000) {
     box.classList.add('notification-warning');
     icon.classList.add('fas', 'fa-exclamation-circle');
   }
-
   text.textContent = message;
   box.style.display = 'flex';
-
-  setTimeout(() => {
-    box.style.display = 'none';
-  }, duration);
+  setTimeout(() => {box.style.display = 'none';}, duration);
 }
 
 document.getElementById("saveUserBtn").addEventListener("click", (e) => {
