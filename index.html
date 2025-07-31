@@ -423,7 +423,7 @@ document.getElementById('btnLoginSubmit').addEventListener('click', function () 
 
 // Logout clear session dan refresh
 function logout() {
-  // Clear sessionStorage;
+  //sessionStorage.clear();
   
   // Disable semua tombol menu 
   const buttons = ['btnFLC', 'btnEstiH', 'btnWE', 'btnDashWE', 'btnCRM', 'btnSetup'];
@@ -438,12 +438,13 @@ function logout() {
   btnLogin.textContent = 'Login';
   btnLogin.onclick = toggleLogin;
   
-  //const userID    = document.getElementById('userId').value ='';
-  //const userPass  = document.getElementById('userPass').value ='';
-  //const userToken = document.getElementById('userToken').value ='';
-  //const userLevel = document.getElementById('userLevel').value ='';
+  document.getElementById('userId').value ='';
+  document.getElementById('userPass').value ='';
+  document.getElementById('userToken').value ='';
+  document.getElementById('userLevel').value ='';
   // Hide login form if it's open
-  document.getElementById('loginOverlay').reset();
+  //document.getElementById('loginOverlay').reset();
+  //sessionStorage.clear();
   document.getElementById('loginOverlay').style.display = 'none';
 }
 
