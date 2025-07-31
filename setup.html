@@ -317,7 +317,7 @@ function showLoading(show) {
 }
 
 document.addEventListener('DOMContentLoaded', loadUserTable);
-document.getElementById('addUserButton').addEventListener('click', () => {
+  document.getElementById('addUserButton').addEventListener('click', () => {
   document.getElementById('mode').value = 'add';
   document.getElementById('userForm').reset();
   document.getElementById('userId').readOnly = false;
@@ -482,8 +482,7 @@ function addUser() {
 
 // EDIT USER MODAL
 function editUser() {
-  // const userId    = document.getElementById('userId').value.trim();
-  const userId    = document.getElementById('userId').ariaDisabled;
+  const userId    = document.getElementById('userId').value.trim();
   const userName  = document.getElementById('userName').value.trim();
   const userEmail = document.getElementById('userEmail').value.trim();
   const userHP    = document.getElementById('userHP').value.trim();
@@ -553,7 +552,6 @@ function unlockUser(userId) {
   const callbackName = 'cbUnlock_' + Date.now();
   window[callbackName] = (res) => {
     if (res.status === 'success') {
-      // alert(res.message);
       showNotification('success', "✅ Sukses " + res.message);
       localStorage.setItem('notifReady_' + userId, 'true');
       const row = document.getElementById(`row_${userId}`);
@@ -565,7 +563,6 @@ function unlockUser(userId) {
         row.querySelector('.fa-unlock')?.classList.add('disabled');
         row.querySelector('.fa-paper-plane')?.classList.remove('disabled');
       }
-    //} else alert("Reset Login gagal: " + res.message);
     } else showNotification('error', "❌ Reset Login gagal: " + res.message);
       delete window[callbackName];
   };
@@ -669,7 +666,6 @@ document.getElementById("saveUserBtn").addEventListener("click", (e) => {
    const mode = document.getElementById("modalUser").getAttribute("data-mode");
    if (mode === "edit") {
       editUser(); // Panggil fungsi edit
-      text.textContent = message;
    } else {
       addUser(); // Panggil fungsi tambah
    }
