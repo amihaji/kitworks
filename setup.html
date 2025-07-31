@@ -489,7 +489,8 @@ function addUser() {
 
 // EDIT USER MODAL
 function editUser() {
-  const userId    = document.getElementById('userId').value.trim();
+  // const userId    = document.getElementById('userId').value.trim();
+  const userId    = document.getElementById('userId').disabled = true;
   const userName  = document.getElementById('userName').value.trim();
   const userEmail = document.getElementById('userEmail').value.trim();
   const userHP    = document.getElementById('userHP').value.trim();
@@ -669,7 +670,6 @@ document.getElementById("saveUserBtn").addEventListener("click", (e) => {
 function showEditModal(userData) {
   // Isi input dari userData
   document.getElementById("userId").value    = userData.userId;
-  document.getElementById("userId").disabled = true;
   document.getElementById("userName").value  = userData.userName;
   document.getElementById("userEmail").value = userData.userEmail;
   document.getElementById("userHP").value    = userData.userHP;
