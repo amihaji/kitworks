@@ -424,9 +424,17 @@ document.getElementById('btnLoginSubmit').addEventListener('click', function () 
 // Logout clear session dan refresh
 function logout() {
   //sessionStorage.clear();
-  sessionStorage.removeItem('userID');
-  sessionStorage.removeItem('userToken');
-  sessionStorage.removeItem('userLevel');
+  //sessionStorage.removeItem('userID');
+  //sessionStorage.removeItem('userPass');
+  //sessionStorage.removeItem('userToken');
+  //sessionStorage.removeItem('userLevel');
+  sessionStorage.clear('userID');
+  sessionStorage.clear('userPass');
+  sessionStorage.clear('userToken');
+  sessionStorage.clear('userLevel');
+  
+  //const userId = document.getElementById('userId').value.trim();
+  //const userPass = document.getElementById('userPass').value.trim();
   
   // Disable semua tombol menu
   const buttons = ['btnFLC', 'btnEstiH', 'btnWE', 'btnDashWE', 'btnCRM', 'btnSetup'];
