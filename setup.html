@@ -421,6 +421,16 @@ function addUser() {
         return;
     }
 
+    // Cek Agare user ID Tidak duplikasi atau sudah ada di tabel
+    const existingRows = document.querySelectorAll('#userTableBody tr');
+    for (let row of existingRows) {
+    const cellUserId = row.children[0]?.textContent?.trim();
+    if (cellUserId === userId) {
+        showNotification('warning', '❌ User ID sudah digunakan, gunakan ID lain');
+        return;
+    }
+    }
+
     const callbackName = 'cb_' + Date.now();
     window[callbackName] = function(response) {
         if (response.success) {
@@ -486,6 +496,8 @@ function editUser() {
        showNotification("success", res.message || "✅ Data berhasil diupdate");
        bootstrap.Modal.getInstance(document.getElementById("modalUser")).hide();
        loadUserTable();
+       document.getElementById("modalUser").setAttribute("data-mode", "add"); // Reset mode
+
     } else {
        showNotification("error", res.message || "❌ Gagal update data");
     }
