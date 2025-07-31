@@ -114,7 +114,7 @@ tr:hover .action-icon {
   from { opacity: 0; transform: translateY(-5px); }
   to { opacity: 1; transform: translateY(0); }
 }
-/* Notifikasi di Modal */
+/* Pesan Notifikasi */
 #modalNotification {
   display: none;
   padding: 8px 12px;
@@ -193,7 +193,7 @@ tr:hover .action-icon {
     <a href="https://amihaji.github.io/kitworks/index.html" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Close</a>
 </div>
 
-<div id="notificationBox" class="notification-message"></div>
+<div id="modalNotification" class="notification-message"></div>
     <div class="table-box">
         <div class="table-wrapper">
         <table class="table table-hover table-striped table-bordered align-middle text-center">
@@ -297,6 +297,7 @@ tr:hover .action-icon {
         </div>
         <button type="submit" class="btn btn-primary" id="saveUserBtn">Simpan</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        
     </div>
 </form>
 </div>
@@ -621,7 +622,7 @@ function updateRowIcons(row, mode) {
     }
 }
 
-// Pesan Untuk di Form Modals Input dan Edit 
+// Pesan Notifikasi  
 function showModalNotification(type, message, duration = 3000) {
   const box  = document.getElementById('modalNotification');
   const icon = document.getElementById('modalNotifIcon');
