@@ -423,7 +423,7 @@ document.getElementById('btnLoginSubmit').addEventListener('click', function () 
 
 // Logout clear session dan refresh
 function logout() {
-  sessionStorage.clear();
+  //sessionStorage.clear();
   
   // Disable semua tombol menu
   const buttons = ['btnFLC', 'btnEstiH', 'btnWE', 'btnDashWE', 'btnCRM', 'btnSetup'];
@@ -436,6 +436,7 @@ function logout() {
   
   // Reset login button
   const btnLogin = document.getElementById('btnLogin');
+  sessionStorage.clear();
   btnLogin.textContent = 'Login';
   btnLogin.onclick = toggleLogin;
   
