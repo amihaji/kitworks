@@ -438,13 +438,12 @@ function logout() {
   btnLogin.textContent = 'Login';
   btnLogin.onclick = toggleLogin;
   
-  //document.getElementById('userId').value ='';
-  //document.getElementById('userPass').value ='';
-  //document.getElementById('userToken').value ='';
-  //document.getElementById('userLevel').value ='';
+  // Clear session dan refresh
+  document.getElementById('userId').value ='';
+  document.getElementById('userPass').value ='';
+  document.getElementById('userToken').value ='';
+  document.getElementById('userLevel').value ='';
   // Hide login form if it's open
-  //document.getElementById('loginOverlay').reset();
-  sessionStorage.clear();
   document.getElementById('loginOverlay').style.display = 'none';
 }
 
