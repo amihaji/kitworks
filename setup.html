@@ -6,6 +6,7 @@
 <title>Setup User - WE Tools</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
 <style>
 body { 
     background-color: #f8f9fa; 
@@ -101,15 +102,37 @@ tr:hover .action-icon {
 
 /* Notifikasi Message Box */
 .notification-message {
-    padding: 10px 15px;
-    border-radius: 6px;
+    padding: 8px 12px;
+    border-radius: 4px;
     margin-bottom: 15px;
-    font-size: medium;
+    font-size: 12px;
     display: none;
 }
 .notification-error { background-color: #d9534f; color: white; }
 .notification-success { background-color: #0275d8; color: white; }
 .notification-warning { background-color: #f0ad4e; color: black; }
+
+/* Animasi muncul menggeser ke bawah */
+@keyframes slideDownFade {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+/* Notifikasi di Modal */
+#modalNotification {
+  display: none;
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+  animation: slideDownFade 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.modal-notif-icon {font-size: 18px;}
+.notification-success {background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb;}
+.notification-error   {background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;}
+.notification-warning {background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba;}
 
 /* Spinner Untuk tabel user */
 .loading-overlay {
@@ -207,10 +230,16 @@ tr:hover .action-icon {
 </div>
 
 <!-- Modal Add/Edit -->
-<!-- <div class="modal fade" id="userModal" tabindex="-1" aria-hidden="true"> -->
+
 <div class="modal fade" id="modalUser" tabindex="-1" data-mode="add">
 
 <div class="modal-dialog">
+
+<div id="modalNotification" class="notification-message">
+  <i id="modalNotifIcon" class="modal-notif-icon"></i>
+  <span id="modalNotifText"></span>
+</div>
+   
 <form id="userForm" class="modal-content">
     <div class="modal-header" style="background-color:#003366; color:white;">
         <h6 class="modal-title">Tambah User</h6>
@@ -273,6 +302,7 @@ tr:hover .action-icon {
         </div>
     </div>
     <div class="modal-footer">
+        <div id="modalNotification" class="notification-message" style="display:none;"></div>
         <button type="submit" class="btn btn-primary" id="saveUserBtn">Simpan</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
     </div>
@@ -417,7 +447,7 @@ function addUser() {
     const aksesCRM       = document.querySelector('input[name="aksesCRM"]:checked')?.value || 'N';
 
     if (!userId || !userName || !userPass) {
-        showNotification('warning','Harap lengkapi data user (ID, Nama, Password)');
+        showModalNotification('warning','Harap lengkapi data user (ID, Nama, Password)');
         return;
     }
 
@@ -426,7 +456,7 @@ function addUser() {
     for (let row of existingRows) {
     const cellUserId = row.children[0]?.textContent?.trim();
     if (cellUserId === userId) {
-        showNotification('warning', '❌ User ID sudah digunakan, gunakan ID lain');
+        showModalNotification('warning', 'User ID sudah digunakan, gunakan ID lain');
         return;
     }
     }
@@ -434,11 +464,11 @@ function addUser() {
     const callbackName = 'cb_' + Date.now();
     window[callbackName] = function(response) {
         if (response.success) {
-            showNotification('success', "✅ Berhasil menyimpan " + response.message);
+            showModalNotification('success', "Berhasil menyimpan " + response.message);
             bootstrap.Modal.getInstance(document.getElementById("modalUser")).hide();  // Tutup modal
             loadUserTable(); // refresh tabel
         } else {
-            showNotification('error','❌ Gagal menyimpan data user');
+            showModalNotification('error','Gagal menyimpan data user');
         }
         delete window[callbackName];
     };
@@ -486,20 +516,20 @@ function editUser() {
   const aksesCRM      = document.querySelector('input[name="aksesCRM"]:checked')?.value || 'N';
 
   if (!userId || !userName || !userPass) {
-    showNotification("warning","Lengkapi data sebelum simpan");
+    showModalNotification("warning","Lengkapi data sebelum simpan");
     return;
   }
 
   const callbackName = 'cb_' + Date.now();
   window[callbackName] = function(res) {
     if (res.status === "success") {
-       showNotification("success", res.message || "✅ Data berhasil diupdate");
+       showModalNotification("success", res.message || "Data berhasil diupdate");
        bootstrap.Modal.getInstance(document.getElementById("modalUser")).hide();
        loadUserTable();
        document.getElementById("modalUser").setAttribute("data-mode", "add"); // Reset mode
 
     } else {
-       showNotification("error", res.message || "❌ Gagal update data");
+       showModalNotification("error", res.message || "Gagal update data");
     }
     delete window[callbackName];
   };
@@ -618,6 +648,7 @@ function updateRowIcons(row, mode) {
     }
 }
 
+// Pesan Untuk di Form Tabel User
 function showNotification(type, message, duration = 3000) {
     const box = document.getElementById('notificationBox');
     box.className = 'notification-message'; // reset class
@@ -629,6 +660,35 @@ function showNotification(type, message, duration = 3000) {
     box.style.display = 'block';
 
     setTimeout(() => { box.style.display = 'none'; }, duration);
+}
+
+// Pesan Untuk di Form/ Modals Input dan Edit 
+function showModalNotification(type, message, duration = 3000) {
+  const box = document.getElementById('modalNotification');
+  const icon = document.getElementById('modalNotifIcon');
+  const text = document.getElementById('modalNotifText');
+
+  // Reset class
+  box.className = 'notification-message';
+  icon.className = 'modal-notif-icon';
+
+  if (type === 'error') {
+    box.classList.add('notification-error');
+    icon.classList.add('fas', 'fa-times-circle');
+  } else if (type === 'success') {
+    box.classList.add('notification-success');
+    icon.classList.add('fas', 'fa-check-circle');
+  } else if (type === 'warning') {
+    box.classList.add('notification-warning');
+    icon.classList.add('fas', 'fa-exclamation-circle');
+  }
+
+  text.textContent = message;
+  box.style.display = 'flex';
+
+  setTimeout(() => {
+    box.style.display = 'none';
+  }, duration);
 }
 
 document.getElementById("saveUserBtn").addEventListener("click", (e) => {
