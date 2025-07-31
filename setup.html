@@ -230,22 +230,19 @@ tr:hover .action-icon {
 </div>
 
 <!-- Modal Add/Edit -->
-
 <div class="modal fade" id="modalUser" tabindex="-1" data-mode="add">
-
 <div class="modal-dialog">
-
-<div id="modalNotification" class="notification-message">
-  <i id="modalNotifIcon" class="modal-notif-icon"></i>
-  <span id="modalNotifText"></span>
-</div>
-   
 <form id="userForm" class="modal-content">
     <div class="modal-header" style="background-color:#003366; color:white;">
         <h6 class="modal-title">Tambah User</h6>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
     </div>
     <div class="modal-body">
+        <div id="modalNotification" class="notification-message">
+            <i id="modalNotifIcon" class="modal-notif-icon"></i>
+            <span id="modalNotifText"></span>
+        </div>
+
         <input type="hidden" id="mode" value="add">
         <div class="mb-2"><label>User ID</label><input type="text" id="userId" class="form-control" required></div>
         <div class="mb-2"><label>Nama User</label><input type="text" id="userName" class="form-control" required></div>
@@ -302,7 +299,7 @@ tr:hover .action-icon {
         </div>
     </div>
     <div class="modal-footer">
-        <div id="modalNotification" class="notification-message" style="display:none;"></div>
+        <!-- <div id="modalNotification" class="notification-message" style="display:none;"></div>-->
         <button type="submit" class="btn btn-primary" id="saveUserBtn">Simpan</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
     </div>
