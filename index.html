@@ -362,13 +362,13 @@ document.addEventListener('DOMContentLoaded', function () {
   
   // Event listener untuk tombol login
 document.getElementById('btnLoginSubmit').addEventListener('click', function () {
-  const userId = document.getElementById('userId').value.trim();
-  const userPass = document.getElementById('userPass').value.trim();
-  const btnText = document.getElementById('loginBtnText');
+  const userId     = document.getElementById('userId').value.trim();
+  const userPass   = document.getElementById('userPass').value.trim();
+  const btnText    = document.getElementById('loginBtnText');
   const btnSpinner = document.getElementById('loginBtnSpinner');
 
   if (!userId || !userPass) {
-    showNotification('warning', 'User ID dan Password harus diisi!');
+    showNotification('warning', 'WARNING : User ID dan Password harus diisi!');
     return;
   }
 
@@ -406,7 +406,7 @@ document.getElementById('btnLoginSubmit').addEventListener('click', function () 
       document.getElementById('loginOverlay').style.display = 'none';
       updateLoginButton();
     } else {
-      showNotification('error', response.message || 'User ID atau Password salah!');
+      showNotification('error', response.message || 'ERROR : User ID atau Password salah!');
     }
 
     document.body.removeChild(script);
@@ -414,7 +414,7 @@ document.getElementById('btnLoginSubmit').addEventListener('click', function () 
   };
 
   script.onerror = () => {
-    showNotification('error', 'Gagal terhubung ke server!');
+    showNotification('error', 'ERROR : Gagal terhubung ke server!');
     btnText.classList.remove('d-none');
     btnSpinner.classList.add('d-none');
     document.getElementById('loginWaitText').classList.add('d-none');
@@ -474,9 +474,7 @@ function showNotification(type, message, duration = 3000) {
 
   text.textContent  = message;
   box.style.display = 'flex';
-  setTimeout(() => {
-    box.style.display = 'none';
-  }, duration);
+  setTimeout(() => { box.style.display = 'none'; }, duration);
 }
 
 </script>
