@@ -722,7 +722,7 @@ function validateUserForm() {
         return false;
     }
     if (!userNamePattern.test(userName)) {
-        showPesanModal("warning", " WARNING : Nama hanya huruf besar dan panjang 3-20 karakter.");
+        showPesanModal("warning", " WARNING : Nama huruf besar dan 3-20 karakter.");
         return false;
     }
     if (!emailPattern.test(userEmail)) {
@@ -734,7 +734,7 @@ function validateUserForm() {
         return false;
     }
     if (!passwordPattern.test(userPass)) {
-        showPesanModal("warning", " WARNING : Password harus 6-8 karakter dan mengandung huruf, angka, simbol.");
+        showPesanModal("warning", " WARNING : Pass 6-8 karakter kombinasi huruf,angka,simbol.");
         return false;
     }
     return true;
