@@ -658,7 +658,7 @@ document.getElementById("saveUserBtn").addEventListener("click", (e) => {
 
 function showEditModal(userData) {
   // Isi input dari userData
-  document.getElementById('judulModal').title = 'Edit User';
+  document.getElementById('judulModal').text = 'Edit User';
   document.getElementById('userId').disabled = true;
   document.getElementById("userId").value    = userData.userId;
   document.getElementById("userName").value  = userData.userName;
