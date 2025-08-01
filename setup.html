@@ -421,6 +421,8 @@ function loadUserTable() {
 
 function addUser() {
     const userId     = document.getElementById('userId').value.trim();
+    document.getElementById('judulModal').textContent = 'INPUT USER';
+    document.getElementById('userId').disabled = false;
     const userName   = document.getElementById('userName').value.trim();
     const userEmail  = document.getElementById('userEmail').value.trim();
     const userHP     = document.getElementById('userHP').value.trim();
@@ -678,9 +680,6 @@ function showEditModal(userData) {
   // Tampilkan modal & ubah mode
   document.getElementById("modalUser").setAttribute("data-mode", "edit");
   new bootstrap.Modal(document.getElementById("modalUser")).show();
-  
-  document.getElementById('judulModal').textContent = 'INPUT USER';
-  document.getElementById('userId').disabled = false;
 }
 
 </SCRIPT>
