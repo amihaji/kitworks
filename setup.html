@@ -114,11 +114,14 @@ tr:hover .action-icon {
 .notification-warning { background-color: #f0ad4e; color: black; }
 
 /* Animasi muncul menggeser ke bawah untuk pesan di modal */
+/*
 @keyframes slideDownFade {
   from { opacity: 0; transform: translateY(-5px); }
   to { opacity: 1; transform: translateY(0); }
 }
+*/
 /* Pesan Notifikasi */
+/*
 #pesanNotification {
   display: none;
   padding: 8px 12px;
@@ -130,6 +133,7 @@ tr:hover .action-icon {
   align-items: center;
   gap: 8px;
 }
+*/
 
 /* Spinner Untuk tabel user */
 .loading-overlay {
@@ -320,7 +324,6 @@ document.addEventListener('DOMContentLoaded', loadUserTable);
   document.getElementById('addUserButton').addEventListener('click', () => {
   document.getElementById('mode').value = 'add';
   document.getElementById('userForm').reset();
-  // document.getElementById('userId').readOnly = false;
   document.getElementById('userId').disabled = false;
   document.getElementById('judulModal').textContent = 'INPUT USER';
   new bootstrap.Modal(document.getElementById('modalUser')).show();
@@ -445,7 +448,7 @@ function addUser() {
     if (!validateUserForm()) return;
     
     if (!userId || !userName || !userPass) {
-        showPesan('warning','WARNING : Harap lengkapi data user !');
+        showPesanModal('warning','WARNING : Harap lengkapi data user !');
         return;
     }
 
@@ -454,7 +457,7 @@ function addUser() {
     for (let row of existingRows) {
     const cellUserId = row.children[0]?.textContent?.trim();
     if (cellUserId === userId) {
-        showPesan('warning','WARNING : User ID sudah digunakan !');
+        showPesanModal('warning','WARNING : User ID sudah digunakan !');
         return;
     }
     }
@@ -462,11 +465,11 @@ function addUser() {
     const callbackName = 'cb_' + Date.now();
     window[callbackName] = function(response) {
         if (response.success) {
-            showPesan('success', 'SUKSES : Menyimpan ' + response.message);
+            showPesanModal('success', 'SUKSES : Menyimpan ' + response.message);
             bootstrap.Modal.getInstance(document.getElementById("modalUser")).hide();  // Tutup modal
             loadUserTable(); // refresh tabel
         } else {
-            showPesan('error','ERROR : Gagal menyimpan data user');
+            showPesanModal('error','ERROR : Gagal menyimpan data user');
         }
         delete window[callbackName];
     };
@@ -506,21 +509,21 @@ function editUser() {
   if (!validateUserForm()) return;
 
   if (!userId || !userName || !userPass) {
-    showPesan("warning","WARNING : Lengkapi data sebelum simpan !");
+    showPesanModal("warning","WARNING : Lengkapi data sebelum simpan !");
     return;
   }
 
   const callbackName = 'cb_' + Date.now();
   window[callbackName] = function(res) {
     if (res.status === "success") {
-       showPesan("success", res.message || "SUKSES : Data berhasil diupdate");
+       showPesanModal("success", res.message || "SUKSES : Data berhasil diupdate");
        bootstrap.Modal.getInstance(document.getElementById("modalUser")).hide();
        loadUserTable();
        // Reset mode ke add
        document.getElementById("modalUser").setAttribute("data-mode", "add"); 
 
     } else {
-       showPesan("error", res.message || "ERROR : Gagal update data");
+       showPesanModal("error", res.message || "ERROR : Gagal update data");
     }
     delete window[callbackName];
   };
@@ -632,37 +635,55 @@ function updateRowIcons(row, mode) {
     }
 }
 
-// Pesan Notifikasi  
+// Pesan Notifikasi untuk di Form Tabel User
 function showPesan(type, message, duration = 3000) {
-  const boxModal = document.getElementById('pesanNotifMODAL');
   const box      = document.getElementById('pesanNotification');
   const icon     = document.getElementById('pesanNotifIcon');
   const text     = document.getElementById('pesanNotifText');
 
   // Reset class
-  boxModal.className  = 'notification-message';
-  box.className       = 'notification-message';
-  icon.className      = 'pesan-notif-icon';
+  box.className  = 'notification-message';
+  icon.className = 'pesan-notif-icon';
 
   if (type === 'error') {
     box.classList.add('notification-error');
-    boxModal.classList.add('notification-error');
     icon.classList.add('fas', 'fa-times-circle');
   } else if (type === 'success') {
     box.classList.add('notification-success');
-    boxModal.classList.add('notification-success');
     icon.classList.add('fas', 'fa-check-circle');
   } else if (type === 'warning') {
     box.classList.add('notification-warning');
-    boxModal.classList.add('notification-warning');
     icon.classList.add('fas', 'fa-exclamation-circle');
   }
   text.textContent  = message;
   box.style.display = 'flex';
-  boxModal.style.display = 'flex';
-  setTimeout(() => {boxModal.style.display = 'none';}, duration);
   setTimeout(() => {box.style.display = 'none';}, duration);
 }
+
+// Pesan Notifikasi untuk di Form Modal Add dan Edit
+function showPesanModal(type, message, duration = 3000) {
+  const boxModal = document.getElementById('pesanNotifMODAL');
+  const icon     = document.getElementById('pesanNotifIcon');
+  const text     = document.getElementById('pesanNotifText');
+
+  // Reset class
+  boxModal.className  = 'notification-message';
+  icon.className      = 'pesan-notif-icon';
+
+  if (type === 'error') {
+    boxModal.classList.add('notification-error');
+    icon.classList.add('fas', 'fa-times-circle');
+  } else if (type === 'success') {
+    boxModal.classList.add('notification-success');
+    icon.classList.add('fas', 'fa-check-circle');
+  } else if (type === 'warning') {
+    boxModal.classList.add('notification-warning');
+    icon.classList.add('fas', 'fa-exclamation-circle');
+  }
+  text.textContent  = message;
+  boxModal.style.display = 'flex';
+  setTimeout(() => {boxModal.style.display = 'none';}, duration);
+}  
 
 document.getElementById("saveUserBtn").addEventListener("click", (e) => {
    e.preventDefault();
@@ -712,23 +733,23 @@ function validateUserForm() {
     const passwordPattern = /^[a-zA-Z0-9!@#$%^&*()_+=\-{}[\]:;"'<>,.?/\\]{6,8}$/;
 
     if (!userIdPattern.test(userId)) {
-        showPesan("warning", "WARNING : User ID harus 6-8 karakter dan mengandung huruf, angka, simbol.");
+        showPesanModal("warning", "WARNING : User ID harus 6-8 karakter dan mengandung huruf, angka, simbol.");
         return false;
     }
     if (!userNamePattern.test(userName)) {
-        showPesan("warning", "WARNING : Nama hanya huruf besar dan panjang 3-20 karakter.");
+        showPesanModal("warning", "WARNING : Nama hanya huruf besar dan panjang 3-20 karakter.");
         return false;
     }
     if (!emailPattern.test(userEmail)) {
-        showPesan("warning", "WARNING : Format email tidak valid.");
+        showPesanModal("warning", "WARNING : Format email tidak valid.");
         return false;
     }
     if (!hpPattern.test(userHP)) {
-        showPesan("warning", "WARNING : Nomor HP harus 10-14 digit angka.");
+        showPesanModal("warning", "WARNING : Nomor HP harus 10-14 digit angka.");
         return false;
     }
     if (!passwordPattern.test(userPass)) {
-        showPesan("warning", "WARNING : Password harus 6-8 karakter dan mengandung huruf, angka, simbol.");
+        showPesanModal("warning", "WARNING : Password harus 6-8 karakter dan mengandung huruf, angka, simbol.");
         return false;
     }
     return true;
