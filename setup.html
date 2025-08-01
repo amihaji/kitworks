@@ -279,8 +279,8 @@ tr:hover .action-icon {
         </div>
     </div>
     <div class="modal-footer flex-column align-items-start">
-        <div id="pesanNotifMODAL" class="notification-message w-100 mb-2" style="display: none;">
-            <i id="pesanNotifIcon" class="pesan-notif-icon me-2"></i><span id="pesanNotifText"></span>
+        <div id="pesanNotifModalBox" class="notification-message w-100 mb-2" style="display: none;">
+           <i id="pesanNotifModalIcon" class="pesan-notif-icon me-2"></i><span id="pesanNotifModalText"></span>
         </div>
         <div class="w-100 d-flex justify-content-between">
             <button type="submit" class="btn btn-primary" id="saveUserBtn">Simpan</button>
@@ -644,13 +644,13 @@ function showPesan(type, message, duration = 3000) {
 
 // Pesan Notifikasi untuk di Form Modal Add dan Edit
 function showPesanModal(type, message, duration = 3000) {
-  const boxModal  = document.getElementById('pesanNotifMODAL');
-  const iconModal = document.getElementById('pesanNotifIcon');
-  const textModal = document.getElementById('pesanNotifText');
+  const boxModal  = document.getElementById('pesanNotifModalBox');
+  const iconModal = document.getElementById('pesanNotifModalIcon');
+  const textModal = document.getElementById('pesanNotifModalText');
 
   // Reset class
-  boxModal.className  = 'notification-message';
-  iconModal.className = 'pesan-notif-icon';
+  boxModal.className  = 'notification-message w-100 mb-2';
+  iconModal.className = 'pesan-notif-icon me-2';
 
   if (type === 'error') {
     boxModal.classList.add('notification-error');
@@ -662,10 +662,13 @@ function showPesanModal(type, message, duration = 3000) {
     boxModal.classList.add('notification-warning');
     iconModal.classList.add('fas', 'fa-exclamation-circle');
   }
+
   textModal.textContent  = message;
   boxModal.style.display = 'flex';
-  setTimeout(() => {boxModal.style.display = 'none';}, duration);
-}  
+  setTimeout(() => {
+    boxModal.style.display = 'none';
+  }, duration);
+}
 
 document.getElementById("saveUserBtn").addEventListener("click", (e) => {
    e.preventDefault();
