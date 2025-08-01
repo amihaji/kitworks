@@ -130,10 +130,6 @@ tr:hover .action-icon {
   align-items: center;
   gap: 8px;
 }
-.pesan-notif-icon {font-size: 18px;}
-.notification-error { background-color: #d9534f; color: white; }
-.notification-success { background-color: #0275d8; color: white; }
-.notification-warning { background-color: #f0ad4e; color: black; }
 
 /* Spinner Untuk tabel user */
 .loading-overlay {
@@ -239,7 +235,7 @@ tr:hover .action-icon {
 <div class="modal-dialog">
 <form id="userForm" class="modal-content">
     <div class="modal-header" style="background-color:#003366; color:white;">
-        <h6 class="modal-title">Tambah User</h6>
+        <h6 id="JudulModal" class="modal-title">Tambah User</h6>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
     </div>
     <div class="modal-body">
@@ -416,7 +412,7 @@ function loadUserTable() {
     };
 
     script.onerror = function() {
-        showPesan('error', 'Gagal mengambil data user!');
+        showPesan('error','ERROR : Gagal mengambil data user!');
         showLoading(false);
         delete window[callbackName];
     };
@@ -441,7 +437,7 @@ function addUser() {
     const aksesCRM      = document.querySelector('input[name="aksesCRM"]:checked')?.value || 'N';
 
     if (!userId || !userName || !userPass) {
-        showPesan('warning','Harap lengkapi data user (ID, Nama, Password)');
+        showPesan('warning','WARNING : Harap lengkapi data user !');
         return;
     }
 
@@ -450,7 +446,7 @@ function addUser() {
     for (let row of existingRows) {
     const cellUserId = row.children[0]?.textContent?.trim();
     if (cellUserId === userId) {
-        showPesan('warning', 'User ID sudah digunakan, gunakan ID lain');
+        showPesan('warning','WARNING : User ID sudah digunakan !');
         return;
     }
     }
@@ -458,11 +454,11 @@ function addUser() {
     const callbackName = 'cb_' + Date.now();
     window[callbackName] = function(response) {
         if (response.success) {
-            showPesan('success', "Berhasil menyimpan " + response.message);
+            showPesan('success', 'SUKSES : Menyimpan ' + response.message);
             bootstrap.Modal.getInstance(document.getElementById("modalUser")).hide();  // Tutup modal
             loadUserTable(); // refresh tabel
         } else {
-            showPesan('error','Gagal menyimpan data user');
+            showPesan('error','ERROR : Gagal menyimpan data user');
         }
         delete window[callbackName];
     };
@@ -499,21 +495,21 @@ function editUser() {
   const aksesCRM      = document.querySelector('input[name="aksesCRM"]:checked')?.value || 'N';
 
   if (!userId || !userName || !userPass) {
-    showPesan("warning","Lengkapi data sebelum simpan");
+    showPesan("warning","WARNING : Lengkapi data sebelum simpan !");
     return;
   }
 
   const callbackName = 'cb_' + Date.now();
   window[callbackName] = function(res) {
     if (res.status === "success") {
-       showPesan("success", res.message || "Data berhasil diupdate");
+       showPesan("success", res.message || "SUKSES : Data berhasil diupdate");
        bootstrap.Modal.getInstance(document.getElementById("modalUser")).hide();
        loadUserTable();
        // Reset mode ke add
        document.getElementById("modalUser").setAttribute("data-mode", "add"); 
 
     } else {
-       showPesan("error", res.message || "Gagal update data");
+       showPesan("error", res.message || "ERROR : Gagal update data");
     }
     delete window[callbackName];
   };
@@ -537,7 +533,7 @@ function deleteUser(userId) {
   window[callback] = function(response) {
     // showPesan(response.message, response.status === 'success' ? 'success' : 'error');
     if (response.status === 'success') {
-       showPesan('success', "Sukses " + response.message);
+       showPesan('success', "SUKSES : " + response.message);
        loadUserTable(); // Refresh tabel
     }
     delete window[callback];
@@ -553,7 +549,7 @@ function unlockUser(userId) {
   const callbackName = 'cbUnlock_' + Date.now();
   window[callbackName] = (res) => {
     if (res.status === 'success') {
-      showPesan('success', "Sukses " + res.message);
+      showPesan('success', "SUKSES : " + res.message);
       localStorage.setItem('notifReady_' + userId, 'true');
       const row = document.getElementById(`row_${userId}`);
       if (row) {
@@ -564,7 +560,7 @@ function unlockUser(userId) {
         row.querySelector('.fa-unlock')?.classList.add('disabled');
         row.querySelector('.fa-paper-plane')?.classList.remove('disabled');
       }
-    } else showPesan('error', "Reset Login gagal: " + res.message);
+    } else showPesan('error', "ERROR : Reset Login gagal " + res.message);
       delete window[callbackName];
   };
   const script = document.createElement('script');
@@ -588,11 +584,11 @@ function sendNotif(userId, userName, userEmail, userHP, userPass) {
     window[callback] = function (response) {
         console.log("Respon kirim:", response);
         if (response.status === 'success') {
-            showPesan('success', "Berhasil " + response.message);
+            showPesan('success', "SUKSES : " + response.message);
             localStorage.removeItem('notifReady_' + userId);
             loadUserTable(); // reload tampilan icon
         } else {
-            showPesan('error', "Gagal " + response.message);
+            showPesan('error', "ERROR : " + response.message);
         }
 
         delete window[callback];
@@ -600,7 +596,7 @@ function sendNotif(userId, userName, userEmail, userHP, userPass) {
     };
 
     script.onerror = () => {
-        showPesan('error', "Gagal terhubung ke server");
+        showPesan('error', "ERROR : Gagal terhubung ke server");
         delete window[callback];
         document.body.removeChild(script);
     };
@@ -662,6 +658,7 @@ document.getElementById("saveUserBtn").addEventListener("click", (e) => {
 
 function showEditModal(userData) {
   // Isi input dari userData
+  document.getElementById('judulModal').title = 'Edit User';
   document.getElementById('userId').disabled = true;
   document.getElementById("userId").value    = userData.userId;
   document.getElementById("userName").value  = userData.userName;
