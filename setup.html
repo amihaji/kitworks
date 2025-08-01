@@ -304,7 +304,7 @@ tr:hover .action-icon {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <SCRIPT>
 // ********* Deklarasi  Public **********
-const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbztnAT9SLVsyP9Jk7QYaxrhfRBIlpwjpGQPrDFzReIPnqBjJntSCMuRUtRC_qNlS4cRhQ/exec';
+const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbyOaw8K7eUqqV3_x0aV1MEdjJGyJ6VTN-u85jx2RRkYv10sOsL6x62PKSilf1EMM_mv4A/exec';
 // **************************************
 
 // Tampilkan Loading Overlay
@@ -424,6 +424,7 @@ function loadUserTable() {
 function addUser() {
     const userId     = document.getElementById('userId').value.trim();
     const userName   = document.getElementById('userName').value.trim();
+    document.getElementById('userName').value = userName.toUpperCase();
     const userEmail  = document.getElementById('userEmail').value.trim();
     const userHP     = document.getElementById('userHP').value.trim();
     const userPass   = document.getElementById('userPass').value.trim();
@@ -438,6 +439,8 @@ function addUser() {
     const aksesFollowup = document.querySelector('input[name="aksesFollowup"]:checked')?.value || 'N';
     const aksesCRM      = document.querySelector('input[name="aksesCRM"]:checked')?.value || 'N';
 
+    if (!validateUserForm()) return;
+    
     if (!userId || !userName || !userPass) {
         showPesan('warning','WARNING : Harap lengkapi data user !');
         return;
@@ -483,6 +486,7 @@ function addUser() {
 function editUser() {
   const userId    = document.getElementById('userId').value.trim();
   const userName  = document.getElementById('userName').value.trim();
+  document.getElementById('userName').value = userName.toUpperCase();
   const userEmail = document.getElementById('userEmail').value.trim();
   const userHP    = document.getElementById('userHP').value.trim();
   const userPass  = document.getElementById('userPass').value.trim();
@@ -495,6 +499,8 @@ function editUser() {
   const aksesWE       = document.querySelector('input[name="aksesWE"]:checked')?.value || 'N';
   const aksesFollowup = document.querySelector('input[name="aksesFollowup"]:checked')?.value || 'N';
   const aksesCRM      = document.querySelector('input[name="aksesCRM"]:checked')?.value || 'N';
+  
+  if (!validateUserForm()) return;
 
   if (!userId || !userName || !userPass) {
     showPesan("warning","WARNING : Lengkapi data sebelum simpan !");
@@ -682,6 +688,41 @@ function showEditModal(userData) {
   new bootstrap.Modal(document.getElementById("modalUser")).show();
 }
 
+function validateUserForm() {
+    const userId    = document.getElementById('userId').value.trim();
+    const userName  = document.getElementById('userName').value.trim();
+    const userEmail = document.getElementById('userEmail').value.trim();
+    const userHP    = document.getElementById('userHP').value.trim();
+    const userPass  = document.getElementById('userPass').value.trim();
+
+    const userIdPattern   = /^[a-zA-Z0-9!@#$%^&*()_+=\-{}[\]:;"'<>,.?/\\]{6,8}$/;
+    const userNamePattern = /^[A-Z\s]{3,20}$/;
+    const emailPattern    = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const hpPattern       = /^[0-9]{10,14}$/;
+    const passwordPattern = /^[a-zA-Z0-9!@#$%^&*()_+=\-{}[\]:;"'<>,.?/\\]{6,8}$/;
+
+    if (!userIdPattern.test(userId)) {
+        showPesan("warning", "WARNING : User ID harus 6-8 karakter dan mengandung huruf, angka, simbol.");
+        return false;
+    }
+    if (!userNamePattern.test(userName)) {
+        showPesan("warning", "WARNING : Nama hanya huruf besar dan panjang 3-20 karakter.");
+        return false;
+    }
+    if (!emailPattern.test(userEmail)) {
+        showPesan("warning", "WARNING : Format email tidak valid.");
+        return false;
+    }
+    if (!hpPattern.test(userHP)) {
+        showPesan("warning", "WARNING : Nomor HP harus 10-14 digit angka.");
+        return false;
+    }
+    if (!passwordPattern.test(userPass)) {
+        showPesan("warning", "WARNING : Password harus 6-8 karakter dan mengandung huruf, angka, simbol.");
+        return false;
+    }
+    return true;
+}
 </SCRIPT>
 </body>
 </html>
