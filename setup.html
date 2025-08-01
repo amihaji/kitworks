@@ -108,34 +108,11 @@ tr:hover .action-icon {
     font-size: 14px;
     display: none;
     align-items: center;
-    gap: 8px;
 }
 .pesan-notif-icon {font-size: 18px;}
 .notification-error { background-color: #d9534f; color: white; }
 .notification-success { background-color: #0275d8; color: white; }
 .notification-warning { background-color: #f0ad4e; color: black; }
-
-/* Animasi muncul menggeser ke bawah untuk pesan di modal */
-/*
-@keyframes slideDownFade {
-  from { opacity: 0; transform: translateY(-5px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-*/
-/* Pesan Notifikasi */
-/*
-#pesanNotification {
-  display: none;
-  padding: 8px 12px;
-  font-size: 14px;
-  border-radius: 4px;
-  margin-bottom: 12px;
-  animation: slideDownFade 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-*/
 
 /* Spinner Untuk tabel user */
 .loading-overlay {
@@ -728,14 +705,14 @@ function validateUserForm() {
     const userHP    = document.getElementById('userHP').value.trim();
     const userPass  = document.getElementById('userPass').value.trim();
 
-    const userIdPattern   = /^[a-zA-Z0-9!@#$%^&*()_+=\-{}[\]:;"'<>,.?/\\]{6,8}$/;
+    const userIdPattern   = /^.{6,8}$/;
     const userNamePattern = /^[A-Z\s]{3,20}$/;
     const emailPattern    = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const hpPattern       = /^[0-9]{10,14}$/;
     const passwordPattern = /^[a-zA-Z0-9!@#$%^&*()_+=\-{}[\]:;"'<>,.?/\\]{6,8}$/;
 
     if (!userIdPattern.test(userId)) {
-        showPesanModal("warning", " WARNING : User ID harus 6-8 karakter dan mengandung huruf, angka, simbol.");
+        showPesanModal("warning", " WARNING : User ID harus 6-8 karakter.");
         return false;
     }
     if (!userNamePattern.test(userName)) {
