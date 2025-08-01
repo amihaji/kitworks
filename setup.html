@@ -660,7 +660,8 @@ document.getElementById("saveUserBtn").addEventListener("click", (e) => {
 function showEditModal(userData) {
   // Isi input dari userData
   document.getElementById('judulModal').textContent = 'EDIT USER';
-  document.getElementById('userId').readOnly = true;
+  //document.getElementById('userId').readOnly = true;
+  document.getElementById('userId').disabled = true;
   document.getElementById("userId").value    = userData.userId;
   document.getElementById("userName").value  = userData.userName;
   document.getElementById("userEmail").value = userData.userEmail;
