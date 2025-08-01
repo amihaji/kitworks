@@ -318,7 +318,7 @@ document.addEventListener('DOMContentLoaded', loadUserTable);
   document.getElementById('mode').value = 'add';
   document.getElementById('userForm').reset();
   // document.getElementById('userId').readOnly = false;
-  document.getElementById('userId').disabled = true;
+  document.getElementById('userId').disabled = false;
   document.getElementById('judulModal').textContent = 'INPUT USER';
   new bootstrap.Modal(document.getElementById('modalUser')).show();
 });
