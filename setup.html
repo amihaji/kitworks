@@ -420,6 +420,7 @@ function loadUserTable() {
 }
 
 function addUser() {
+    document.getElementById('userId').disabled = false;
     const userId     = document.getElementById('userId').value.trim();
     const userName   = document.getElementById('userName').value.trim();
     const userEmail  = document.getElementById('userEmail').value.trim();
@@ -658,7 +659,7 @@ document.getElementById("saveUserBtn").addEventListener("click", (e) => {
 
 function showEditModal(userData) {
   // Isi input dari userData
-  document.getElementById('judulModal').text = 'Edit User';
+  document.getElementById('judulModal').textContent = 'Edit User';
   document.getElementById('userId').disabled = true;
   document.getElementById("userId").value    = userData.userId;
   document.getElementById("userName").value  = userData.userName;
