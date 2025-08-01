@@ -420,7 +420,6 @@ function loadUserTable() {
 }
 
 function addUser() {
-    document.getElementById('userId').disabled = false;
     const userId     = document.getElementById('userId').value.trim();
     const userName   = document.getElementById('userName').value.trim();
     const userEmail  = document.getElementById('userEmail').value.trim();
@@ -651,16 +650,18 @@ document.getElementById("saveUserBtn").addEventListener("click", (e) => {
    e.preventDefault();
    const mode = document.getElementById("modalUser").getAttribute("data-mode");
    if (mode === "edit") {
-      editUser(); // Panggil fungsi edit
+     document.getElementById('judulModal').textContent = 'EDIT USER';
+     document.getElementById('userId').disabled = true;
+     editUser(); // Panggil fungsi edit
    } else {
-      addUser(); // Panggil fungsi tambah
+     document.getElementById('judulModal').textContent = 'INPUT USER';
+     document.getElementById('userId').disabled = false;
+     addUser(); // Panggil fungsi tambah
    }
 });
 
 function showEditModal(userData) {
   // Isi input dari userData
-  document.getElementById('judulModal').textContent = 'Edit User';
-  document.getElementById('userId').disabled = true;
   document.getElementById("userId").value    = userData.userId;
   document.getElementById("userName").value  = userData.userName;
   document.getElementById("userEmail").value = userData.userEmail;
