@@ -209,7 +209,9 @@ body {
                 <input type="password" class="form-control" id="userPass" name="userPass" required minlength="6" maxlength="8">
               </div>
             </div>
-            <div id="notificationBox" class="notification-message"></div>
+            <div id="notificationBox" class="notification-message w-100 mb-2" style="display: none;">
+              <i id="pesanNotifIcon" class="pesan-notif-icon me-2"></i><span id="pesanNotifText"></span>
+            </div>
             <div class="d-grid">
               <button id="btnLoginSubmit" class="btn btn-primary w-100">
                 <span id="loginBtnText"><i class="fas fa-sign-in-alt"></i> Login</span>
@@ -460,6 +462,35 @@ function showNotification(type, message, duration = 2000) {
     box.style.display = 'block';
 
     setTimeout(() => { box.style.display = 'none'; }, duration);
+}
+
+
+// Pesan Notifikasi untuk di Form Modal Add dan Edit
+function showNotification(type, message, duration = 3000) {
+  const box  = document.getElementById('notificationBox');
+  const icon = document.getElementById('pesanNotifIcon');
+  const text = document.getElementById('pesanNotifText');
+
+  // Reset class
+  box.className  = 'notification-message w-100 mb-2';
+  icon.className = 'pesan-notif-icon me-2';
+
+  if (type === 'error') {
+    box.classList.add('notification-error');
+    icon.classList.add('fas', 'fa-times-circle');
+  } else if (type === 'success') {
+    box.classList.add('notification-success');
+    icon.classList.add('fas', 'fa-check-circle');
+  } else if (type === 'warning') {
+    boxM.classList.add('notification-warning');
+    icon.classList.add('fas', 'fa-exclamation-circle');
+  }
+
+  text.textContent  = message;
+  box.style.display = 'flex';
+  setTimeout(() => {
+    box.style.display = 'none';
+  }, duration);
 }
 
 </script>
