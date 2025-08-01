@@ -317,7 +317,8 @@ document.addEventListener('DOMContentLoaded', loadUserTable);
   document.getElementById('addUserButton').addEventListener('click', () => {
   document.getElementById('mode').value = 'add';
   document.getElementById('userForm').reset();
-  document.getElementById('userId').readOnly = false;
+  // document.getElementById('userId').readOnly = false;
+  document.getElementById('userId').disabled = true;
   document.getElementById('judulModal').textContent = 'INPUT USER';
   new bootstrap.Modal(document.getElementById('modalUser')).show();
 });
@@ -660,7 +661,6 @@ document.getElementById("saveUserBtn").addEventListener("click", (e) => {
 function showEditModal(userData) {
   // Isi input dari userData
   document.getElementById('judulModal').textContent = 'EDIT USER';
-  //document.getElementById('userId').readOnly = true;
   document.getElementById('userId').disabled = true;
   document.getElementById("userId").value    = userData.userId;
   document.getElementById("userName").value  = userData.userName;
