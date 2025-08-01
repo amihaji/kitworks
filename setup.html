@@ -294,6 +294,9 @@ tr:hover .action-icon {
             </div>
         </div>
     </div>
+    <div id="pesanNotifMODAL" class="notification-message">
+       <i id="pesanNotifIcon" class="pesan-notif-icon"></i><span id="pesanNotifText"></span>
+    </div>
     <div class="modal-footer">
         <button type="submit" class="btn btn-primary" id="saveUserBtn">Simpan</button>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -631,26 +634,33 @@ function updateRowIcons(row, mode) {
 
 // Pesan Notifikasi  
 function showPesan(type, message, duration = 3000) {
-  const box  = document.getElementById('pesanNotification');
-  const icon = document.getElementById('pesanNotifIcon');
-  const text = document.getElementById('pesanNotifText');
+  const boxModal = document.getElementById('pesanNotifMODAL');
+  const box      = document.getElementById('pesanNotification');
+  const icon     = document.getElementById('pesanNotifIcon');
+  const text     = document.getElementById('pesanNotifText');
 
   // Reset class
-  box.className  = 'notification-message';
-  icon.className = 'pesan-notif-icon';
+  boxModal.className  = 'notification-message';
+  box.className       = 'notification-message';
+  icon.className      = 'pesan-notif-icon';
 
   if (type === 'error') {
     box.classList.add('notification-error');
+    boxModal.classList.add('notification-error');
     icon.classList.add('fas', 'fa-times-circle');
   } else if (type === 'success') {
     box.classList.add('notification-success');
+    boxModal.classList.add('notification-success');
     icon.classList.add('fas', 'fa-check-circle');
   } else if (type === 'warning') {
     box.classList.add('notification-warning');
+    boxModal.classList.add('notification-warning');
     icon.classList.add('fas', 'fa-exclamation-circle');
   }
   text.textContent  = message;
   box.style.display = 'flex';
+  boxModal.style.display = 'flex';
+  setTimeout(() => {boxModal.style.display = 'none';}, duration);
   setTimeout(() => {box.style.display = 'none';}, duration);
 }
 
