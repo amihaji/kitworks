@@ -664,25 +664,25 @@ function showPesan(type, message, duration = 3000) {
 
 // Pesan Notifikasi untuk di Form Modal Add dan Edit
 function showPesanModal(type, message, duration = 3000) {
-  const boxModal = document.getElementById('pesanNotifMODAL');
-  const icon     = document.getElementById('pesanNotifIcon');
-  const text     = document.getElementById('pesanNotifText');
+  const boxModal  = document.getElementById('pesanNotifMODAL');
+  const iconModal = document.getElementById('pesanNotifIcon');
+  const textModal = document.getElementById('pesanNotifText');
 
   // Reset class
   boxModal.className  = 'notification-message';
-  icon.className      = 'pesan-notif-icon';
+  iconModal.className = 'pesan-notif-icon';
 
   if (type === 'error') {
     boxModal.classList.add('notification-error');
-    icon.classList.add('fas', 'fa-times-circle');
+    iconModal.classList.add('fas', 'fa-times-circle');
   } else if (type === 'success') {
     boxModal.classList.add('notification-success');
-    icon.classList.add('fas', 'fa-check-circle');
+    iconModal.classList.add('fas', 'fa-check-circle');
   } else if (type === 'warning') {
     boxModal.classList.add('notification-warning');
-    icon.classList.add('fas', 'fa-exclamation-circle');
+    iconModal.classList.add('fas', 'fa-exclamation-circle');
   }
-  text.textContent  = message;
+  textModal.textContent  = message;
   boxModal.style.display = 'flex';
   setTimeout(() => {boxModal.style.display = 'none';}, duration);
 }  
