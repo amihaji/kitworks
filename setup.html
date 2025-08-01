@@ -489,8 +489,8 @@ function addUser() {
 
 // EDIT USER MODAL
 function editUser() {
-  // const userId    = document.getElementById('userId').value.trim();
-  const userId    = document.getElementById('userId').disabled = true;
+  document.getElementById('userId').disabled = true;
+  const userId    = document.getElementById('userId').value.trim();
   const userName  = document.getElementById('userName').value.trim();
   const userEmail = document.getElementById('userEmail').value.trim();
   const userHP    = document.getElementById('userHP').value.trim();
