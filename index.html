@@ -451,20 +451,6 @@ function logout() {
   document.getElementById('loginOverlay').style.display = 'none';
 }
 
-function showNotification(type, message, duration = 2000) {
-    const box = document.getElementById('notificationBox');
-    box.className = 'notification-message'; // reset class
-    if (type === 'error') box.classList.add('notification-error');
-    else if (type === 'success') box.classList.add('notification-success');
-    else if (type === 'warning') box.classList.add('notification-warning');
-
-    box.innerText = message;
-    box.style.display = 'block';
-
-    setTimeout(() => { box.style.display = 'none'; }, duration);
-}
-
-
 // Pesan Notifikasi untuk di Form Modal Add dan Edit
 function showNotification(type, message, duration = 3000) {
   const box  = document.getElementById('notificationBox');
