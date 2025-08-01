@@ -108,6 +108,7 @@ tr:hover .action-icon {
     font-size: 14px;
     display: none;
     align-items: center;
+    gap: 8px; /* agar icon dan teks tidak dempet */
 }
 .pesan-notif-icon {font-size: 18px;}
 .notification-error { background-color: #d9534f; color: white; }
@@ -277,12 +278,14 @@ tr:hover .action-icon {
             </div>
         </div>
     </div>
-    <div id="pesanNotifMODAL" class="notification-message">
-       <i id="pesanNotifIcon" class="pesan-notif-icon"></i><span id="pesanNotifText"></span>
-    </div>
-    <div class="modal-footer">
-        <button type="submit" class="btn btn-primary" id="saveUserBtn">Simpan</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+    <div class="modal-footer flex-column align-items-start">
+        <div id="pesanNotifMODAL" class="notification-message w-100 mb-2" style="display: none;">
+            <i id="pesanNotifIcon" class="pesan-notif-icon me-2"></i><span id="pesanNotifText"></span>
+        </div>
+        <div class="w-100 d-flex justify-content-between">
+            <button type="submit" class="btn btn-primary" id="saveUserBtn">Simpan</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        </div>
     </div>
 </form>
 </div>
