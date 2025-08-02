@@ -411,8 +411,8 @@ function loadUserTable() {
 
 function addUser() {
     const userId     = document.getElementById('userId').value.trim();
-    const userName   = document.getElementById('userName').value.trim();
-    document.getElementById('userName').value = userName.toUpperCase();
+    const userName   = document.getElementById('userName').value.toUpperCase().trim();
+    //document.getElementById('userName').value = userName.toUpperCase();
     const userEmail  = document.getElementById('userEmail').value.trim();
     const userHP     = document.getElementById('userHP').value.trim();
     const userPass   = document.getElementById('userPass').value.trim();
