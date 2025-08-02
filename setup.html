@@ -347,6 +347,12 @@ document.addEventListener('DOMContentLoaded', loadUserTable);
   new bootstrap.Modal(document.getElementById('modalUser')).show();
 });
 
+document.getElementById('logUserButton').addEventListener('click', function() {
+  document.querySelector('.container').style.display = 'none';
+  document.getElementById('logNotifForm').style.display = 'block';
+  loadLogNotifTable();
+});
+
 // LOAD DATA USER
 function loadUserTable() {
     showLoading(true);  
@@ -444,6 +450,54 @@ function loadUserTable() {
     };
     document.body.appendChild(script);
 }
+
+function kembaliKeSetupUser() {
+  document.getElementById('logNotifForm').style.display = 'none';
+  document.querySelector('.container').style.display = 'block';
+}
+
+function loadLogNotifTable() {
+  const callbackName = 'cb_' + Date.now();
+  const script = document.createElement('script');
+  script.src = `${URL_APPS_SCRIPT}?action=getLogNotif&callback=${callbackName}`;
+
+  window[callbackName] = function(data) {
+    const tbody = document.getElementById('logNotifTableBody');
+    tbody.innerHTML = '';
+
+    if (!data || data.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7">Tidak ada log notifikasi.</td></tr>';
+      return;
+    }
+
+    data.forEach(row => {
+      const [waktu, userId, nama, email, hp, pass, status] = row;
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${waktu}</td>
+        <td>${userId}</td>
+        <td>${nama}</td>
+        <td>${email}</td>
+        <td>${hp}</td>
+        <td>${pass}</td>
+        <td>${status}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    delete window[callbackName];
+    document.body.removeChild(script);
+  };
+
+  script.onerror = function() {
+    showPesan('error', ' ERROR : Gagal mengambil data log notifikasi!');
+    delete window[callbackName];
+    document.body.removeChild(script);
+  };
+
+  document.body.appendChild(script);
+}
+
 
 function addUser() {
     const userId     = document.getElementById('userId').value.trim();
@@ -776,47 +830,6 @@ function validateUserForm() {
     return true;
 }
 
-function loadLogNotifTable() {
-  const callbackName = 'cb_' + Date.now();
-  const script = document.createElement('script');
-  script.src = `${URL_APPS_SCRIPT}?action=getLogNotif&callback=${callbackName}`;
-
-  window[callbackName] = function(data) {
-    const tbody = document.getElementById('logNotifTableBody');
-    tbody.innerHTML = '';
-
-    if (!data || data.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="7">Tidak ada log notifikasi.</td></tr>';
-      return;
-    }
-
-    data.forEach(row => {
-      const [waktu, userId, nama, email, hp, pass, status] = row;
-      const tr = document.createElement('tr');
-      tr.innerHTML = `
-        <td>${waktu}</td>
-        <td>${userId}</td>
-        <td>${nama}</td>
-        <td>${email}</td>
-        <td>${hp}</td>
-        <td>${pass}</td>
-        <td>${status}</td>
-      `;
-      tbody.appendChild(tr);
-    });
-
-    delete window[callbackName];
-    document.body.removeChild(script);
-  };
-
-  script.onerror = function() {
-    showPesan('error', ' ERROR : Gagal mengambil data log notifikasi!');
-    delete window[callbackName];
-    document.body.removeChild(script);
-  };
-
-  document.body.appendChild(script);
-}
 
 </SCRIPT>
 </body>
