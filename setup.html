@@ -288,13 +288,48 @@ tr:hover .action-icon {
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
         </div>
     </div>
+
+    <!-- Log Notifikasi -->
+    <div id="logNotifForm" class="container" style="display:none">
+    <div class="title-box mb-3">
+        <i class="fas fa-list-alt fa-lg"></i>
+        <h6 class="mb-0">Log Notifikasi</h6>
+    </div>
+
+    <div class="table-box">
+        <div class="table-wrapper">
+        <table class="table table-hover table-striped table-bordered align-middle text-center">
+            <thead class="sticky-header">
+            <tr>
+                <th style="width:14%">Waktu</th>
+                <th style="width:12%">User ID</th>
+                <th style="width:15%">Nama</th>
+                <th style="width:17%">Email</th>
+                <th style="width:12%">No HP</th>
+                <th style="width:10%">Pass</th>
+                <th style="width:20%">Status</th>
+            </tr>
+            </thead>
+            <tbody id="logNotifTableBody" style="font-size: small;">
+            <tr><td colspan="7">Memuat data log notifikasi...</td></tr>
+            </tbody>
+        </table>
+        </div>
+    </div>
+
+    <div class="button-box d-flex btn-group-vertical-responsive">
+        <button class="btn btn-danger" onclick="deleteAllLogNotif()"><i class="fas fa-trash"></i> Delete All</button>
+        <button class="btn btn-secondary" onclick="kembaliKeSetupUser()"><i class="fas fa-arrow-left"></i> Close</button>
+    </div>
+    </div>
+
 </form>
 </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <SCRIPT>
 // ********* Deklarasi  Public **********
-const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbyOaw8K7eUqqV3_x0aV1MEdjJGyJ6VTN-u85jx2RRkYv10sOsL6x62PKSilf1EMM_mv4A/exec';
+const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbxC1NLRlevA9QjpOr_84XykD1WZhT2DRoQoVXGNZG0sY1Ezj2M-0wHOr8gDBK8eHr84GA/exec';
 // **************************************
 
 // Tampilkan Loading Overlay
@@ -740,6 +775,49 @@ function validateUserForm() {
     }
     return true;
 }
+
+function loadLogNotifTable() {
+  const callbackName = 'cb_' + Date.now();
+  const script = document.createElement('script');
+  script.src = `${URL_APPS_SCRIPT}?action=getLogNotif&callback=${callbackName}`;
+
+  window[callbackName] = function(data) {
+    const tbody = document.getElementById('logNotifTableBody');
+    tbody.innerHTML = '';
+
+    if (!data || data.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7">Tidak ada log notifikasi.</td></tr>';
+      return;
+    }
+
+    data.forEach(row => {
+      const [waktu, userId, nama, email, hp, pass, status] = row;
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${waktu}</td>
+        <td>${userId}</td>
+        <td>${nama}</td>
+        <td>${email}</td>
+        <td>${hp}</td>
+        <td>${pass}</td>
+        <td>${status}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    delete window[callbackName];
+    document.body.removeChild(script);
+  };
+
+  script.onerror = function() {
+    showPesan('error', ' ERROR : Gagal mengambil data log notifikasi!');
+    delete window[callbackName];
+    document.body.removeChild(script);
+  };
+
+  document.body.appendChild(script);
+}
+
 </SCRIPT>
 </body>
 </html>
