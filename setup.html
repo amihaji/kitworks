@@ -157,7 +157,7 @@ tr:hover .action-icon {
     .btn-group-vertical-responsive {
        flex-direction: column !important;
        align-items: stretch !important;
-       gap: 10px; /* jarak antar tombol */
+       gap: 2px; /* jarak antar tombol */
     }
 
     .btn-group-vertical-responsive button,
@@ -179,10 +179,10 @@ tr:hover .action-icon {
 </div>
 
 <!-- <div class="button-box d-flex btn-group-vertical-responsive"> -->
-<div class="button-box d-flex justify-content-between align-items-center btn-group-vertical-responsive">
+<div class="button-box d-flex justify-content-between align-items-center btn-group-vertical-responsive mb-2">
     <div>
-       <button class="btn btn-primary mb-2" id="addUserButton"><i class="fas fa-plus"></i> Add User</button>
-       <button class="btn btn-primary mb-2" onclick="showLogNotifForm()"><i class="fas fa-list"></i> Log Notif</button>
+       <button class="btn btn-primary" id="addUserButton"><i class="fas fa-plus"></i> Add User</button>
+       <button class="btn btn-primary" onclick="showLogNotifForm()"><i class="fas fa-list"></i> Log Notif</button>
     </div>
     <div>
        <a href="https://amihaji.github.io/kitworks/index.html" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Close</a>
@@ -311,23 +311,24 @@ tr:hover .action-icon {
 
     <!-- BARIS TOMBOL FILTER & AKSI -->
     <!-- <div class="d-flex justify-content-between align-items-start flex-wrap btn-group-vertical-responsive mb-2">-->
-    <div class="button-box d-flex justify-content-between align-items-center btn-group-vertical-responsive">    
+    <div class="button-box d-flex justify-content-between align-items-center btn-group-vertical-responsive mb-2">    
         <div class="dropdown">
             <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-            <i class="fas fa-filter"></i> Filter
+                <i class="fas fa-filter"></i> Filter
             </button>
             <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#" onclick="filterLogNotif('SUKSES')">Sukses</a></li>
-            <li><a class="dropdown-item" href="#" onclick="filterLogNotif('LOCKED')">Locked</a></li>
-            <li><a class="dropdown-item" href="#" onclick="filterLogNotif('ALL')">Semua</a></li>
+                <li><a class="dropdown-item" href="#" onclick="filterLogNotif('SUKSES')">Sukses</a></li>
+                <li><a class="dropdown-item" href="#" onclick="filterLogNotif('LOCKED')">Locked</a></li>
+                <li><a class="dropdown-item" href="#" onclick="filterLogNotif('ALL')">Semua</a></li>
             </ul>
         </div>
-        <div class="d-flex gap-2">
+        <!-- <div class="d-flex gap-2"> -->
+        <div>    
             <button class="btn btn-danger" onclick="deleteAllLogNotif()">
-            <i class="fas fa-trash"></i> Delete All
+                <i class="fas fa-trash"></i> Delete All
             </button>
             <button class="btn btn-secondary" onclick="kembaliKeSetupUser()">
-            <i class="fas fa-arrow-left"></i> Close
+                <i class="fas fa-arrow-left"></i> Close
             </button>
         </div>
     </div>
