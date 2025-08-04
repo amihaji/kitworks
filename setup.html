@@ -347,7 +347,7 @@ tr:hover .action-icon {
         <i id="pesanNotifIcon" class="pesan-notif-icon"></i><span id="pesanNotifText"></span>
     </div>
     
-    <!-- Tabel Log Totifikasi -->
+    <!-- Tabel Log Notifikasi -->
     <div class="table-box">
         <div class="table-wrapper">
             <table class="table table-hover table-striped table-bordered align-middle text-center">
@@ -551,7 +551,7 @@ function loadLogNotifTable() {
 }
 
 // Sembunyikan tombol Setup User saat tampil Log Notif
-function showLogNotifForm() {
+function BACKUP_showLogNotifForm() {
   // Sembunyikan elemen-elemen Setup User
   document.getElementById('logNotifForm').style.display = 'block';
   document.querySelector('.title-box').style.display    = 'none';
@@ -567,6 +567,13 @@ function showLogNotifForm() {
   if (logUserBtn) logUserBtn.style.display = 'none';
 
   loadLogNotifTable();
+}
+
+function showLogNotifForm() {
+  // Sembunyikan elemen-elemen Setup User
+  document.querySelector('.container').style.display    = 'none';  // Sembunyikan semua form Setup User
+  document.getElementById('logNotifForm').style.display = 'block'; // Tampilkan form Log Notifikasi
+  loadLogNotifTable(); // Load datanya
 }
 
 function addUser() {
