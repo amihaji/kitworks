@@ -176,7 +176,7 @@ tr:hover .action-icon {
 <div class="button-box d-flex justify-content-between align-items-center btn-group-vertical-responsive">
     <div>
        <button class="btn btn-primary" id="addUserButton"><i class="fas fa-plus"></i> Add User</button>
-       <button class="btn btn-info text-white" onclick="showLogNotifForm()"><i class="fas fa-list"></i> Log Notif</button>
+       <button class="btn btn-primary" onclick="showLogNotifForm()"><i class="fas fa-list"></i> Log Notif</button>
     </div>
     <div>
        <a href="https://amihaji.github.io/kitworks/index.html" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Close</a>
@@ -302,11 +302,12 @@ tr:hover .action-icon {
         <i class="fas fa-list-alt fa-lg"></i>
         <h6 class="mb-0">Log Notifikasi</h6>
     </div>
+
     <!-- BARIS TOMBOL FILTER & AKSI -->
     <div class="row mb-2">
     <div class="col-md-6 col-12 mb-2 mb-md-0">
         <div class="dropdown">
-        <button class="btn btn-outline-secondary btn-sm dropdown-toggle w-100" type="button" data-bs-toggle="dropdown">
+        <button class="btn btn-outline-secondary dropdown-toggle w-100" type="button" data-bs-toggle="dropdown">
             <i class="fas fa-filter"></i> Filter
         </button>
         <ul class="dropdown-menu">
@@ -317,15 +318,14 @@ tr:hover .action-icon {
         </div>
     </div>
     <div class="col-md-6 col-12 d-flex flex-column flex-md-row gap-2 justify-content-md-end">
-        <button class="btn btn-danger btn-sm w-100 w-md-auto" onclick="deleteAllLogNotif()">
-        <i class="fas fa-trash"></i> Delete All
+        <button class="btn btn-danger w-100 w-md-auto" onclick="deleteAllLogNotif()">
+           <i class="fas fa-trash"></i> Delete All
         </button>
-        <button class="btn btn-secondary btn-sm w-100 w-md-auto" onclick="kembaliKeSetupUser()">
-        <i class="fas fa-arrow-left"></i> Close
+        <button class="btn btn-secondary w-100 w-md-auto" onclick="kembaliKeSetupUser()">
+           <i class="fas fa-arrow-left"></i> Close
         </button>
     </div>
     </div>
-
 
     <div class="table-box">
         <div class="table-wrapper">
@@ -475,15 +475,15 @@ function loadUserTable() {
 
 function kembaliKeSetupUser() {
   document.getElementById('logNotifForm').style.display = 'none';
-  document.querySelector('.title-box').style.display = 'flex';
-  document.querySelector('.button-box').style.display = 'flex';
-  document.querySelector('.table-box').style.display = 'block';
+  document.querySelector('.title-box').style.display    = 'flex';
+  document.querySelector('.button-box').style.display   = 'flex';
+  document.querySelector('.table-box').style.display    = 'block';
 }
 
 function loadLogNotifTable() {
   const callbackName = 'cb_' + Date.now();
-  const script = document.createElement('script');
-  script.src = `${URL_APPS_SCRIPT}?action=getLogNotif&callback=${callbackName}`;
+  const script       = document.createElement('script');
+  script.src         = `${URL_APPS_SCRIPT}?action=getLogNotif&callback=${callbackName}`;
 
   window[callbackName] = function(data) {
     const tbody = document.getElementById('logNotifTableBody');
@@ -524,12 +524,11 @@ function loadLogNotifTable() {
 
 // Sembunyikan tombol Setup User saat tampil Log Notif
 function showLogNotifForm() {
-  document.getElementById('logNotifForm').style.display = 'block';        // Tampilkan form log
-  document.querySelector('.title-box').style.display = 'none';            // Sembunyikan judul utama
-  document.querySelector('.button-box').style.display = 'none';           // Sembunyikan tombol utama (Add User, Log Notif, Close)
-  //document.querySelector('tombolSetupUser').style.display = 'none';           // Sembunyikan tombol utama (Add User, Log Notif, Close)
-    document.querySelector('.table-box').style.display = 'none';            // Sembunyikan tabel user
-  document.getElementById('pesanNotification').style.display = 'none';    // Sembunyikan pesan utama
+  document.getElementById('logNotifForm').style.display = 'block';      // Tampilkan form log
+  document.querySelector('.title-box').style.display    = 'none';       // Sembunyikan judul utama
+  document.querySelector('.button-box').style.display   = 'none';       // Sembunyikan tombol utama (Add User, Log Notif, Close)
+  document.querySelector('.table-box').style.display    = 'none';       // Sembunyikan tabel user
+  document.getElementById('pesanNotification').style.display = 'none';  // Sembunyikan pesan utama
 
   loadLogNotifTable(); // Load isi tabel log
 }
