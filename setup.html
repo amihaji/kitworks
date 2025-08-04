@@ -147,19 +147,28 @@ tr:hover .action-icon {
   min-width: 75px;
 }
 
+.btn-group-vertical-responsive {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    flex-wrap: wrap; /* Tambahan */
+    justify-content: space-between; /* Agar kiri-kanan terpisah */
+    align-items: center;
+}
+
 /* Tampilan Vertikal Mobile */
 @media (max-width: 591.98px) {
     .sticky-header th tr { 
        font-size:15px;
        white-space: nowrap !important;
     }
-
+    
     .btn-group-vertical-responsive {
        flex-direction: column !important;
        align-items: stretch !important;
        gap: 6px; /* jarak antar tombol */
     }
-
+   
     .btn-group-vertical-responsive button,
     .btn-group-vertical-responsive a {
        width: 100% !important;
@@ -483,6 +492,13 @@ function kembaliKeSetupUser() {
   document.querySelector('.title-box').style.display    = 'flex';
   document.querySelector('.button-box').style.display   = 'flex';
   document.querySelector('.table-box').style.display    = 'block';
+
+  // Tampilkan kembali tombol jika sebelumnya disembunyikan
+  const addUserBtn = document.getElementById('addUserButton');
+  if (addUserBtn) addUserBtn.style.display = 'inline-block';
+
+  const logUserBtn = document.getElementById('logUserButton');
+  if (logUserBtn) logUserBtn.style.display = 'inline-block';
 }
 
 function loadLogNotifTable() {
@@ -529,13 +545,21 @@ function loadLogNotifTable() {
 
 // Sembunyikan tombol Setup User saat tampil Log Notif
 function showLogNotifForm() {
-  document.getElementById('logNotifForm').style.display = 'block';      // Tampilkan form log
-  document.querySelector('.title-box').style.display    = 'none';       // Sembunyikan judul utama
-  document.querySelector('.button-box').style.display   = 'none';       // Sembunyikan tombol utama (Add User, Log Notif, Close)
-  document.querySelector('.table-box').style.display    = 'none';       // Sembunyikan tabel user
-  document.getElementById('pesanNotification').style.display = 'none';  // Sembunyikan pesan utama
+  // Sembunyikan elemen-elemen Setup User
+  document.getElementById('logNotifForm').style.display = 'block';
+  document.querySelector('.title-box').style.display    = 'none';
+  document.querySelector('.button-box').style.display   = 'none';
+  document.querySelector('.table-box').style.display    = 'none';
+  document.getElementById('pesanNotification').style.display = 'none';
 
-  loadLogNotifTable(); // Load isi tabel log
+  // Jika ada tombol spesifik lain, sembunyikan eksplisit juga:
+  const addUserBtn = document.getElementById('addUserButton');
+  if (addUserBtn) addUserBtn.style.display = 'none';
+
+  const logUserBtn = document.getElementById('logUserButton');
+  if (logUserBtn) logUserBtn.style.display = 'none';
+
+  loadLogNotifTable();
 }
 
 function addUser() {
@@ -744,6 +768,26 @@ function updateRowIcons(row, mode) {
         unlockIcon.classList.add('disabled');
         kirimIcon.classList.add('disabled');
     }
+}
+
+// Menghapus seluruh log notifikasi
+function deleteAllLogNotif() {
+    if (!confirm("Yakin ingin menghapus semua log notifikasi?")) return;
+
+    const callbackName = 'cb_' + Date.now();
+    window[callbackName] = function(response) {
+        if (response.status === 'success') {
+            showPesan('success', ' SUKSES : ' + response.message);
+            loadLogNotifTable(); // Refresh log setelah hapus
+        } else {
+            showPesan('error', ' ERROR : Gagal menghapus log');
+        }
+        delete window[callbackName];
+    };
+
+    const script = document.createElement('script');
+    script.src = `${URL_APPS_SCRIPT}?action=deleteAllLogNotif&callback=${callbackName}`;
+    document.body.appendChild(script);
 }
 
 // Pesan Notifikasi untuk di Form Tabel User
