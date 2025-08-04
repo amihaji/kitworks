@@ -173,7 +173,7 @@ tr:hover .action-icon {
 </div>
 
 <!-- <div class="button-box d-flex btn-group-vertical-responsive"> -->
-<div class="button-box d-flex justify-content-between align-items-center btn-group-vertical-responsive" id="TombolSetupUser">
+<div class="button-box d-flex justify-content-between align-items-center btn-group-vertical-responsive">
     <div>
        <button class="btn btn-primary" id="addUserButton"><i class="fas fa-plus"></i> Add User</button>
        <button class="btn btn-info text-white" onclick="showLogNotifForm()"><i class="fas fa-list"></i> Log Notif</button>
@@ -527,7 +527,7 @@ function showLogNotifForm() {
   document.getElementById('logNotifForm').style.display = 'block';        // Tampilkan form log
   document.querySelector('.title-box').style.display = 'none';            // Sembunyikan judul utama
   document.querySelector('.button-box').style.display = 'none';           // Sembunyikan tombol utama (Add User, Log Notif, Close)
-  document.querySelector('tombolSetupUser').style.display = 'none';           // Sembunyikan tombol utama (Add User, Log Notif, Close)
+  //document.querySelector('tombolSetupUser').style.display = 'none';           // Sembunyikan tombol utama (Add User, Log Notif, Close)
     document.querySelector('.table-box').style.display = 'none';            // Sembunyikan tabel user
   document.getElementById('pesanNotification').style.display = 'none';    // Sembunyikan pesan utama
 
