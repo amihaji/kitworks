@@ -497,18 +497,7 @@ function loadUserTable() {
 function kembaliKeSetupUser() {
   document.querySelector('.container').style.display    = 'block';  // Tampilkan semua form Setup User
   document.getElementById('logNotifForm').style.display = 'none';   // Sembunyikan form Log Notifikasi
-
-  //document.getElementById('logNotifForm').style.display = 'none';
-  //document.querySelector('.title-box').style.display    = 'flex';
-  //document.querySelector('.button-box').style.display   = 'flex';
-  //document.querySelector('.table-box').style.display    = 'block';
-
-  // Tampilkan kembali tombol jika sebelumnya disembunyikan
-  //const addUserBtn = document.getElementById('addUserButton');
-  //if (addUserBtn) addUserBtn.style.display = 'inline-block';
-
-  //const logUserBtn = document.getElementById('logUserButton');
-  //if (logUserBtn) logUserBtn.style.display = 'inline-block';
+  loadUserTable(); // Refresh data user
 }
 
 function loadLogNotifTable() {
@@ -554,24 +543,6 @@ function loadLogNotifTable() {
 }
 
 // Sembunyikan tombol Setup User saat tampil Log Notif
-function BACKUP_showLogNotifForm() {
-  // Sembunyikan elemen-elemen Setup User
-  document.getElementById('logNotifForm').style.display = 'block';
-  document.querySelector('.title-box').style.display    = 'none';
-  document.querySelector('.button-box').style.display   = 'none';
-  document.querySelector('.table-box').style.display    = 'none';
-  document.getElementById('pesanNotification').style.display = 'none';
-
-  // Jika ada tombol spesifik lain, sembunyikan eksplisit juga:
-  const addUserBtn = document.getElementById('addUserButton');
-  if (addUserBtn) addUserBtn.style.display = 'none';
-
-  const logUserBtn = document.getElementById('logUserButton');
-  if (logUserBtn) logUserBtn.style.display = 'none';
-
-  loadLogNotifTable();
-}
-
 function showLogNotifForm() {
   // Sembunyikan elemen-elemen Setup User
   document.querySelector('.container').style.display    = 'none';  // Sembunyikan semua form Setup User
