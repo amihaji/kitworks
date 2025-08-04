@@ -187,7 +187,7 @@ tr:hover .action-icon {
     <h6 class="mb-0">Setup User</h6>
 </div>
 
-<!-- <div class="button-box d-flex btn-group-vertical-responsive"> -->
+<!-- Tombol Form Setup User -->
 <div class="button-box d-flex justify-content-between align-items-center btn-group-vertical-responsive">
     <div>
        <button class="btn btn-primary mb-2" id="addUserButton"><i class="fas fa-plus"></i> Add User</button>
@@ -202,6 +202,7 @@ tr:hover .action-icon {
 <div id="pesanNotification" class="notification-message">
     <i id="pesanNotifIcon" class="pesan-notif-icon"></i><span id="pesanNotifText"></span>
 </div>
+    <!-- Tabel Daftar User -->
     <div class="table-box">
         <div class="table-wrapper">
         <table class="table table-hover table-striped table-bordered align-middle text-center">
@@ -318,7 +319,7 @@ tr:hover .action-icon {
         <h6 class="mb-0">Log Notifikasi</h6>
     </div>
 
-    <!-- BARIS TOMBOL FILTER & AKSI -->
+    <!-- Baris Tombol Filtere dan Aksi Form Log Notifikasi -->
     <div class="button-box d-flex justify-content-between align-items-center btn-group-vertical-responsive">    
         <div class="dropdown">
             <button class="btn btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
@@ -340,7 +341,13 @@ tr:hover .action-icon {
             </button>
         </div>
     </div>
-
+    
+    <!-- Pesan notifikasi -->
+    <div id="pesanNotification" class="notification-message">
+        <i id="pesanNotifIcon" class="pesan-notif-icon"></i><span id="pesanNotifText"></span>
+    </div>
+    
+    <!-- Tabel Log Totifikasi -->
     <div class="table-box">
         <div class="table-wrapper">
             <table class="table table-hover table-striped table-bordered align-middle text-center">
@@ -365,7 +372,7 @@ tr:hover .action-icon {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <SCRIPT>
 // ********* Deklarasi  Public **********
-const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbzjAiB96shqXFAiiXNg3eBYRpubRSaDUTbhvNYDfqU2iFFc4nRumgl8aDAV9DB4BOlbMA/exec';
+const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbxyAVmvsGPhB_vfzi7jrTM9Mdp6HlqpQCrDRCRnqV2jcPnMIcYmq5rpVIrWBgmQ4-fptQ/exec';
 // **************************************
 
 // Tampilkan Loading Overlay
@@ -772,22 +779,30 @@ function updateRowIcons(row, mode) {
 
 // Menghapus seluruh log notifikasi
 function deleteAllLogNotif() {
-    if (!confirm("Yakin ingin menghapus semua log notifikasi?")) return;
+  if (!confirm("Yakin ingin menghapus semua log notifikasi?")) return;
 
-    const callbackName = 'cb_' + Date.now();
-    window[callbackName] = function(response) {
-        if (response.status === 'success') {
-            showPesan('success', ' SUKSES : ' + response.message);
-            loadLogNotifTable(); // Refresh log setelah hapus
-        } else {
-            showPesan('error', ' ERROR : Gagal menghapus log');
-        }
-        delete window[callbackName];
-    };
+  const callback = 'cb_' + Date.now();
+  const script   = document.createElement('script');
+  script.src     = `${URL_APPS_SCRIPT}?action=deleteAllLogNotif&callback=${callback}`;
 
-    const script = document.createElement('script');
-    script.src = `${URL_APPS_SCRIPT}?action=deleteAllLogNotif&callback=${callbackName}`;
-    document.body.appendChild(script);
+  window[callback] = function(response) {
+    if (response.status === 'success') {
+      showPesan("success", "Semua log berhasil dihapus");
+      loadLogNotifTable(); // Refresh tabel log
+    } else {
+      showPesan("error", "Gagal menghapus log");
+    }
+    delete window[callback];
+    document.body.removeChild(script);
+  };
+
+  script.onerror = function() {
+    showPesan("error", "Tidak dapat terhubung ke server");
+    delete window[callback];
+    document.body.removeChild(script);
+  };
+
+  document.body.appendChild(script);
 }
 
 // Pesan Notifikasi untuk di Form Tabel User
