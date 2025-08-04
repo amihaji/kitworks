@@ -298,29 +298,30 @@ tr:hover .action-icon {
         <i class="fas fa-list-alt fa-lg"></i>
         <h6 class="mb-0">Log Notifikasi</h6>
     </div>
-    <!-- Dropdown Filter -->
-    <div class="button-box d-flex justify-content-between align-items-center btn-group-vertical-responsive">
-    <!-- <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap">-->
+    <!-- BARIS TOMBOL FILTER & AKSI -->
+    <div class="row mb-2">
+    <div class="col-md-6 col-12 mb-2 mb-md-0">
         <div class="dropdown">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                <i class="fas fa-filter"></i> Filter
-            </button>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#" onclick="filterLogNotif('SUKSES')">Sukses</a></li>
-                <li><a class="dropdown-item" href="#" onclick="filterLogNotif('LOCKED')">Locked</a></li>
-                <li><a class="dropdown-item" href="#" onclick="filterLogNotif('ALL')">Semua</a></li>
-            </ul>
-        </div>
-        <!-- Tombol Aksi -->
-        <div class="d-flex gap-2">
-            <button class="btn btn-danger btn-sm" onclick="deleteAllLogNotif()">
-                <i class="fas fa-trash"></i> Delete All
-            </button>
-            <button class="btn btn-secondary" onclick="kembaliKeSetupUser()">
-                <i class="fas fa-arrow-left"></i> Close
-            </button>
+        <button class="btn btn-outline-secondary btn-sm dropdown-toggle w-100" type="button" data-bs-toggle="dropdown">
+            <i class="fas fa-filter"></i> Filter
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#" onclick="filterLogNotif('SUKSES')">Sukses</a></li>
+            <li><a class="dropdown-item" href="#" onclick="filterLogNotif('LOCKED')">Locked</a></li>
+            <li><a class="dropdown-item" href="#" onclick="filterLogNotif('ALL')">Semua</a></li>
+        </ul>
         </div>
     </div>
+    <div class="col-md-6 col-12 d-flex flex-column flex-md-row gap-2 justify-content-md-end">
+        <button class="btn btn-danger btn-sm w-100 w-md-auto" onclick="deleteAllLogNotif()">
+        <i class="fas fa-trash"></i> Delete All
+        </button>
+        <button class="btn btn-secondary btn-sm w-100 w-md-auto" onclick="kembaliKeSetupUser()">
+        <i class="fas fa-arrow-left"></i> Close
+        </button>
+    </div>
+    </div>
+
 
     <div class="table-box">
         <div class="table-wrapper">
@@ -517,18 +518,15 @@ function loadLogNotifTable() {
   document.body.appendChild(script);
 }
 
+// Sembunyikan tombol Setup User saat tampil Log Notif
 function showLogNotifForm() {
-  // SEMBUNYIKAN SEMUA KOMPONEN SETUP USER
-  document.querySelector('.title-box').style.display  = 'none';           // Judul
-  document.querySelector('.button-box').style.display = 'none';           // Tombol Add, Log, Close
-  document.querySelector('.table-box').style.display  = 'none';           // Tabel User
-  document.getElementById('pesanNotification').style.display = 'none';    // Notifikasi
+  document.getElementById('logNotifForm').style.display = 'block';        // Tampilkan form log
+  document.querySelector('.title-box').style.display = 'none';            // Sembunyikan judul utama
+  document.querySelector('.button-box').style.display = 'none';           // Sembunyikan tombol utama (Add User, Log Notif, Close)
+  document.querySelector('.table-box').style.display = 'none';            // Sembunyikan tabel user
+  document.getElementById('pesanNotification').style.display = 'none';    // Sembunyikan pesan utama
 
-  // TAMPILKAN FORM LOG NOTIF
-  document.getElementById('logNotifForm').style.display = 'block';
-
-  // Panggil data log notifikasi
-  loadLogNotifTable();
+  loadLogNotifTable(); // Load isi tabel log
 }
 
 function addUser() {
