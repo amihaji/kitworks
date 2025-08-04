@@ -495,17 +495,20 @@ function loadUserTable() {
 }
 
 function kembaliKeSetupUser() {
-  document.getElementById('logNotifForm').style.display = 'none';
-  document.querySelector('.title-box').style.display    = 'flex';
-  document.querySelector('.button-box').style.display   = 'flex';
-  document.querySelector('.table-box').style.display    = 'block';
+  document.querySelector('.container').style.display    = 'block';  // Tampilkan semua form Setup User
+  document.getElementById('logNotifForm').style.display = 'none';   // Sembunyikan form Log Notifikasi
+
+  //document.getElementById('logNotifForm').style.display = 'none';
+  //document.querySelector('.title-box').style.display    = 'flex';
+  //document.querySelector('.button-box').style.display   = 'flex';
+  //document.querySelector('.table-box').style.display    = 'block';
 
   // Tampilkan kembali tombol jika sebelumnya disembunyikan
-  const addUserBtn = document.getElementById('addUserButton');
-  if (addUserBtn) addUserBtn.style.display = 'inline-block';
+  //const addUserBtn = document.getElementById('addUserButton');
+  //if (addUserBtn) addUserBtn.style.display = 'inline-block';
 
-  const logUserBtn = document.getElementById('logUserButton');
-  if (logUserBtn) logUserBtn.style.display = 'inline-block';
+  //const logUserBtn = document.getElementById('logUserButton');
+  //if (logUserBtn) logUserBtn.style.display = 'inline-block';
 }
 
 function loadLogNotifTable() {
