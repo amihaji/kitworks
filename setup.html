@@ -147,20 +147,26 @@ tr:hover .action-icon {
   min-width: 75px;
 }
 
-/* Tampilan Vertikal */
+/* Tampilan Vertikal Mobile */
 @media (max-width: 591.98px) {
     .sticky-header th tr { 
        font-size:15px;
        white-space: nowrap !important;
     }
-    
-    .btn-group-vertical-responsive { 
-       flex-direction: column; 
+
+    .btn-group-vertical-responsive {
+       flex-direction: column !important;
+       align-items: stretch !important;
+       gap: 8px; /* jarak antar tombol */
     }
-    .btn-group-vertical-responsive button, .btn-group-vertical-responsive a { 
-       width: 100% !important; 
+
+    .btn-group-vertical-responsive button,
+    .btn-group-vertical-responsive a {
+       width: 100% !important;
+       text-align: center;
     }
 }
+
 
 </style>
 </head>
@@ -304,27 +310,25 @@ tr:hover .action-icon {
     </div>
 
     <!-- BARIS TOMBOL FILTER & AKSI -->
-    <div class="row mb-2">
-    <div class="col-md-6 col-12 mb-2 mb-md-0">
+    <div class="d-flex justify-content-between align-items-start flex-wrap btn-group-vertical-responsive mb-2">
         <div class="dropdown">
-        <button class="btn btn-outline-secondary dropdown-toggle w-100" type="button" data-bs-toggle="dropdown">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
             <i class="fas fa-filter"></i> Filter
-        </button>
-        <ul class="dropdown-menu">
+            </button>
+            <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="#" onclick="filterLogNotif('SUKSES')">Sukses</a></li>
             <li><a class="dropdown-item" href="#" onclick="filterLogNotif('LOCKED')">Locked</a></li>
             <li><a class="dropdown-item" href="#" onclick="filterLogNotif('ALL')">Semua</a></li>
-        </ul>
+            </ul>
         </div>
-    </div>
-    <div class="col-md-6 col-12 d-flex flex-column flex-md-row gap-2 justify-content-md-end">
-        <button class="btn btn-danger w-100 w-md-auto" onclick="deleteAllLogNotif()">
-           <i class="fas fa-trash"></i> Delete All
-        </button>
-        <button class="btn btn-secondary w-100 w-md-auto" onclick="kembaliKeSetupUser()">
-           <i class="fas fa-arrow-left"></i> Close
-        </button>
-    </div>
+        <div class="d-flex gap-2">
+            <button class="btn btn-danger" onclick="deleteAllLogNotif()">
+            <i class="fas fa-trash"></i> Delete All
+            </button>
+            <button class="btn btn-secondary" onclick="kembaliKeSetupUser()">
+            <i class="fas fa-arrow-left"></i> Close
+            </button>
+        </div>
     </div>
 
     <div class="table-box">
