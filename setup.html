@@ -320,10 +320,23 @@ tr:hover .action-icon {
             </table>
         </div>
     </div>
-
-    <div class="button-box d-flex btn-group-vertical-responsive">
-        <button class="btn btn-danger" onclick="deleteAllLogNotif()"><i class="fas fa-trash"></i> Delete All</button>
-        <button class="btn btn-secondary" onclick="kembaliKeSetupUser()"><i class="fas fa-arrow-left"></i> Close</button>
+        <div class="button-box d-flex btn-group-vertical-responsive">
+            <div class="d-flex flex-wrap mb-2 gap-2">
+        <button class="btn btn-outline-success btn-sm" onclick="filterLogNotif('SUKSES')">
+            <i class="fas fa-check-circle"></i> SUKSES
+        </button>
+        <button class="btn btn-outline-danger btn-sm" onclick="filterLogNotif('LOCKED')">
+            <i class="fas fa-lock"></i> LOCKED
+        </button>
+        <button class="btn btn-outline-secondary btn-sm" onclick="filterLogNotif('ALL')">
+            <i class="fas fa-list"></i> ALL
+        </button>
+        <button class="btn btn-danger" onclick="deleteAllLogNotif()">
+            <i class="fas fa-trash"></i> Delete All
+        </button>
+        <button class="btn btn-secondary" onclick="kembaliKeSetupUser()">
+            <i class="fas fa-arrow-left"></i> Close
+        </button>
     </div>
 </div>
 
@@ -502,13 +515,17 @@ function loadLogNotifTable() {
 }
 
 function showLogNotifForm() {
-  document.getElementById('logNotifForm').style.display = 'block';        // Tampilkan form log
-  document.querySelector('.title-box').style.display = 'none';            // Sembunyikan judul utama
-  document.querySelector('.button-box').style.display = 'none';           // Sembunyikan tombol utama
-  document.querySelector('.table-box').style.display = 'none';            // Sembunyikan tabel user
-  document.getElementById('pesanNotification').style.display = 'none';    // Sembunyikan pesan utama
+  // SEMBUNYIKAN SEMUA KOMPONEN SETUP USER
+  document.querySelector('.title-box').style.display  = 'none';           // Judul
+  document.querySelector('.button-box').style.display = 'none';           // Tombol Add, Log, Close
+  document.querySelector('.table-box').style.display  = 'none';           // Tabel User
+  document.getElementById('pesanNotification').style.display = 'none';    // Notifikasi
 
-  loadLogNotifTable(); // Load isi tabel log
+  // TAMPILKAN FORM LOG NOTIF
+  document.getElementById('logNotifForm').style.display = 'block';
+
+  // Panggil data log notifikasi
+  loadLogNotifTable();
 }
 
 function addUser() {
@@ -842,6 +859,17 @@ function validateUserForm() {
     return true;
 }
 
+function filterLogNotif(status) {
+    const rows = document.querySelectorAll('#logNotifTableBody tr');
+    rows.forEach(row => {
+        const statusText = row.cells[6]?.textContent?.trim().toUpperCase();
+        if (status === 'ALL' || statusText === status.toUpperCase()) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
 
 </SCRIPT>
 </body>
