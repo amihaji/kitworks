@@ -221,7 +221,7 @@ tr:hover .action-icon {
                 </tr>
             </thead>
             <!-- Loading Overlay -->
-            <div id="loadingOverlay" class="loading-overlay" style="display:none; align-content: center;">
+            <div id="loadingOverlayUser" class="loading-overlay" style="display:none; align-content: center;">
                <div class="spinner-border text-primary" role="status"></div>
             </div>   
             <tbody id="userTableBody" style="font-size: small;"><tr><td colspan="15">Memuat data user ...</td></tr></tbody>
@@ -347,7 +347,7 @@ tr:hover .action-icon {
     <div class="table-box">
         <div class="table-wrapper" style="position:relative;">
             <!-- Loading Overlay -->
-            <div id="loadingOverlay" class="loading-overlay" style="display:none; align-content: center;">
+            <div id="loadingOverlayLog" class="loading-overlay" style="display:none; align-content: center;">
                 <div class="spinner-border text-primary" role="status"></div>
             </div>  
             <table class="table table-hover table-striped table-bordered align-middle text-center">
@@ -374,8 +374,9 @@ const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbyX2Xoppj1eAc8-
 // **************************************
 
 // Tampilkan Spinner Loading Overlay
-function showLoading(show) {
-  const overlay = document.getElementById('loadingOverlay');
+function showLoading(show, target = 'user') {
+  const overlayId = target === 'log' ? 'loadingOverlayLog' : 'loadingOverlayUser';
+  const overlay = document.getElementById(overlayId);
   if (overlay) overlay.style.display = show ? 'flex' : 'none';
 }
 
@@ -391,7 +392,7 @@ document.addEventListener('DOMContentLoaded', loadUserTable);
 
 // Fungsi untuk memanggil Tabel User Id
 function loadUserTable() {
-    showLoading(true);  
+    showLoading(true,'user');
     const callbackName = 'cb_' + Date.now();
     const script = document.createElement('script');
     script.src = `${URL_APPS_SCRIPT}?action=getTabelUser&callback=${callbackName}`;
@@ -402,7 +403,7 @@ function loadUserTable() {
 
         if (!data || data.length === 0) {
             tbody.innerHTML = '<tr><td colspan="14">Tidak ada data user.</td></tr>';
-            showLoading(false); 
+            showLoading(false,'user');
             return;
         }
 
@@ -474,14 +475,14 @@ function loadUserTable() {
 
             tbody.appendChild(tr);
         });
-        showLoading(false);  
+        showLoading(false,'user');
         delete window[callbackName];
         document.body.removeChild(script);
     };
 
     script.onerror = function() {
         showPesan('error',' ERROR : Gagal mengambil data user!');
-        showLoading(false);
+        showLoading(false,'user');
         delete window[callbackName];
     };
     document.body.appendChild(script);
@@ -496,7 +497,7 @@ function kembaliKeSetupUser() {
 
 // Fungsi untuk memanggil Tabel Log Notifikasi 
 function loadLogNotifTable() {
-  showLoading(true);  
+  showLoading(true, 'log');
   const callbackName = 'cb_' + Date.now();
   const script       = document.createElement('script');
   script.src         = `${URL_APPS_SCRIPT}?action=getLogNotif&callback=${callbackName}`;
@@ -524,14 +525,14 @@ function loadLogNotifTable() {
       `;
       tbody.appendChild(tr);
     });
-    showLoading(false);
+    showLoading(false, 'log');
     delete window[callbackName];
     document.body.removeChild(script);
   };
 
   script.onerror = function() {
     showPesan('error', ' ERROR : Gagal mengambil data log notifikasi!');
-    showLoading(false);
+    showLoading(true, 'log');
     delete window[callbackName];
     document.body.removeChild(script);
   };
