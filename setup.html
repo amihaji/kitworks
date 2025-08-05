@@ -550,6 +550,59 @@ function showLogNotifForm() {
   loadLogNotifTable(); // Load datanya
 }
 
+function addUser() {
+    const userId     = document.getElementById('userId').value.trim();
+    const userName   = document.getElementById('userName').value.trim().toUpperCase();
+    const userEmail  = document.getElementById('userEmail').value.trim();
+    const userHP     = document.getElementById('userHP').value.trim();
+    const userPass   = document.getElementById('userPass').value.trim();
+    const userLevel  = document.getElementById('userLevel').value;
+
+    const aksesLogin    = document.querySelector('input[name="aksesLogin"]:checked')?.value || 'N';
+    const aksesSetting  = document.querySelector('input[name="aksesSetting"]:checked')?.value || 'N';
+    const aksesFLC      = document.querySelector('input[name="aksesFLC"]:checked')?.value || 'N';
+    const aksesEstiH    = document.querySelector('input[name="aksesEstiH"]:checked')?.value || 'N';
+    const aksesWE       = document.querySelector('input[name="aksesWE"]:checked')?.value || 'N';
+    const aksesFollowup = document.querySelector('input[name="aksesFollowup"]:checked')?.value || 'N';
+    const aksesCRM      = document.querySelector('input[name="aksesCRM"]:checked')?.value || 'N';
+
+    // Validasi
+    if (!validateUserForm()) return;
+
+    // Cek duplikasi User ID di tabel
+    const rows = document.querySelectorAll('#userTableBody tr');
+    for (let row of rows) {
+        const cellUserId = row.children[0]?.textContent?.trim();
+        if (cellUserId === userId) {
+            showPesanModal("warning", " WARNING : User ID sudah digunakan.");
+            return;
+        }
+    }
+
+    const callbackName = 'cb_' + Date.now();
+    window[callbackName] = function(response) {
+        if (response.success) {
+            showPesanModal('success', ' SUKSES : ' + response.message);
+            bootstrap.Modal.getInstance(document.getElementById("modalUser")).hide();
+            loadUserTable();
+        } else {
+            showPesanModal('error', ' ERROR : Gagal menyimpan data');
+        }
+        delete window[callbackName];
+    };
+
+    const params = new URLSearchParams({
+        action: 'addUser',
+        userId, userName, userEmail, userHP, userPass, userLevel,
+        aksesLogin, aksesSetting, aksesFLC, aksesEstiH, aksesWE, aksesFollowup, aksesCRM,
+        callback: callbackName
+    });
+
+    const script = document.createElement('script');
+    script.src = `${URL_APPS_SCRIPT}?${params.toString()}`;
+    document.body.appendChild(script);
+}
+
 function BACKUP_addUser() {
     const userId     = document.getElementById('userId').value.trim();
     const userName   = document.getElementById('userName').value.trim();
@@ -611,21 +664,13 @@ function BACKUP_addUser() {
     bootstrap.Modal.getInstance(document.getElementById("modalUser")).hide();
 }
 
-
-function addUser() {
-    // Cegah error jika form input tidak aktif atau hilang
-    if (!document.getElementById('userId') || !document.getElementById('userForm')) {
-        console.warn("Form Input tidak tersedia. Pastikan tidak sedang dalam mode Log Notif.");
-        return;
-    }
-
+function editUser() {
     const userId     = document.getElementById('userId').value.trim();
     const userName   = document.getElementById('userName').value.trim().toUpperCase();
-    document.getElementById('userName').value = userName;
     const userEmail  = document.getElementById('userEmail').value.trim();
     const userHP     = document.getElementById('userHP').value.trim();
     const userPass   = document.getElementById('userPass').value.trim();
-    const userLevel  = document.getElementById('userLevel').value.trim();
+    const userLevel  = document.getElementById('userLevel').value;
 
     const aksesLogin    = document.querySelector('input[name="aksesLogin"]:checked')?.value || 'N';
     const aksesSetting  = document.querySelector('input[name="aksesSetting"]:checked')?.value || 'N';
@@ -635,75 +680,18 @@ function addUser() {
     const aksesFollowup = document.querySelector('input[name="aksesFollowup"]:checked')?.value || 'N';
     const aksesCRM      = document.querySelector('input[name="aksesCRM"]:checked')?.value || 'N';
 
-    if (!validateUserForm()) return;
-
-    // Cek duplikasi userId
-    const existingRows = document.querySelectorAll('#userTableBody tr');
-    for (let row of existingRows) {
-        const cellUserId = row.children[0]?.textContent?.trim();
-        if (cellUserId === userId) {
-            showPesanModal('warning', ' WARNING : User ID sudah digunakan!');
-            return;
-        }
-    }
-
-    const callbackName = 'cb_' + Date.now();
-    window[callbackName] = function(response) {
-        if (response.success) {
-            showPesanModal('success', ' SUKSES : ' + response.message);
-            bootstrap.Modal.getInstance(document.getElementById("modalUser")).hide();
-            loadUserTable();
-        } else {
-            showPesanModal('error', ' ERROR : Gagal menyimpan data user.');
-        }
-        delete window[callbackName];
-    };
-
-    const params = new URLSearchParams({
-        action: 'addUser',
-        userId, userName, userEmail, userHP, userPass, userLevel,
-        aksesLogin, aksesSetting, aksesFLC, aksesEstiH, aksesWE, aksesFollowup, aksesCRM,
-        callback: callbackName
-    });
-
-    const script = document.createElement('script');
-    script.src = `${URL_APPS_SCRIPT}?${params.toString()}`;
-    document.body.appendChild(script);
-}
-
-function editUser() {
-    if (!document.getElementById('userId') || !document.getElementById('userForm')) {
-        console.warn("Form Input tidak tersedia. Pastikan tidak sedang dalam mode Log Notif.");
-        return;
-    }
-
-    const userId    = document.getElementById('userId').value.trim();
-    const userName  = document.getElementById('userName').value.trim().toUpperCase();
-    document.getElementById('userName').value = userName;
-    const userEmail = document.getElementById('userEmail').value.trim();
-    const userHP    = document.getElementById('userHP').value.trim();
-    const userPass  = document.getElementById('userPass').value.trim();
-    const userLevel = document.getElementById('userLevel').value.trim();
-
-    const aksesLogin    = document.querySelector('input[name="aksesLogin"]:checked')?.value || 'N';
-    const aksesSetting  = document.querySelector('input[name="aksesSetting"]:checked')?.value || 'N';
-    const aksesFLC      = document.querySelector('input[name="aksesFLC"]:checked')?.value || 'N';
-    const aksesEstiH    = document.querySelector('input[name="aksesEstiH"]:checked')?.value || 'N';
-    const aksesWE       = document.querySelector('input[name="aksesWE"]:checked')?.value || 'N';
-    const aksesFollowup = document.querySelector('input[name="aksesFollowup"]:checked')?.value || 'N';
-    const aksesCRM      = document.querySelector('input[name="aksesCRM"]:checked')?.value || 'N';
-
+    // Validasi
     if (!validateUserForm()) return;
 
     const callbackName = 'cb_' + Date.now();
     window[callbackName] = function(res) {
-        if (res.status === 'success') {
-            showPesanModal('success', res.message || " SUKSES : Data berhasil diupdate.");
+        if (res.status === "success") {
+            showPesanModal("success", " SUKSES : " + res.message);
             bootstrap.Modal.getInstance(document.getElementById("modalUser")).hide();
             loadUserTable();
             document.getElementById("modalUser").setAttribute("data-mode", "add");
         } else {
-            showPesanModal('error', res.message || " ERROR : Gagal update data.");
+            showPesanModal("error", " ERROR : " + res.message);
         }
         delete window[callbackName];
     };
@@ -948,14 +936,19 @@ function showPesanModal(type, message, duration = 3000) {
   }, duration);
 }
 
-document.getElementById("saveUserBtn").addEventListener("click", (e) => {
-   e.preventDefault();
-   const mode = document.getElementById("modalUser").getAttribute("data-mode");
-   if (mode === "edit") {
-     editUser(); // Panggil fungsi edit
-   } else {
-     addUser(); // Panggil fungsi tambah
-   }
+document.addEventListener('DOMContentLoaded', () => {
+  const saveBtn = document.getElementById("saveUserBtn");
+  if (saveBtn) {
+    saveBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const mode = document.getElementById("modalUser").getAttribute("data-mode");
+      if (mode === "edit") {
+        editUser();
+      } else {
+        addUser();
+      }
+    });
+  }
 });
 
 function showEditModal(userData) {
