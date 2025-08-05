@@ -376,12 +376,13 @@ tr:hover .action-icon {
 const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbyX2Xoppj1eAc8-SFWbfYbl8k54PClP-9HL9QF55dbDssgDqUg9tKjvhzSELUcKmOvw6Q/exec';
 // **************************************
 
-// Tampilkan Loading Overlay
+// Tampilkan Spinner Loading Overlay
 function showLoading(show) {
   const overlay = document.getElementById('loadingOverlay');
   if (overlay) overlay.style.display = show ? 'flex' : 'none';
 }
 
+// Fungsi untuk load awal Tabel User id
 document.addEventListener('DOMContentLoaded', loadUserTable);
   document.getElementById('addUserButton').addEventListener('click', () => {
   document.getElementById('mode').value = 'add';
@@ -391,7 +392,7 @@ document.addEventListener('DOMContentLoaded', loadUserTable);
   new bootstrap.Modal(document.getElementById('modalUser')).show();
 });
 
-// LOAD DATA USER
+// Fungsi untuk memanggil Tabel User Id
 function loadUserTable() {
     showLoading(true);  
     const callbackName = 'cb_' + Date.now();
@@ -489,12 +490,14 @@ function loadUserTable() {
     document.body.appendChild(script);
 }
 
+// fungsi untuk kembali ke setup user
 function kembaliKeSetupUser() {
   document.querySelector('.container').style.display    = 'block';  // Tampilkan semua form Setup User
   document.getElementById('logNotifForm').style.display = 'none';   // Sembunyikan form Log Notifikasi
   loadUserTable(); // Refresh data user
 }
 
+// Fungsi untuk memanggil Tabel Log Notifikasi 
 function loadLogNotifTable() {
   showLoading(true);  
   const callbackName = 'cb_' + Date.now();
@@ -548,6 +551,7 @@ function showLogNotifForm() {
   loadLogNotifTable(); // Load datanya
 }
 
+// Fungsi untuk menambah user
 function addUser() {
     const userId     = document.getElementById('userId').value.trim().toLowerCase();
     document.getElementById('userId').value = userId;
@@ -603,6 +607,7 @@ function addUser() {
     document.body.appendChild(script);
 }
 
+// Fungsi untuk mengedit user id
 function editUser() {
     const userId     = document.getElementById('userId').value.trim().toLowerCase();
     document.getElementById('userId').value = userId;
@@ -649,6 +654,7 @@ function editUser() {
     document.body.appendChild(script);
 }
 
+// Fungsi untuk menghapus user id
 function deleteUser(userId) {
   if (!confirm("Yakin ingin menghapus user ini?")) return;
 
@@ -667,6 +673,7 @@ function deleteUser(userId) {
   document.body.appendChild(script);
 }
 
+// Fungsi untuk reset user id
 function unlockUser(userId) {
   if (!confirm("Anda yakin untuk unlock user ini?")) return;
   const callbackName = 'cbUnlock_' + Date.now();
@@ -691,6 +698,7 @@ function unlockUser(userId) {
   document.body.appendChild(script);
 }
 
+// Fungsi untuk mengirim notifikasi ke wa dan email
 function sendNotif(userId, userName, userEmail, userHP, userPass) {
     console.log("Mengirim notifikasi ke:", userId, userName, userEmail, userHP, userPass);
 
@@ -727,6 +735,7 @@ function sendNotif(userId, userName, userEmail, userHP, userPass) {
     document.body.appendChild(script);
 }
 
+// Mengupdate baris icon
 function updateRowIcons(row, mode) {
     const icons = row.querySelectorAll('.action-icon');
     const [editIcon, delIcon, unlockIcon, kirimIcon] = icons;
