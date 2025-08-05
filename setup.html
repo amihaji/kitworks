@@ -508,6 +508,7 @@ function loadLogNotifTable() {
 
     if (!data || data.length === 0) {
       tbody.innerHTML = '<tr><td colspan="7">Tidak ada log notifikasi.</td></tr>';
+      showLoading(false, 'log');
       return;
     }
 
