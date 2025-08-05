@@ -362,7 +362,8 @@ document.addEventListener('DOMContentLoaded', function () {
   
   // Event listener untuk tombol login
 document.getElementById('btnLoginSubmit').addEventListener('click', function () {
-  const userId     = document.getElementById('userId').value.trim();
+  const userId     = document.getElementById('userId').value.trim().toLowerCase();
+  document.getElementById('userId').value = userId;
   const userPass   = document.getElementById('userPass').value.trim();
   const btnText    = document.getElementById('loginBtnText');
   const btnSpinner = document.getElementById('loginBtnSpinner');
