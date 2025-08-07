@@ -391,9 +391,15 @@ document.getElementById('btnLoginSubmit').addEventListener('click', function () 
     document.getElementById('loginWaitText').classList.add('d-none');
 
     if (response.status === 'success' && response.loggedIn) {
+      // Menyimpan session sifatnya sementara
       sessionStorage.setItem('userId', response.userId);
       sessionStorage.setItem('userToken', response.token);
       sessionStorage.setItem('userLevel', response.level);
+      // Menyimpan session sifatnya lebih lama sepanjang tidak clear session
+      localStorage.setItem('userId', response.userId);       
+      localStorage.setItem('userToken', response.token);     
+      localStorage.setItem('userLevel', response.level);     
+
       if (response.access) {
         sessionStorage.setItem('aksesList', JSON.stringify(response.access));
       }
