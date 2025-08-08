@@ -304,7 +304,7 @@ tr:hover .action-icon {
         <!-- Tombol-tombol untuk Modal Add dan Edit -->
         <div class="w-100 d-flex justify-content-between">
             <button type="submit" class="btn btn-primary" id="saveUserBtn"><i class="fas  fa fa-save"></i> Simpan</button>
-            <button type="submit" class="btn btn-primary" id="kirimInfoBtn"><i class="fas fa-paper-plane"></i> Kirim Info</button>
+            <button type="button" class="btn btn-primary" id="kirimInfoBtn"><i class="fas fa-paper-plane"></i> Kirim Info</button>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
         </div>
     </div>
@@ -327,9 +327,9 @@ tr:hover .action-icon {
             </button>
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="#" onclick="filterLogNotif('TERKIRIM')">Terkirim</a></li>
-                <li><a class="dropdown-item" href="#" onclick="filterLogNotif('UNLOCKED')">Unlocked</a></li>
-                <li><a class="dropdown-item" href="#" onclick="filterLogNotif('LOCKED')">Locked</a></li>
-                <li><a class="dropdown-item" href="#" onclick="filterLogNotif('ALL')">Semua</a></li>
+                <li><a class="dropdown-item" href="#" onclick="filterLogNotif('AKTIF')">Aktif</a></li>
+                <li><a class="dropdown-item" href="#" onclick="filterLogNotif('TERKUNCI')">Terkunci</a></li>
+                <li><a class="dropdown-item" href="#" onclick="filterLogNotif('SEMUA')">Semua</a></li>
             </ul>
         </div>
         <div>    
@@ -918,7 +918,7 @@ function filterLogNotif(status) {
     const rows = document.querySelectorAll('#logNotifTableBody tr');
     rows.forEach(row => {
         const statusText = row.cells[6]?.textContent?.trim().toUpperCase();
-        if (status === 'ALL' || statusText === status.toUpperCase()) {
+        if (status === 'SEMUA' || statusText === status.toUpperCase()) {
             row.style.display = '';
         } else {
             row.style.display = 'none';
