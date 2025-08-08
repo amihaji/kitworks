@@ -303,8 +303,8 @@ tr:hover .action-icon {
         </div>
         <!-- Tombol-tombol untuk Modal Add dan Edit -->
         <div class="w-100 d-flex justify-content-between">
-            <button type="submit" class="btn btn-primary fa fa-save" id="saveUserBtn">Simpan</button>
-            <button type="submit" class="btn btn-primary fa fa-paper-plane" id="kirimInfoBtn">Kirim Info</button>
+            <button type="submit" class="btn btn-primary" id="saveUserBtn"><i class="fas  fa fa-save"></i> Simpan</button>
+            <button type="submit" class="btn btn-primary" id="kirimInfoBtn"><i class="fas fa-paper-plane"></i> Kirim Info</button>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
         </div>
     </div>
@@ -326,7 +326,8 @@ tr:hover .action-icon {
                 <i class="fas fa-filter"></i> Filter
             </button>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#" onclick="filterLogNotif('SUKSES')">Sukses</a></li>
+                <li><a class="dropdown-item" href="#" onclick="filterLogNotif('TERKIRIM')">Terkirim</a></li>
+                <li><a class="dropdown-item" href="#" onclick="filterLogNotif('UNLOCKED')">Unlocked</a></li>
                 <li><a class="dropdown-item" href="#" onclick="filterLogNotif('LOCKED')">Locked</a></li>
                 <li><a class="dropdown-item" href="#" onclick="filterLogNotif('ALL')">Semua</a></li>
             </ul>
