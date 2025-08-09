@@ -304,7 +304,7 @@ tr:hover .action-icon {
         <!-- Tombol-tombol untuk Modal Add dan Edit -->
         <div class="w-100 d-flex justify-content-between">
             <button type="submit" class="btn btn-primary" id="saveUserBtn"><i class="fas  fa fa-save"></i> Simpan</button>
-            <button type="button" class="btn btn-primary" id="kirimInfoBtn"><i class="fas fa-paper-plane"></i> Kirim Info</button>
+            <!-- <button type="button" class="btn btn-primary" id="kirimInfoBtn"><i class="fas fa-paper-plane"></i> Kirim Info</button>-->
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
         </div>
     </div>
@@ -416,6 +416,7 @@ function loadUserTable() {
                 login, setting, flc, estih, we, followup, crm] = row;
 
             let editState   = '';
+            let infoState  = '';
             let deleteState = '';
             let unlockState = 'disabled';
             let kirimState  = 'disabled';
@@ -425,11 +426,13 @@ function loadUserTable() {
 
             if (salahCount >= 3) {
                 editState   = 'disabled';
+                infoState  = 'disabled';
                 deleteState = 'disabled';
                 unlockState = '';
                 kirimState  = 'disabled';
             } else if (unlockFlag === 'true') {
                 editState   = 'disabled';
+                infoState  = 'disabled';
                 deleteState = 'disabled';
                 unlockState = 'disabled';
                 kirimState  = '';
@@ -454,23 +457,13 @@ function loadUserTable() {
                 <td>${followup}</td>
                 <td>${crm}</td>
                 <td class="actions-col">
+
                     <!-- <i class="fas fa-edit action-icon ${editState}" title="Edit User" onclick="editUser('${userId}')"></i> -->
                     <i class="fas fa-edit action-icon" title="Edit" onclick="showEditModal({
-                        userId: '${userId}',     
-                        userName: '${namaUser}', 
-                        userEmail: '${emailUser}', 
-                        userHP: '${hpUser}',
-                        userPass: '${passUser}', 
-                        userLevel: '${levelUser}',
-                        aksesLogin: '${login}', 
-                        aksesSetting: '${setting}', 
-                        aksesFLC: '${flc}',
-                        aksesEstiH: '${estih}', 
-                        aksesWE: '${we}', 
-                        aksesFollowup: '${followup}', 
-                        aksesCRM: '${crm}'
+                        userId: '${userId}', userName: '${namaUser}', userEmail: '${emailUser}', userHP: '${hpUser}',userPass: '${passUser}',userLevel: '${levelUser}',
+                        aksesLogin: '${login}', aksesSetting: '${setting}', aksesFLC: '${flc}', aksesEstiH: '${estih}', aksesWE: '${we}', aksesFollowup: '${followup}', aksesCRM: '${crm}'
                     })"></i>
-
+                    <i class="fas fa-user-secret action-icon ${infoState}" title="Pesan Info User" onclick="infoNotif('${userId}','${namaUser}','${emailUser}','${hpUser}','${passUser}')"></i>
                     <i class="fas fa-trash-alt action-icon ${deleteState}" title="Hapus User" onclick="deleteUser('${userId}')"></i>
                     <i class="fas fa-unlock action-icon ${unlockState}" title="Unlock User" onclick="unlockUser('${userId}')"></i>
                     <i class="fas fa-paper-plane action-icon ${kirimState}" title="Kirim Notifikasi" onclick="sendNotif('${userId}','${namaUser}','${emailUser}','${hpUser}','${passUser}')"></i>
@@ -662,7 +655,6 @@ function deleteUser(userId) {
 
   const callback = 'cb_' + Date.now();
   window[callback] = function(response) {
-    // showPesan(response.message, response.status === 'success' ? 'success' : 'error');
     if (response.status === 'success') {
        showPesan('success', " SUKSES : " + response.message);
        loadUserTable(); // Refresh tabel
@@ -688,6 +680,7 @@ function unlockUser(userId) {
         const cols = row.getElementsByTagName('td');
         if (cols.length >= 7) cols[6].textContent = '0';
         row.querySelector('.fa-edit')?.classList.add('disabled');
+        row.querySelector('.fa-user-secret')?.classList.remove('disabled');
         row.querySelector('.fa-trash-alt')?.classList.add('disabled');
         row.querySelector('.fa-unlock')?.classList.add('disabled');
         row.querySelector('.fa-paper-plane')?.classList.remove('disabled');
@@ -737,18 +730,56 @@ function sendNotif(userId, userName, userEmail, userHP, userPass) {
     document.body.appendChild(script);
 }
 
+function infoNotif(userId, userName, userEmail, userHP, userPass) {
+    console.log("Mengirim notifikasi ke:", userId, userName, userEmail, userHP, userPass);
+
+    const callback = 'cb_' + Date.now();
+    const script = document.createElement('script');
+    script.src = `${URL_APPS_SCRIPT}?action=infoNotifUser` +
+        `&userId=${encodeURIComponent(userId)}` +
+        `&userName=${encodeURIComponent(userName)}` +
+        `&userEmail=${encodeURIComponent(userEmail)}` +
+        `&userHP=${encodeURIComponent(userHP)}` +
+        `&userPass=${encodeURIComponent(userPass)}` +
+        `&callback=${callback}`;
+
+    window[callback] = function (response) {
+        console.log("Respon kirim:", response);
+        if (response.status === 'success') {
+            showPesan('success', " SUKSES : " + response.message);
+            localStorage.removeItem('notifReady_' + userId);
+            loadUserTable(); // reload tampilan icon
+        } else {
+            showPesan('error', " ERROR : " + response.message);
+        }
+
+        delete window[callback];
+        document.body.removeChild(script);
+    };
+
+    script.onerror = () => {
+        showPesan('error', " ERROR : Gagal terhubung ke server");
+        delete window[callback];
+        document.body.removeChild(script);
+    };
+
+    document.body.appendChild(script);
+}
+
 // Mengupdate baris icon
 function updateRowIcons(row, mode) {
     const icons = row.querySelectorAll('.action-icon');
-    const [editIcon, delIcon, unlockIcon, kirimIcon] = icons;
+    const [editIcon, infoIcon, delIcon, unlockIcon, kirimIcon] = icons;
 
     if (mode === 'unlock') {
         editIcon.classList.add('disabled');
+        infoIcon.classList.add('disabled');
         delIcon.classList.add('disabled');
         unlockIcon.classList.add('disabled');
         kirimIcon.classList.remove('disabled');
     } else if (mode === 'kirim') {
         editIcon.classList.remove('disabled');
+        infoIcon.classList.remove('disabled');
         delIcon.classList.remove('disabled');
         unlockIcon.classList.add('disabled');
         kirimIcon.classList.add('disabled');
