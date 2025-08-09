@@ -377,14 +377,18 @@ tr:hover .action-icon {
 const URL_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbziMZ5ZuI_gh6B8qAtYaoWtZEBtjucD_CQbkKZSfUAfjUgCVLkAz3ET1rhBKLkLafTJAA/exec';
 // **************************************
 
+// **********************************
 // Tampilkan Spinner Loading Overlay
+// **************************************
 function showLoading(show, target = 'user') {
   const overlayId = target === 'log' ? 'loadingOverlayLog' : 'loadingOverlayUser';
   const overlay = document.getElementById(overlayId);
   if (overlay) overlay.style.display = show ? 'flex' : 'none';
 }
 
+// *************************************
 // Fungsi untuk load awal Tabel User id
+// *************************************
 document.addEventListener('DOMContentLoaded', loadUserTable);
   document.getElementById('addUserButton').addEventListener('click', () => {
   document.getElementById('mode').value = 'add';
@@ -394,7 +398,9 @@ document.addEventListener('DOMContentLoaded', loadUserTable);
   new bootstrap.Modal(document.getElementById('modalUser')).show();
 });
 
+// *************************************
 // Fungsi untuk memanggil Tabel User Id
+// *************************************
 function loadUserTable() {
     showLoading(true,'user');
     const callbackName = 'cb_' + Date.now();
@@ -486,14 +492,18 @@ function loadUserTable() {
     document.body.appendChild(script);
 }
 
-// fungsi untuk kembali ke setup user
+// **********************************
+// Fungsi untuk kembali ke setup user
+// **********************************
 function kembaliKeSetupUser() {
   document.querySelector('.container').style.display    = 'block';  // Tampilkan semua form Setup User
   document.getElementById('logNotifForm').style.display = 'none';   // Sembunyikan form Log Notifikasi
   loadUserTable(); // Refresh data user
 }
 
+// ********************************************
 // Fungsi untuk memanggil Tabel Log Notifikasi 
+// ********************************************
 function loadLogNotifTable() {
   showLoading(true, 'log');
   const callbackName = 'cb_' + Date.now();
@@ -539,7 +549,9 @@ function loadLogNotifTable() {
   document.body.appendChild(script);
 }
 
+// ***************************************************
 // Sembunyikan tombol Setup User saat tampil Log Notif
+// ***************************************************
 function showLogNotifForm() {
   // Sembunyikan elemen-elemen Setup User
   document.querySelector('.container').style.display    = 'none';  // Sembunyikan semua form Setup User
@@ -547,7 +559,9 @@ function showLogNotifForm() {
   loadLogNotifTable(); // Load datanya
 }
 
+// **************************
 // Fungsi untuk menambah user
+// **************************
 function addUser() {
     const userId     = document.getElementById('userId').value.trim().toLowerCase();
     document.getElementById('userId').value = userId;
@@ -603,7 +617,9 @@ function addUser() {
     document.body.appendChild(script);
 }
 
+// ******************************
 // Fungsi untuk mengedit user id
+// ******************************
 function editUser() {
     const userId     = document.getElementById('userId').value.trim().toLowerCase();
     document.getElementById('userId').value = userId;
@@ -650,7 +666,9 @@ function editUser() {
     document.body.appendChild(script);
 }
 
+// ******************************
 // Fungsi untuk menghapus user id
+// ******************************
 function deleteUser(userId) {
   if (!confirm("Yakin ingin menghapus user ini?")) return;
 
@@ -668,7 +686,9 @@ function deleteUser(userId) {
   document.body.appendChild(script);
 }
 
+// ***************************
 // Fungsi untuk reset user id
+// ***************************
 function unlockUser(userId) {
   if (!confirm("Anda yakin untuk unlock user ini?")) return;
   const callbackName = 'cbUnlock_' + Date.now();
@@ -694,7 +714,9 @@ function unlockUser(userId) {
   document.body.appendChild(script);
 }
 
+// *************************************************
 // Fungsi untuk mengirim notifikasi ke wa dan email
+// *************************************************
 function sendNotif(userId, userName, userEmail, userHP, userPass) {
     console.log("Mengirim notifikasi ke:", userId, userName, userEmail, userHP, userPass);
 
@@ -731,6 +753,9 @@ function sendNotif(userId, userName, userEmail, userHP, userPass) {
     document.body.appendChild(script);
 }
 
+// *******************************
+// Fungsi untuk Mengaktifasi User
+// *******************************
 function aktifasiNotif(userId, userName, userEmail, userHP, userPass) {
     console.log("Mengirim notifikasi ke:", userId, userName, userEmail, userHP, userPass);
 
@@ -767,7 +792,9 @@ function aktifasiNotif(userId, userName, userEmail, userHP, userPass) {
     document.body.appendChild(script);
 }
 
-// Mengupdate baris icon
+// **********************
+// Mengupdate Baris Icon
+// *********************
 function updateRowIcons(row, mode) {
     const icons = row.querySelectorAll('.action-icon');
     const [editIcon, infoIcon, delIcon, unlockIcon, kirimIcon] = icons;
@@ -787,7 +814,9 @@ function updateRowIcons(row, mode) {
     }
 }
 
-// Menghapus seluruh log notifikasi
+// ********************************
+// Menghapus Seluruh log Notifikasi
+// ********************************
 function deleteAllLogNotif() {
   if (!confirm("Yakin ingin menghapus semua log notifikasi?")) return;
 
@@ -815,7 +844,9 @@ function deleteAllLogNotif() {
   document.body.appendChild(script);
 }
 
+// *****************************************
 // Pesan Notifikasi untuk di Form Tabel User
+// *****************************************
 function showPesan(type, message, duration = 3000) {
   const box      = document.getElementById('pesanNotification');
   const icon     = document.getElementById('pesanNotifIcon');
@@ -840,7 +871,9 @@ function showPesan(type, message, duration = 3000) {
   setTimeout(() => {box.style.display = 'none';}, duration);
 }
 
+// **************************************************
 // Pesan Notifikasi untuk di Form Modal Add dan Edit
+// **************************************************
 function showPesanModal(type, message, duration = 3000) {
   const boxModal  = document.getElementById('pesanNotifModalBox');
   const iconModal = document.getElementById('pesanNotifModalIcon');
@@ -883,6 +916,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+// **************************
+// Tampilkan Modal Edit User
+// ************************** 
 function showEditModal(userData) {
   // Isi input dari userData
   document.getElementById('judulModal').textContent = 'EDIT USER';
@@ -907,6 +943,9 @@ function showEditModal(userData) {
   new bootstrap.Modal(document.getElementById("modalUser")).show();
 }
 
+// **********************
+// Validasi Form User
+// ********************** 
 function validateUserForm() {
     const userId    = document.getElementById('userId').value.trim().toLowerCase();
     document.getElementById('userId').value = userId;
@@ -946,6 +985,9 @@ function validateUserForm() {
     return true;
 }
 
+// *****************************
+// Filter Log Notifikasi
+// *****************************   
 function filterLogNotif(status) {
     const rows = document.querySelectorAll('#logNotifTableBody tr');
     rows.forEach(row => {
