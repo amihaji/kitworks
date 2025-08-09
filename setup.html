@@ -464,7 +464,7 @@ function loadUserTable() {
                         userId: '${userId}', userName: '${namaUser}', userEmail: '${emailUser}', userHP: '${hpUser}',userPass: '${passUser}',userLevel: '${levelUser}',
                         aksesLogin: '${login}', aksesSetting: '${setting}', aksesFLC: '${flc}', aksesEstiH: '${estih}', aksesWE: '${we}', aksesFollowup: '${followup}', aksesCRM: '${crm}'
                     })"></i>
-                    <i class="fas fa-user-secret action-icon ${infoState}" title="Kirim Info User" onclick="aktifasiNotif('${userId}','${namaUser}','${emailUser}','${hpUser}','${passUser}')"></i>
+                    <i class="fas fa-user-secret action-icon ${infoState}" title="Info Aktifasi" onclick="aktifasiNotif('${userId}','${namaUser}','${emailUser}','${hpUser}','${passUser}')"></i>
                     <i class="fas fa-trash-alt action-icon ${deleteState}" title="Hapus User" onclick="deleteUser('${userId}')"></i>
                     <i class="fas fa-unlock action-icon ${unlockState}" title="Aktifkan User" onclick="unlockUser('${userId}')"></i>
                     <i class="fas fa-paper-plane action-icon ${kirimState}" title="Kirim Notifikasi" onclick="sendNotif('${userId}','${namaUser}','${emailUser}','${hpUser}','${passUser}')"></i>
