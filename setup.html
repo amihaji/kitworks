@@ -421,27 +421,27 @@ function loadUserTable() {
             const [userId, namaUser, emailUser, hpUser, passUser, levelUser, salah,
                 login, setting, flc, estih, we, followup, crm] = row;
 
-            let editState   = '';
-            let infoState  = '';
-            let deleteState = '';
-            let unlockState = 'disabled';
-            let kirimState  = 'disabled';
+            let editState     = '';
+            let aktifasiState = '';
+            let deleteState   = '';
+            let unlockState   = 'disabled';
+            let kirimState    = 'disabled';
 
             const salahCount = parseInt(salah) || 0;
             const unlockFlag = localStorage.getItem('notifReady_' + userId);
 
             if (salahCount >= 3) {
-                editState   = 'disabled';
-                infoState  = 'disabled';
-                deleteState = 'disabled';
-                unlockState = '';
-                kirimState  = 'disabled';
+                editState     = 'disabled';
+                aktifasiState = 'disabled';
+                deleteState   = 'disabled';
+                unlockState   = '';
+                kirimState    = 'disabled';
             } else if (unlockFlag === 'true') {
-                editState   = 'disabled';
-                infoState  = 'disabled';
-                deleteState = 'disabled';
-                unlockState = 'disabled';
-                kirimState  = '';
+                editState     = 'disabled';
+                aktifasiState = 'disabled';
+                deleteState   = 'disabled';
+                unlockState   = 'disabled';
+                kirimState    = '';
             }
 
             const tr = document.createElement('tr');
@@ -470,7 +470,7 @@ function loadUserTable() {
                         userId: '${userId}', userName: '${namaUser}', userEmail: '${emailUser}', userHP: '${hpUser}',userPass: '${passUser}',userLevel: '${levelUser}',
                         aksesLogin: '${login}', aksesSetting: '${setting}', aksesFLC: '${flc}', aksesEstiH: '${estih}', aksesWE: '${we}', aksesFollowup: '${followup}', aksesCRM: '${crm}'
                     })"></i>
-                    <i class="fas fa-user-secret action-icon ${infoState}" title="Kirim Notif Aktifasi" onclick="aktifasiNotif('${userId}','${namaUser}','${emailUser}','${hpUser}','${passUser}')"></i>
+                    <i class="fas fa-user-secret action-icon ${aktifasiState}" title="Kirim Notif Aktifasi" onclick="aktifasiNotif('${userId}','${namaUser}','${emailUser}','${hpUser}','${passUser}')"></i>
                     <i class="fas fa-trash-alt action-icon ${deleteState}" title="Hapus User" onclick="deleteUser('${userId}')"></i>
                     <i class="fas fa-unlock action-icon ${unlockState}" title="Aktifkan User" onclick="unlockUser('${userId}')"></i>
                     <i class="fas fa-paper-plane action-icon ${kirimState}" title="Kirim Notifikasi" onclick="sendNotif('${userId}','${namaUser}','${emailUser}','${hpUser}','${passUser}')"></i>
@@ -666,6 +666,24 @@ function editUser() {
     document.body.appendChild(script);
 }
 
+// **************************************
+// Fungsi untuk pengaturan tombol simpan
+// **************************************
+document.addEventListener('DOMContentLoaded', () => {
+  const saveBtn = document.getElementById("saveUserBtn");
+  if (saveBtn) {
+    saveBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const mode = document.getElementById("modalUser").getAttribute("data-mode");
+      if (mode === "edit") {
+        editUser();
+      } else {
+        addUser();
+      }
+    });
+  }
+});
+
 // ******************************
 // Fungsi untuk menghapus user id
 // ******************************
@@ -797,17 +815,17 @@ function aktifasiNotif(userId, userName, userEmail, userHP, userPass) {
 // *********************
 function updateRowIcons(row, mode) {
     const icons = row.querySelectorAll('.action-icon');
-    const [editIcon, infoIcon, delIcon, unlockIcon, kirimIcon] = icons;
+    const [editIcon, aktifasiIcon, delIcon, unlockIcon, kirimIcon] = icons;
 
     if (mode === 'unlock') {
         editIcon.classList.add('disabled');
-        infoIcon.classList.add('disabled');
+        aktifasiIcon.classList.add('disabled');
         delIcon.classList.add('disabled');
         unlockIcon.classList.add('disabled');
         kirimIcon.classList.remove('disabled');
     } else if (mode === 'kirim') {
         editIcon.classList.remove('disabled');
-        infoIcon.classList.remove('disabled');
+        aktifasiIcon.classList.remove('disabled');
         delIcon.classList.remove('disabled');
         unlockIcon.classList.add('disabled');
         kirimIcon.classList.add('disabled');
@@ -901,20 +919,6 @@ function showPesanModal(type, message, duration = 3000) {
   }, duration);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  const saveBtn = document.getElementById("saveUserBtn");
-  if (saveBtn) {
-    saveBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      const mode = document.getElementById("modalUser").getAttribute("data-mode");
-      if (mode === "edit") {
-        editUser();
-      } else {
-        addUser();
-      }
-    });
-  }
-});
 
 // **************************
 // Tampilkan Modal Edit User
