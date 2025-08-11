@@ -304,7 +304,6 @@ tr:hover .action-icon {
         <!-- Tombol-tombol untuk Modal Add dan Edit -->
         <div class="w-100 d-flex justify-content-between">
             <button type="submit" class="btn btn-primary" id="saveUserBtn"><i class="fas  fa fa-save"></i> Simpan</button>
-            <!-- <button type="button" class="btn btn-primary" id="kirimInfoBtn"><i class="fas fa-paper-plane"></i> Kirim Info</button>-->
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
         </div>
     </div>
@@ -473,7 +472,7 @@ function loadUserTable() {
                     <i class="fas fa-user-secret action-icon ${aktifasiState}" title="Kirim Notif Aktifasi" onclick="aktifasiNotif('${userId}','${namaUser}','${emailUser}','${hpUser}','${passUser}')"></i>
                     <i class="fas fa-trash-alt action-icon ${deleteState}" title="Hapus User" onclick="deleteUser('${userId}')"></i>
                     <i class="fas fa-unlock action-icon ${unlockState}" title="Aktifkan User" onclick="unlockUser('${userId}')"></i>
-                    <i class="fas fa-paper-plane action-icon ${kirimState}" title="Kirim Notifikasi" onclick="sendNotif('${userId}','${namaUser}','${emailUser}','${hpUser}','${passUser}')"></i>
+                    <i class="fas fa-paper-plane action-icon ${kirimState}" title="Kirim Notif Reset User" onclick="sendNotif('${userId}','${namaUser}','${emailUser}','${hpUser}','${passUser}')"></i>
                 </td>
             `;
 
