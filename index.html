@@ -264,31 +264,25 @@ body {
             <a href="https://amihaji.github.io/crmtools/index.html" class="btn btn-primary disabled" id="btnCRM" style="text-shadow: #e4e4e4; text-align: left">CRMTools - Management Pelanggan</a>
           </div>
           
-          <div class="btn-group">  
+          <div class="btn-group">
             <span class="button-group-icon">
               <i class="fas fa-cog"></i>
             </span>     
-            <!-- <select class="form-select form-select-sm mt-3"> -->
-              <select class=" form-select form-select-sm mt-3 btn-primary disabled" id="btnSetup" style="text-shadow: #e4e4e4; text-align: left">
-                 Setting Konfigurasi
-                <option>
-                  <a href="https://amihaji.github.io/kitworks/setupUser.html" 
-                     style="text-shadow: #e4e4e4; text-align: left">Setup User
-                  </a>
-                </option>
-                <option>
-                  <a href="https://amihaji.github.io/estihtools/setupEstih.html" 
-                    style="text-shadow: #e4e4e4; text-align: left">Setup Estihtools
-                  </a>
-                </option>
-                <option>
-                    <p> SUB MENU 3</p>   
-                </option>
-                <option>
-                    <p> SUB MENU 4</p> 
-                </option>
-        
-            </select>       
+          
+            <button type="button" class="btn btn-primary dropdown-toggle disabled" id="btnSetup" 
+                style="text-shadow: #e4e4e4; text-align: left" data-bs-toggle="dropdown">Setting Konfiurasi
+            </button>
+            <!-- Sub Menu Setting Konfigrasi -->
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="https://amihaji.github.io/kitworks/setupUser.html"
+                 style="text-shadow: #e4e4e4; text-align: left">Setup UserTablet
+              </a>
+              <a class="dropdown-item" href="https://amihaji.github.io/estihtools/setupEstih.html" 
+                 style="text-shadow: #e4e4e4; text-align: left">Setup Estihtools
+              </a> 
+              <a class="dropdown-item" href="#">Sub Menu3</a>
+              <a class="dropdown-item" href="#">Sub Menu4</a>
+            </div>
           </div>
           
           <div class="btn-group">  
