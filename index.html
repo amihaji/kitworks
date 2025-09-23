@@ -233,7 +233,7 @@ body {
             <span class="button-group-icon">
               <i class="fas fa-dumbbell"></i>
             </span>            
-            <a href="https://amihaji.github.io/flc/index.html" class="btn btn-warning disabled" id="Menu1" 
+            <a href="https://amihaji.github.io/flc/index.html" class="btn btn-warning disabled" id="btnFLC" 
               style="text-shadow: #e4e4e4; text-align: left">Beratidealku - FIT Challenge
             </a>
           </div>
@@ -242,7 +242,7 @@ body {
             <span class="button-group-icon">
               <i class="fas fa-cart-plus"></i>
             </span>            
-            <a href="https://amihaji.github.io/estihtools/index.html" class="btn btn-primary disabled" id="Menu2" 
+            <a href="https://amihaji.github.io/estihtools/index.html" class="btn btn-primary disabled" id="btnEstiH" 
               style="text-shadow: #e4e4e4; text-align: left">EstiHTools - Estimasi Harga Produk
             </a>
           </div>
@@ -251,7 +251,7 @@ body {
             <span class="button-group-icon">
               <i class="fas fa-heartbeat"></i>
             </span>            
-            <a href="https://amihaji.github.io/wetools/index.html" class="btn btn-primary disabled" id="Menu3" 
+            <a href="https://amihaji.github.io/wetools/index.html" class="btn btn-primary disabled" id="btnWE" 
                style="text-shadow: #e4e4e4; text-align: left">WETools - Cek Evaluasi Kebugaran
             </a>
           </div>
@@ -260,7 +260,7 @@ body {
             <span class="button-group-icon">
               <i class="fas fa-list-check"></i>
             </span>            
-            <a href="https://amihaji.github.io/wetools/DashWE.html" class="btn btn-primary disabled" id="Menu4" 
+            <a href="https://amihaji.github.io/wetools/DashWE.html" class="btn btn-primary disabled" id="btnDashWE" 
               style="text-shadow: #e4e4e4; text-align: left">FollowTools - Followup Hasil WE
             </a>
           </div>
@@ -269,7 +269,7 @@ body {
             <span class="button-group-icon">
               <i class="fas fa-users"></i>
             </span>            
-            <a href="https://amihaji.github.io/crmtools/index.html" class="btn btn-primary disabled" id="Menu5" 
+            <a href="https://amihaji.github.io/crmtools/index.html" class="btn btn-primary disabled" id="btnCRM" 
               style="text-shadow: #e4e4e4; text-align: left">CRMTools - Management Pelanggan
             </a>
           </div>
@@ -278,7 +278,7 @@ body {
             <span class="button-group-icon">
               <i class="fas fa-cog"></i>
             </span>     
-            <button type="button" class="btn btn-primary dropdown-toggle disabled" id="Menu6" 
+            <button type="button" class="btn btn-primary dropdown-toggle disabled" id="btnSetup" 
               style="text-shadow: #e4e4e4; text-align: left" data-bs-toggle="dropdown">Setting Konfiurasi
             </button>
             <!-- Sub Menu Setting Konfigurasi -->
@@ -290,7 +290,7 @@ body {
               <a class="dropdown-item" href="https://amihaji.github.io/estihtools/setupEstih.html" 
                  style="text-shadow: #e4e4e4; text-align: left">Setup Estihtools
               </a> 
-              <a class="dropdown-item" href="#">Sub Menu4</a>
+              <a class="dropdown-item" href="#">Sub MenuKe4</a>
             </div>
           </div>
           
@@ -460,7 +460,7 @@ document.getElementById('btnLoginSubmit').addEventListener('click', function () 
 function logout() {
   //sessionStorage.clear();
   //Disable semua tombol menu 
-  const buttons = ['Menu1', 'Menu2', 'Menu3', 'Menu4', 'Menu5', 'Menu6'];
+  const buttons = ['btnFLC', 'btnEstiH', 'btnWE', 'btnDashWE', 'btnCRM', 'btnSetup'];
   buttons.forEach(id => {
     const btn = document.getElementById(id);
     if (btn) {
